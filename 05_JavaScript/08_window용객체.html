@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>window</h1>
+    <p>
+        window객체는 자바스크립트의 최상위 객체이며 BOM, DOM으로 나뉨
+        - BOM(Brower Obejct Model) : location(주소창관리), screen(창과 관련), navigator(브라우저 관련)
+        - DOM(Dobument Object Model) : document객체
+    </p>
+
+    <h4>- [window].open([url], '특성')</h4>
+    <button onclick="test1();">네이버</button>
+    <script>
+        function test1(){
+            //window.open();
+            //window.open(url, 창이름, 옵션)
+            //url : 새창에서 열려고하는 url
+            //window.open("https://www.naver.com");
+            //창이름 : 브라우저 창의 이름을 부여함, 이름에 따라서 동일이름의 창은 1번만 생성됨
+            //window.open("https://www.naver.com", "naver");
+            //옵션 : 너비, 높이, 주소창여부, 툴바여부...
+            /*
+            창의 특성
+            width : 너비
+            height: 높이
+
+            => yes | no
+            resizable : 창의 크기조절여부
+            locationn : 주소창
+            menubar : 메뉴바
+            scrollbar : 스크롤바
+            status : 상태표시줄
+            toolbar : 도구모음
+            */
+
+            window.open("https://www.naver.com", "naver", "width=500, height=500, resizable=no location=no");
+        }
+    </script>
+
+    <hr>
+
+    <h3>wondow 객체의 timer관련 메서드</h3>
+    <h4>widow.setTimeOut(함수, 시간ms)</h4> <!--일정시간후에 함수 딱 한번만 실행해줘/비동기-->
+    <button onclick="test2()">실행</button>
+    <script>
+        function test2(){
+            //const myWindow = window.open();
+            //myWindow.alert("ㅋㅋㅋㅋㅋ");
+
+            // setTimeout(function(){
+            //     myWindow.close();
+            // }, 3000);
+
+            console.log("처음 로딩 -> 화면표시");
+            console.log("서버에 요청");
+            setTimeout(function(){
+                console.log("서버에서 데이터가 도착");
+                console.log("데이터로 화면 재구성");
+            }, 3000)
+            
+            console.log("데이터없이 화면구성");
+        }
+    </script>
+
+    <br>
+
+    <h4>- window.serInterval(함수, 시간ms)</h4>
+    <button onclick="test3()">실행</button>
+    <div id="area1" class="area">0</div>
+
+    <script>
+        function test3(){
+            const area1 = document.getElementById("area1");
+            //1초마다 카운트값 1씩 증가 -> 스탑워치처럼
+
+            let count = 0;
+            setInterval(function(){
+                // console.log("count증가")
+                // count++;
+                // area1.innerHTML = count;
+
+                area1.innerHTML = getNowTimeHHMMSS();
+            }, 1000);
+        }
+
+        function getNowTimeHHMMSS(){
+            const now = new Date();
+
+            let hour = now.getHours(); //시
+            let min = now.getMinutes(); //분
+            let sec = now.getSeconds(); //초
+
+            const str = `${hour} : ${min} : ${sec}`;
+            return str;
+        }
+    </script>
+
+    <hr>
+
+    <h3>BOM</h3>
+    <h3>location객체</h3>
+    <p>브라우저 주소창과 관련된 객체</p>
+
+    <button onclick="console.log(location)">실행확인</button>
+
+    <br>
+
+    <a href="http://www.naver.com">네이버로 이동</a>
+    <button onclick="location.href = 'http://www.naver.com'">네이버로 이동</button>
+    <br>
+    <button onclick="location.assign('http://www.google.com')">구글로 이동</button>
+    <button onclick="location.replace('http://www.google.com')">구글로 이동</button>
+    <!-- replace: 브라우저의 히스토리를 저장하지 않음(뒤로가기 안됨) -->
+    <br>
+    <button onclick="location.href = location.href">새로고침</button>
+    <button onclick="location.reload()">새로고침</button>
+
+    <br><br><br>
+
+    <h3>screen객체</h3>
+    <button onclick="console.log(screen)">객체확인</button>
+
+    <h3>navigator객체</h3>
+    <button onclick="console.log(navigator)">객체확인</button>
+
+    
+    <h3>history객체</h3>
+    <button onclick="console.log(history)">객체확인</button>
+</body>
+</html>
+
+
+
+
+
+

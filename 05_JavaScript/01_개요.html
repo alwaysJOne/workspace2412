@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개요</title>
+
+    <script src="resources/js/sample.js"></script>
+</head>
+<body>
+    <!-- 
+        웹은 크게 3요소
+        - html : 웹문서의 큰 틀을 잡을 때 사용(DOM트리 구성)
+        - css : html로 구성된 DOM에 다양한 스타일 속성을 부여할 때 사용
+        - js : 웹문에서 이벤트가 발생했을 때 실행할 기능을 정의한다.
+                => html로 구성된 DOM을 편집할 때 사용
+    -->
+    <h1>자바스크립트 개요</h1>
+
+    <h3>1. 스크립트 언어란?</h3>
+    <p>
+        프로그램의 동작을 사용자의 요구의 맞게 수행되도록 해주는 용도<br>
+        빠르게 배울 수 있고 짧은 소스코드로 상호작용이 되도록 구성되어 있음
+    </p>
+
+    <h3>2. 자바스크립트</h3>
+    <p>
+        웹 브라우저에서 많이 사용되는 인터프리터방식의 스트립트 언어 <br>
+        - 인터프리터방식 : 코드를 한줄씩한줄씩 읽어가며 바로 실행하는 방식 <br>
+        (실시간으로 텍스트 분석해서 실행됨 -> 코드에 문법 오류가 있다면 런타임 시점에 알려줌)
+    </p>
+
+    <h3>3. 자바스크립트 사용법</h3>
+    <ol>
+        <li>inline(인라인) : 태그내에서 간단한 소스코드를 작성해서 실행되게 하는 방법</li>
+        <li>internal(내부) : html문서 내에 소스코드를 작성해서 실행되게 하는 방법</li>
+        <li>external(외부) : 별도의 .js파일로 소스코드를 작성해서 가져다가 실행되게 하는 방법</li>
+    </ol>
+
+    <h4>1) inline</h4>
+    <p>[표현법] (태그 on이벤트명="해당 요소의 이벤트 발생시 실행할 코드")</p>
+
+    <button onclick="window.alert('알림창 출력 버튼 클릭!!')">알림창 출력</button>
+    <button onclick="window.console.log('콘솔창 출력 버튼 클릭!!')">콘솔창 출력</button>
+
+    <br><br>
+
+    <h4>2) internal방식</h4>
+    <p>
+        script태그 영역안에 소스코드를 작성 <br>
+        script태그는 head태그, body태그 다 작성 가능
+    </p>
+
+    <button id="btn">알림창 출력</button>
+    <button onclick="btnClcick()">콘솔창 출력</button>
+
+    <script>
+        let btn = document.querySelector("#btn"); 
+        btn.onclick = function(){
+            window.alert("알림창 출력");
+        }
+        
+        function btnClcick(){
+            window.console.log("콘솔창 출력");
+        }
+    </script>
+
+    <h4>3) external방식</h4>
+    <p>외부의 .js파일을 생성해서 따로 js코드를 작성한다.</p>
+
+    <button onclick="btnClick2()">알림창 출력</button>
+</body>
+</html>

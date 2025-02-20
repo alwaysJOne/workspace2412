@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영역관련태그</title>
+
+    <style>
+        div{
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+        }
+        span{
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <!--
+        블럭요소 : 한 줄 단위로 영역을 차지함.
+                  줄바꿈이 적요되어 이미 존재하는 태그의 다음줄에 다음영역이 잡힘
+                  (p, pre, "div", h...)
+        인라인요소 : content(내용) 영역에 해당하는 부분만 영역을 차지하는 요소
+                    줄바꿈이 적용되지않아 다음영역이 바로 옆으로 잡힘
+                    (b, mark, s, img, "span"...)
+    -->    
+    <h1>영역관련태그</h1>
+    <h2>div태그와 span태그의 차이점1 : 줄바꿈처리</h2>
+
+    <div style="background: red;">첫번째 영역</div>
+    <div style="background: orange;">두번째 영역</div>
+    <div style="background: yellow;">세번째 영역</div>
+
+    <h3>span태그</h3>
+    <p>span태그는 인라인 요소로 content영역만 차지(줄바꿈 발생x)</p>
+    <span style="background: red;">첫번째 영역</span>
+    <span style="background: orange;">두번째 영역</span>
+    <span style="background: yellow;">세번째 영역</span>
+
+    <h2>div태그와 span의 차이점2 : 영역지정방식</h2>
+    <h3>div태그 : 사각형 박스로 영역을 지정함</h3>
+    <div style="height: auto;">
+        [STN뉴스] 반진혁 기자 = 손흥민이 우승을 외쳤다.
+        토트넘은 지난 2일 오후 11시(한국시간) 영국 브렌트포드에 위치한 지테크 커뮤니티 스타디움에서 치러진 브렌트포드와의 2024/25시즌 프리미어리그(EPL) 24라운드 경기에서 2-0으로 승리했다.
+        토트넘은 EPL에서 오랜만에 승전고를 울렸다. 작년 12월 사우샘프턴과의 16라운드 경기 이후 8경기 만에 승리를 거머쥐었다.
+        토트넘은 4-3-3 포메이션을 가동했다. 손흥민, 히샬리송, 마이키 무어가 공격진을 구성했고 로드리고 벤탄쿠르, 이브 비수마, 데얀 쿨루셉스키가 미드필더를 형성했다. 수비는 제드 스펜스, 벤 데이비스, 아치 그레이, 페드로 포로가 구축했고 골문은 안토닌 킨스키가 지켰다.
+        0의 균형은 토트넘이 깼다. 전반 28분 코너킥 상황에서 손흥민이 연결한 크로스가 브렌트포드의 야넬트의 등을 맞고 그대로 득점으로 이어졌다.
+        손흥민은 작년 12월 맨체스터 유나이티드와의 2024/25시즌 잉글랜드 풋볼 리그(EFL)컵 8강전 후반 43분 코너킥 상황에서 시도한 킥이 그대로 득점으로 이어지면서 환상적인 골을 만들어낸 기억이 있는데 또 한 번 번뜩였다.
+    </div>
+    <h3>span태그 : 문장단위로 영역을 지정함</h3>
+    <span style="height: auto;">
+        [STN뉴스] 반진혁 기자 = 손흥민이 우승을 외쳤다.
+        토트넘은 지난 2일 오후 11시(한국시간) 영국 브렌트포드에 위치한 지테크 커뮤니티 스타디움에서 치러진 브렌트포드와의 2024/25시즌 프리미어리그(EPL) 24라운드 경기에서 2-0으로 승리했다.
+        토트넘은 EPL에서 오랜만에 승전고를 울렸다. 작년 12월 사우샘프턴과의 16라운드 경기 이후 8경기 만에 승리를 거머쥐었다.
+        토트넘은 4-3-3 포메이션을 가동했다. 손흥민, 히샬리송, 마이키 무어가 공격진을 구성했고 로드리고 벤탄쿠르, 이브 비수마, 데얀 쿨루셉스키가 미드필더를 형성했다. 수비는 제드 스펜스, 벤 데이비스, 아치 그레이, 페드로 포로가 구축했고 골문은 안토닌 킨스키가 지켰다.
+        0의 균형은 토트넘이 깼다. 전반 28분 코너킥 상황에서 손흥민이 연결한 크로스가 브렌트포드의 야넬트의 등을 맞고 그대로 득점으로 이어졌다.
+        손흥민은 작년 12월 맨체스터 유나이티드와의 2024/25시즌 잉글랜드 풋볼 리그(EFL)컵 8강전 후반 43분 코너킥 상황에서 시도한 킥이 그대로 득점으로 이어지면서 환상적인 골을 만들어낸 기억이 있는데 또 한 번 번뜩였다.
+    </span>
+
+    <hr>
+
+    <h1>iframe</h1>
+    <p>웹문서 안에 다른 웹페이지를 추가하는 태그(인라인요소)</p>
+    <iframe src="./04_이미지및 멀티미디어태그.html" width="300" height="300"></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/mni4_Ktwvhw?si=9xbEPi1w8KeLE2rn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</body>
+</html>

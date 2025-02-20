@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- 외부라이브러리 -->
+    <!-- jQuery 3.7.1 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- jQueryUI 1.14.1 -->
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" integrity="sha256-AlTido85uXPlSyyaZNsjJXeCs07eSv3r43kyCVc8ChI=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>jQuery</h1>
+
+    <h3>jQuery란</h3>
+    <p>
+        기존의 자바스크립트 언어만으로 구현하기에는 복잡했던 구문을 간소화하기 위해 만들어진<br>
+        JavaScript기반의 라이브러리 <br>
+        즉, JavaScript로 유용한 함수나 내용들을 다른 누군가가 이미 정의해 놓은 것
+        <br>
+        복잡한 JavaScript구문보다 짧고 쉽게 개발이 가능하다. <br>
+        <br>
+        ==> 장점 <br>
+        1) DOM요소와 관련된 스크립트를 보다 쉽게 구현할 수 있음 <br>
+        2) AJAX(비동기통신) 이벤트 처리등을 폭넓게 지원함 <br>
+        3) jQuery와 관련된 확장형 플러그인, 오픈API등을 지원(차트, 슬라이드, 캘린더...)
+    </p>
+
+    <br>
+
+    <h3>jQuery라이브러리 연결방법</h3>
+    <p>
+        head태그내에 script태그로 외부jQuery관련 .js파일 연결하기 <br>
+        단 오프라인/온라인방식이 있음
+        <br>
+        1. jQuery라이브러리 파일을 직접 다운로드 받은 후 경로지정
+        2. CDN(Content Delivery Network)방식 <br>
+        파일을 다운로드 받아서 저장할 필요없이 라이브러리를 제공하는 사이트의 url을 제시하면 <br>
+        브라우저에서 로딩시 직접 해당 서버에서 파일을 다운로드해서 그때그때 사용하는 방식
+    </p>
+
+    <h3>jQuery구문 작성하기</h3>
+    <p>
+        jquery구문으로 dom요소를 다루는 구문을 기본적으로 작성할 것이기 때문에 <br>
+        문서상에 요소들이 다 만들어지고나서 실행되어야한다.
+    </p>
+
+    <pre>
+        window.onload이벤트 -> 해당문서의 모든 요소들이 전부 로드되고
+                               외부문서들도 전부 가져온 뒤 실행되는 이벤트
+        순수자바스크립트
+        window.onload = function(){
+            실행내용;
+        }
+    </pre>
+
+    <script>
+        window.onload = function(){
+            console.log("js로딩 완료");
+        }
+
+        $(document).ready(function(){ // document.onload와 동일한 기능을 제공
+            console.log("document로딩완료");
+        })
+
+        $(function(){ // window.onload와 동일한 기능을 제공
+            console.log("jquery사용준비완료");
+        })
+        
+
+        console.log("js실행시점");
+    </script>
+
+    <hr>
+
+    <h1>태그 선택자</h1>
+    <p>Java</p>
+    <p>Oracle</p>
+    <p>HTML</p>
+
+    <h5 id="css-box">css</h5>
+    <h5>JavaScript</h5>
+    <h5>jQuery</h5>
+
+    <button class="btn">1</button>
+    <button class="btn">2</button>
+    <button class="btn">3</button>
+    <button class="btn">4</button>
+    <button class="btn">5</button>
+
+    <ul id="ul-area">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+
+    <script>
+        $(function(){
+            //순수자바스크립트
+            //document.getElementsByTagName('태그명') : 배열
+
+            // const pArr = document.getElementsByTagName('p');
+            // for(let pEl of pArr){
+            //     pEl.style.color = "red";
+            // }
+
+            //jQuery방식 -> $('선택자')
+            //$('p, h5').css("color", "red");
+
+            $('.btn').click(function(){
+                alert('클릭됨');
+            })
+
+            let $btnList = $('.btn');
+            let btnList = document.querySelectorAll('.btn');
+            console.log($btnList)
+            console.log(btnList)
+
+            setTimeout(function(){
+                //특정요소를 지우고싶을 때
+                //$('.btn').remove();
+                //document.querySelector('.btn').remove(); -> 반복해줘야함
+
+                //$('#ul-area').empty(); //해당요소의 내부를 비움
+                document.querySelector('#ul-area').innerHTML = "";
+                console.log($('#ul-area')); //반환값은 무조건 배열로 가져온다.
+            }, 2000);
+        })
+
+        //document.getElementById('아이디') // $('#아이디');
+        //document.getElementsByClassName('클래스명') // $('.클래스명')
+        //... 
+        //-> document.querySelectorAll('선택자') // $('선택자')
+
+        let h5El = document.querySelector('#css-box');
+        //h5El.스타일속성 = 스타일값;
+        // $(h5El).css("color","red");
+        // $(h5El).css({
+        //     "color":"red", 
+        //     "font-size":"20px"
+        // });
+
+        //h5El.on이벤트명 = 이벤트핸들러;
+        //$(h5El).이벤트명(이벤트핸들러);
+        $(h5El).click(function(){
+            alert("실행");
+        });
+
+        //h5El.innerHTML = "<span>내부변경됨</span>";
+        $(h5El).html("<span>내부변경됨</span>");
+        //h5El.innerText = "안녕하세요.";
+        $(h5El).text("안녕하세요");
+    </script>
+
+    <hr>
+
+    <h3>jQuery에서 input</h3>
+    텍스트상자 : <input type="text"> <br>
+    버튼상자 : <input type="button"> <br>
+    체크박스 : <input type="checkbox"> <br>
+    첨부파일 : <input type="file"> <br>
+    비밀번호 : <input type="password"> <br>
+    라디오버튼 : <input type="radio"> <br>
+    초기화버튼 : <input type="reset"> <br>
+    제출버튼 : <input type="submit"> <br>
+
+    <script>
+        $(function(){
+            $(":text").css("background", "red").val("빨간상자");
+            //alert($(":text").val());
+
+            $(":button").css({
+                width: "100px",
+                height: "100px"
+            }).val("큰버튼");
+
+            //속성을 변경할 때
+            //document.querySelector("input[type='checkbox']").checked = true;
+            //document.querySelector("input[type='checkbox']").setAttribute("checked", true);
+            $(":checkbox").attr("checked", true);
+        
+            //첨부파일 input의 배경을 green으로
+            $(":file").css("background", "green");
+
+            //비밀번호 input의 배경색을 yellow로
+            $(":password").css("background", "yellow");
+
+            //라디오버튼 check상태로, 가로50px 세로50px로
+            $(":radio").attr("checked",true).css({
+                width: "50px",
+                height: "50px"
+            });
+
+            //제출벼튼 클릭시 alert("제출완료") 실행되도록
+            $(":submit").click(function(){
+                alert("제출완료");
+            })
+        })
+    </script>
+</body>
+</html>

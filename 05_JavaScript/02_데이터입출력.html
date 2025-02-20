@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>자바스크립트에서 데이터 입/출력</h1>
+
+    <!--
+        *window : 자바스크립트의 내장객체로 브라우저 창이 열릴 때마다 하나씩 만들어지는 객체
+                  브라우저창 안에 모든요소들의 최상위 객체(내부함수 호출시 생략가능)
+        *document : 웹 문서마다 하나씩 만들어지는 객체(html 문서에대한 정보를 가지고 있음 -> DOM관리)
+    -->
+
+    <h2>1. 데이터를 출력하는 구문</h2>
+    <p>
+        1) [window.]alert("출력하고싶은 문구"); <br>
+        2) [window.]console.log("콘솔창에 출력하고자하는 문구"); <br>
+        3) document.write("화면상에 출력하고자하는 문구"); <br>
+        4) 선택한요소.innerHTML | 선택한요소.innerText = "요소에 추가할 노드" 
+    </p>
+    <script>
+        //alert("안녕하세요.");
+        console.log("콘솔에 입력");
+    </script>
+
+    <button onclick="documentWrite()">화면에 출력</button>
+    <script>
+        function documentWrite(){
+            //출력할 문구에 html 태그가 있는 경우 해석해서 보여준다.
+            let str = `<table border= '1'>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                            </tr>
+                       </table>`;
+            document.write(str);
+        }
+    </script>
+
+    <br><br>
+
+    <h3>4) 선택한요소.innerHTML | 선택한요소.inner.Text = "요소에 출력할 문구"</h3>
+    <div class="area" id="area1">
+        자바스크립트에서 어떤 요소(Element)안의 값(content)을 가지고 온다거나 <br>
+        변경하고자할 때 <br>
+        innerHTML, innerText라는 속성에 접근
+    </div>
+
+    <button onclick="tagValue()" style="color: blue;">확인</button>
+    <script>
+        function tagValue(){
+            //위에 div요소를 가져와서 안에 값을 확인/변경
+
+            //div요소객체를 가져와서 변수에 담기
+            let divEl = document.getElementById('area1');
+            console.log(divEl);
+
+            //선택한 요소에 속성에 접근이 가능(.를 통해서)
+            console.log(divEl.id);
+            console.log(divEl.className);
+
+            console.log(divEl.innerHTML); // 요소의 content영역안의 HTML을 포함해서 전부 가져온다.
+            console.log(divEl.innerText); // 요소의 content영역안의 텍스트만 포함해서 가져온다.
+
+            //속성값 변경
+            divEl.innerHTML = "<h3>속성값 변경됨</h3>";
+            divEl.innerText = "<h3>속성값 변경됨</h3>";
+
+            divEl.style.color = "red";
+        }
+    </script>
+
+    <hr>
+
+    <h2>2. 데이터를 입력받는 구문</h2>
+    <p>
+        1)변수 = [window.]comfirm("질문내용");
+        2)변수 = [window.]prompt("질문내용");
+        3)변수 = 선택한요소.속성(id, className, innerText...) <br>
+        4)변수 = input요소.value;
+    </p>
+
+    <button onclick="testConfirm()">confirm버튼</button>
+    <div id="area2"></div>
+
+    <script>
+        function testConfirm(){
+            //호출시 질문내용과 확인/취소버튼이 존재하는 알림창 발생
+            //-> 확인시 true, 취소시 false반환
+            let result = confirm("졸리면 확인, 아니면 취소를 누르세요.");
+            console.log(result);
+
+            let div2 = document.getElementById('area2');
+            div2.innerText = result ? "정신차리기!" : "굳!";
+        }
+    </script>
+
+    <button onclick="testPrompt()">prompt버튼</button>
+    <div id="area3"></div>
+
+    <script>
+        function testPrompt(){
+            //질문내용을 입력하면 답을 입력할 수 있는 텍스트상자와
+            //확인,취소버튼을 제공
+            //확인시 텍스트상자의 내용반환, 취소시 null반환
+            let name = prompt("이름을 입력하세요.");
+            let age = prompt("나이를 입력하세요.");
+
+            let div3 = document.getElementById('area3');
+            div3.innerHTML = "당신은 " + age + "살에 " + name + "이군요."; 
+        }
+    </script>
+
+    <br><br>
+
+    <h3>선택한 input요소.value</h3>
+
+    아이디 : <input type="text" id="userId"> <br>
+    비밀번호 : <input type="password" id="userPwd"> <br>
+
+    <button onclick="testInput()">클릭</button>
+    <br>
+    <input type="text" id="result-input">
+
+    <script>
+        function testInput(){
+            let idInput = document.getElementById("userId");
+            let pwdInput = document.getElementById("userPwd");
+
+            console.log(idInput.value);
+            console.log(pwdInput.value);
+
+            let result = document.getElementById('result-input');
+            result.value = idInput.value + " " + pwdInput.value;
+            
+            idInput.value = "";
+            pwdInput.value = "";
+        }
+    </script>
+</body>
+</html>

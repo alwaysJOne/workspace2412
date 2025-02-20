@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .area{
+            border: 1px solid black;
+            width: 300px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML요소에 접근하기(해당 요소객체 가져오기)</h1>
+    
+    <h3>1) 아이디를 이용해서 요소 가져오기</h3>
+    <div class="area" id="area1">area1영역</div>
+    <button onclick="accessId()">아이디로 접근</button>
+
+    <script>
+        //document.getElementById('아이디명');
+        function accessId(){
+            let area1 = document.getElementById('area1');
+
+            area1.className = "t1 t2 t3";
+
+            area1.style.background = 'yellow';
+            area1.style.width = '200px';
+            area1.style.height = '200px';
+
+            area1.innerText = "클릭된 area1영역";
+        }
+    </script>
+
+    <div class="area" id="area2">area2영역</div>
+    <button onclick="changBackground()">색상변경</button>
+
+    <script>
+        function changBackground(){
+            let area2 = document.getElementById('area2');
+ 
+            if (area2.style.background !== "yellow"){
+                area2.style.background = "yellow";
+            } else {
+                area2.style.background = "red";
+            }
+        }
+    </script>
+
+    <h3>2) 태그명으로 요소 가져오기</h3>
+    <ul>
+        <li>안녕하세요,</li>
+        <li><h2>안녕하세요,</h2></li>
+        <li>안녕하세요,</li>
+        <li>안녕하세요,</li>
+        <li>안녕하세요,</li>
+    </ul>
+    <button onclick="accessTagName()">태그명으로 검색</button>
+
+    <script>
+        //태그명으로 요소 가져올 때
+        //document.getElementsByTagName('태그명')
+        function accessTagName(){
+            let list = document.getElementsByTagName('li');
+            console.log("길이 : ", list.length);
+            console.log("첫번째요소의 html : ", list[0].innerHTML);
+            console.log("첫번째요소의 text : ", list[0].innerText);
+
+            for(let i=0; i<list.length; i++){
+                list[i].innerHTML = (i + 1) + "번째 입니다.";
+                list[i].style.color = "red";
+            }
+        }
+    </script>
+
+    <script>
+        //3) document.getElementsByName(name속성값) -> 여러개리턴
+        //4) document.getElementsByClassName(class명) -> 여러개리턴
+    </script>
+
+    <h5>5) 내가 원하는 요소 자유자재로 가져오기(선택자 활용)</h5>
+    
+    <div id="tmp1">테스트입니다.</div>
+    <div id="tmp2">
+        <h2>안녕하세요.</h2>
+        <h2>최지원입니다.</h2>
+    </div>
+    <span>span? 맞나요?</span>
+    <h2>이렇게 하면 될까요?</h2>
+    
+    <br>
+
+    <button onclick="accessSelector()">클릭</button>
+    <script>
+        //선택자를 이용해서 요소를 가져오고자 함
+        //document.querySelector(선택자); -> 요소 한개만 반환
+        //document.querySelectorAll(선택자); -> 선택한 요소 전부 배열로 반환
+
+        function accessSelector(){
+            const divT1 = document.querySelector('#tmp1');
+            const h2El = document.querySelectorAll('#tmp2 > h2');//[h2, h2]
+            const spanEl = document.querySelector('#tmp2+span');
+            console.log(divT1);
+            console.log(h2El);
+            console.log(spanEl);
+        }
+    </script>
+</body>
+</html>

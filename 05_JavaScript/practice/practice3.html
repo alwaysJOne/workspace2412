@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .none-calculator{
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Practice3</h1>
+    <div style="display: flex; gap: 8px;">
+        <input type="number" id="number1">
+        <select id="calcul-select">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+            <option value="%">%</option>
+        </select>
+        <input type="number" id="number2">
+        <button onclick="resultFunk()">=</button>
+        <input type="text" readonly id="result">
+    </div>
+
+    <script>
+        function resultFunk() {
+            const num1 = Number(document.getElementById("number1").value);
+            const num2 = Number(document.getElementById("number2").value);
+            const operator = document.getElementById("calcul-select").value;
+
+            const resultInput = document.querySelector('#result');
+            
+            if((operator === '/' || operator === '%') && num2 === 0){
+                resultInput.value = "연산불가";
+                resultInput.classList.add("none-calculator"); //class추가
+            } else {
+                resultInput.value = calculator(num1, num2, operator);
+                resultInput.classList.remove("none-calculator");
+            }
+        }
+
+        //+,-,*,/,%연산을 진행함
+        function calculator(num1, num2, operator) {
+            let result;
+            switch (operator) {
+                case '+':
+                    result = num1 + num2; 
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    result = num1 / num2;
+                    break;
+                case '%':
+                    result = num1 % num2;
+                    break;
+            }
+
+            return result;
+        }
+    </script>
+</body>
+
+</html>

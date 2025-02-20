@@ -1,0 +1,128 @@
+/* css영역 */
+
+/* 1. 속성선택자----------- */
+/* div요소들 중 name속성값에 name1이 "포함"되어있는 요소*/
+div[name~=name1]{
+    background: yellow;
+}
+
+/* div요소들 중 name속성값이 name1과 "일치"하는 요소 */
+div[name=name1]{
+    background: blue;
+}
+
+/* div요소들 중에서 class속성값이 class로 시작하는 요소(-으로 구분) */
+div[class|=class]{
+    background: gray;
+}
+
+/* div요소들 중 name속성값이 na로 시작하는 요소 */
+div[name^=na]{
+    background: wheat;
+}
+
+/* div요소들 중 class속성값이 ss로 끝나는 요소 */
+div[class$=ss]{
+    background: yellow;
+    color: red;    
+}
+
+/* div요소들 중 class속성값에 i가 포함되어있는 요소 */
+div[class*=i]{
+    color: white;
+}
+
+/* 문제 : class속성값이 div-class인 요소들 중에서 
+    name속성값에 name3이 포함된 요소(배경: pink) */
+.div-class[name~=name3]{
+    background: pink;
+}
+
+/* 2. 자손선택자와 후손선택자 */
+/* a>b: a요소의 자손들중에서 b요소만 전부 선택 */
+
+/* 아이디가test1인 요소들의 자손들중에서 h4만 선택 */
+#test1>h4{
+    background: black;
+}
+
+#test1{
+    color: black;
+}
+
+#test1>ul>li{
+  background: blue;  
+}
+
+/* a b : a요소의 후손들 중에서 b요소 전부선택 */
+#test1 li{
+    color: aquamarine;
+}
+
+/* 3.동위선택자 */
+#test2+div{
+    background: yellow;
+}
+
+#test2+ul{
+    background: yellow;
+}/*바로뒤에오는 요소가 아니기 때문에 적용x  */
+
+#test2~ul{
+    background: darkgreen;
+}
+
+.area{
+    background: yellowgreen;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+#active-test:active{
+    background: brown;
+    color: red;
+}
+
+#hover-test:hover{
+    background: teal;
+    color: antiquewhite;
+    scale: 0.98;
+}
+
+button{
+    outline: none;
+    background: none;
+    cursor: pointer;
+    background-color: rgb(128, 128, 245);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+button:hover{
+    opacity: 0.9;
+    scale: 0.98;
+}
+
+input[type=checkbox]:checked{
+    width: 20px;
+    height: 20px;
+}
+
+input[type=checkbox]:checked+label{
+    font-size: 20px;
+}
+
+input[name^=user]:focus{
+    background: pink;
+}
+
+button:enabled{
+    background: darkgoldenrod;
+}
+
+button:disabled{
+    background: aqua;
+}

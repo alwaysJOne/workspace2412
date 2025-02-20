@@ -1,0 +1,67 @@
+package com.kh.controller;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * http://localhost:8001/servlet/gettest.do
+ * Servlet의 요청경로는 contextPath뒤에 작성됨
+ */
+@WebServlet("/gettest.do")
+public class RequestGetServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public RequestGetServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Get방식으로 요청시 해당 deGGet메서드가 저절로 호출된다.(톰캣이 서블릿객체를 생성해서 메서드 호출까지 함)
+		System.out.println("GET요청 도착");
+		
+		/*
+		 * 첫번째 매개변수인 request에는 요청시 전달된 내용들이 담겨있음(사용자가 입력한 값, 요청방식, 요청자의 url등...)
+		 * 두번째 매개변수인 reponse에는 요청 처리 후 응답에 사용되는 객체(어떤타입으로 응답을 할지, 어떤 값을 응답할지등을 넣어주면 됨)
+		 * 
+		 * 요청처리를 위해서 요청시 전달된 값을 추출
+		 * request의 parameter영역안에 존재
+		 * request.getparameter("키");
+		 */
+		
+		String name = request.getParameter("name"); //최지원 | ""
+		String gender = request.getParameter("gender"); // M | F | null
+		int age = Integer.parseInt(request.getParameter("age")); // "23" -> 23
+		String city = request.getParameter("city"); //"경기" | "서울" 등등
+		double height = Double.parseDouble(request.getParameter("height")); // "180.0" -> 180.0
+		
+		//체크박스와 같이 여러개의 값을 추출하고자할 때
+		String[] foods = request.getParameterValues("food"); // ["한식", "중식"] || null
+		
+		System.out.println("name : " + name);
+		System.out.println("gender : " + gender);
+		System.out.println("age : " + age);
+		System.out.println("city : " + city);
+		System.out.println("height : " + height);
+		System.out.println("foods : " + String.join(", ", foods));
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        div, form, input {
+            box-sizing: border-box;
+        }
+
+        ul,li,ol{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /*  화면 전체를 감싸는 div */
+        .wrap {
+            width: 100%;
+            max-width: 1000px;
+            height: 800px;
+            margin: 0 auto;
+        }
+
+        .wrap>div {
+            width: 100%;
+        }
+
+        #header,
+        #aside {
+            height: 20%;
+        }
+
+        #navigator {
+            height: 5%;
+        }
+
+        #content {
+            height: 55%;
+        }
+
+        #header>div,
+        #content>div,
+        #aside>div {
+            height: 100%;
+            float: left;
+        }
+
+        /*20 65 15*/
+        #header_1 {
+            width: 20%;
+        }
+
+        #header_2 {
+            width: 65%;
+        }
+
+        #header_3 {
+            width: 15%;
+        }
+
+        /*15 65 20*/
+        #content_1 {
+            width: 15%;
+        }
+
+        #content_2 {
+            width: 55%;
+        }
+
+        #content_3 {
+            width: 30%;
+        }
+
+        #aside_1 {
+            width: 40%;
+        }
+
+        #aside_2 {
+            width: 60%;
+        }
+
+        /*footer*/
+        #footer {
+            width: 100%;
+            height: 270px;
+        }
+
+        #footer>div {
+            width: 100%;
+        }
+
+        #footer_1 {
+            height: 55px;
+            background: #f1f4f8;
+            display: flex;
+            align-items: center;
+        }
+
+        #footer_1>div {
+            display: inline-block;
+            width: 100%;
+            max-width: 1130px;
+            margin: 0 auto;
+        }
+
+        #footer_1 a {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        #footer_1 a:hover {
+            color: #FA1800;
+        }
+
+        #footer_2 {
+            height: calc(100% - 55px);
+            background: #fefefee3;
+        }
+
+        #footer_2>p {
+            width: 100%;
+            max-width: 1130px;
+            margin: 0 auto;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        #footer_2>p:nth-child(1) {
+            font-size: 13px;
+            padding-bottom: 10px;
+        }
+
+        #footer_2>p:nth-child(3) {
+            font-size: 11px;
+            padding-top: 10px;
+        }
+        /*로그인 form*/
+        #login-form{
+            width: 300px;
+            height: 200px;
+        }
+        #login-form>*{
+            width: 100%;
+        }
+        #login-form-input{
+            height: 80%;
+        }
+        #login-form-input>*{
+            height: 100%;
+            float: left;
+        }
+        #login-input-id-pwd{
+            width: 65%;
+        }
+        #login-input-id-pwd>input{
+            width: 100%;
+            height: 50%;
+        }
+
+        #login-input-btn{
+           width: 35%;
+        }
+        #login-input-btn>input[type="submit"]{
+            width: 100%;
+            height: 100%;
+        }
+
+        #login-form-etc{
+            height: 20%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        #login-form-etc>a{
+            font-size: 12px;
+        }
+        /*검색창*/
+        #content{
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #content>form{
+            margin: auto;
+            width: 80%;
+            height: 30px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            /*사방으로 가려고해서 결굮 중앙정렬*/
+        }
+
+        #content>form input{
+            height: 100%;
+            float: left;
+        }
+        #content>form input[type="text"]{
+            width: calc(100% - 80px);
+        }
+        #content>form input[type="submit"]{
+            width: 80px;
+        }
+        /*메뉴바*/
+        #navigator{width: 1000px; height: 40px;}
+        
+        #navi{height: 100%;}
+        #navi>li{
+            float: left;
+            width: 100px;
+            text-align: center;
+            height: 100%;
+        }
+
+        #navi a{
+            font-size: 18px;
+            font-weight: 900;
+            width: 100%;
+            height: 100%;
+            display: block;
+            line-height: 36px;
+        }
+
+        #navi a:hover{
+            color: rgb(89, 89, 89);
+            scale: 1.08;
+        }
+
+        #navi>li>ul{
+            display: none;
+        }
+        #navi>li>a:hover+ul{
+            display: block;
+        }
+        #navi>li>ul:hover{
+            display: block;
+        }
+
+        #navi>li>ul a{
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div id="header">
+            <div id="header_1"></div>
+            <div id="header_2">
+                <div id="content">
+                    <form action="">
+                        <input type="text">
+                        <input type="submit" value="검색">
+                    </form>
+                </div>
+            </div>
+            <div id="header_3"></div>
+        </div>
+        <div id="navigator">
+            <ul id="navi">
+                <li><a href="">JAVA</a></li>
+                <li><a href="">Oracle</a></li>
+                <li>
+                    <a href="">Front-end</a>
+                    <ul>
+                        <li><a href="">HTML</a></li>
+                        <li><a href="">CSS</a></li>
+                        <li><a href="">JavaScript</a></li>
+                        <li><a href="">jQuery</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">Server</a>
+                    <ul>
+                        <li><a href="">JDBC</a></li>
+                        <li><a href="">Servlet</a></li>
+                        <li><a href="">JSP</a></li>
+                        <li><a href="">AJAX</a></li>
+                    </ul>
+                </li>
+                <li><a href="">Framwork</a></li>
+            </ul>
+        </div>
+        <div id="content">
+            <div id="content_1"></div>
+            <div id="content_2"></div>
+            <div id="content_3">
+                <!--로그인폼 전체를 감싸는 div-->
+                <div id="login-form">
+                    <!--입력을 받아 요청을 할 수 있는 form태그-->
+                    <form action="" id="login-form-input">
+                        <!--id, pwd들어갈 div-->
+                        <div id="login-input-id-pwd">
+                            <input type="text" placeholder="아이디를 입력해주세요.">
+                            <input type="password" placeholder="비밀번호를 입력해주세요.">
+                        </div>
+                        <!--로그인버튼이 들억갈 div-->
+                        <div id="login-input-btn">
+                            <input type="submit" value="로그인">
+                        </div>
+                    </form>
+                    <!--회원가입, id/pwd찾기가 들어갈 div-->
+                    <div id="login-form-etc">
+                        <a href="">회원가입</a>
+                        <a href="">ID/PWD 찾기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="aside">
+            <div id="aside_1"></div>
+            <div id="aside_2"></div>
+        </div>
+        <div id="footer">
+            <div id="footer_1">
+                <div>
+                    <a href="">이용약관</a> ｜
+                    <a href="">개인정보처리방침</a> ｜
+                    <a href="">인재 채용 문의</a> ｜
+                    <a href="">훈련비 게시</a> ｜
+                    <a href="">강사 구인</a>
+                </div>
+            </div>
+            <div id="footer_2">
+                <p>KH정보교육원 ｜ 사업자등록번호 : 487-86-00763 ｜ 사업자등록번호 : 851-87-00622 ｜ 서울 강남 제2014-01호 ｜ 대표자 : 양진선 ｜ 책임자 : 최홍석 ｜
+                    개인정보관리책임자 : 양진선</p>
+                <p>
+                    강남지원 1관 : 서울특별시 강남구 테헤란로14길 6 남도빌딩 2F, 3F, 4F, 5F, 6F <br>
+                    강남지원 2관 : 서울특별시 강남구 테헤란로10길 9 그랑프리 빌딩 4F, 5F, 7F <br>
+                    강남지원 3관 : 서울특별시 강남구 테헤란로 130 호산빌딩 5F, 6F <br>
+                    종로점 : 서울특별시 중구 남대문로 120 그레이츠 청계(구 대일빌딩) 2F, 3F <br>
+                    당산점 : 서울특별시 영등포구 선유동2로 57 이레빌딩(구관) 19F, 20F <br>
+                    논현점 : 서울특별시 강남구 논현로 132길 9 마루빌딩 1F, 2F, 3F <br>
+                    부산점 : 부산 부산진구 중앙대로 627 삼비빌딩 2F, 12F <br>
+                </p>
+                <p>Copyright © 1998-2025 KH Information Educational Institute All Right Reserved</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

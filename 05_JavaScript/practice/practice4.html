@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .none-pass{color: red;}
+        .pass{color: green;}
+    </style>
+</head>
+<body>
+    <h1>Practice4</h1>
+    <form action="" id="join-form">
+        <fieldset>
+            <legend>회원가입</legend>
+            아이디 : <input type="text" id="user-id" data-name="아이디" onkeyup="checkId(this)"> <span id="id-review"></span><br><br>
+            비밀번호 : <input type="text" id="user-pwd" data-name="비밀번호"> <br><br>
+            비밀번호 확인 : <input type="text" id="check-pwd" onblur="checkPwd()"> <span id="pwd-review"></span> <br><br>
+            이름 : <input type="text" data-name="이름"> <br><br>
+
+            <input type="submit" onclick="return validate();" value="회원가입">
+        </fieldset>
+    </form>
+
+    <script>
+        function validate(){
+            //전체 input입력여부 체크
+            const inputList = document.querySelectorAll("#join-form input");
+            for(let input of inputList){
+                if(input.dataset.name && (input.value.trim() === "")){
+                    alert(input.dataset.name + "은 필수입니다.");
+                    return false;
+                }
+            } 
+
+            if(!checkId(document.getElementById('user-id'))){
+                alert("사용할 수 없는 ID입니다.")
+                return false;
+            }
+
+            if(!checkPwd()) {
+                alert("비밀번호를 확인해주세요.")
+                return false;
+            }
+        }
+        function checkId(_this){
+            console.log(_this.value)
+            /*
+            ‘user01’이라는 아이디만 저장되어 있다는 설정으로 두고
+            ‘user01’이 아니라면 아이디 필드 옆에 ‘사용 가능한 아이디입니다.’가 초록 글자로 뜨며
+            ‘user01’이면 ‘이미 존재하는 아이디입니다.’가 빨간 글자로 뜸
+            */
+
+            const id = _this.value; //사용자가 입력한 값
+            const idCheckView = document.querySelector('#id-review');
+            if(id.trim() === "user01"){
+                idCheckView.innerHTML = "이미 존재하는 아이디입니다.";//빨강
+                idCheckView.className = 'none-pass';
+                return false;
+            }else {
+                idCheckView.innerHTML = "사용 가능한 아이디입니다."; //초록
+                idCheckView.className = 'pass';
+                return true;
+            }
+        }
+
+        function checkPwd(){
+            /*
+                비밀번호와 비밀번호 확인값을 비교
+                비교결과가 같으면 초록글자, 다르면 빨간글자
+            */
+
+            const userPwd = document.getElementById('user-pwd').value;
+            const checkPwd = document.getElementById('check-pwd').value;
+            const pwdCheckView = document.querySelector('#pwd-review');
+
+            if(userPwd !== checkPwd){
+                pwdCheckView.innerHTML = "비밀번호가 일치하지 않습니다.";//빨강
+                pwdCheckView.className = 'none-pass';
+                return false;
+            }else {
+                pwdCheckView.innerHTML = "비밀번호가 일치합니다."; //초록
+                pwdCheckView.className = 'pass';
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>

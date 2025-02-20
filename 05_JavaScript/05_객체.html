@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .area{
+            background: lightblue;
+            border: 1px solid black;
+        }
+
+        .small{ height: 250px;}
+        .big{height: 400px;}
+    </style>
+</head>
+<body>
+    <h1>객체</h1>
+
+    <h3>객체 선언및 사용</h3>
+    <p>
+        객체는 중괄호 {}를 이용해서 생성학고 <br>
+        중괄호안에 이 객체에서 필요한 속성을 정의한다. <br>
+        속성명 : 속성값 (key : value) 형태로 정의한다. <br>
+        속성값으로는 모든 자료형의 값을 담을 수 있음
+    </p>
+
+    <pre>
+        변수 = {
+            속성명 : 속성값,
+            속성명 : 속성값,
+            속성명 : 속성값,
+            ...
+        }
+    </pre>
+
+    <button onclick="test1()">실행</button>
+    <div id="area1" class="area"></div>
+    <script>
+        function test1(){
+            const arr = ["Dry Mango", 4000, "pickle", ["mango", "sugar"]];
+            //자바스크립트 배열 == 자바의 컬렉션(ArrayList)와 유사함
+
+            const product = {
+                pName: "Dry Mango",
+                price: 4000,
+                kind: "pickle",
+                ingredient: ["mango", "sugar"]
+            }
+            //자바스크립트의 객체 == 자바의 컬렉션(HashMap)과 유사
+            console.log(typeof product);
+            const area1 = document.querySelector("#area1");
+            area1.innerHTML += ("product : " + product + "<br>");
+        
+            //객체의 속성에 접근하는 방법
+            //방법1. .을 이용해서 접근하는 방법 : 객체.속성명
+            area1.innerHTML += ("pName : " + product.pName + "<br>");
+            area1.innerHTML += ("pName : " + product.price + "<br>");
+            area1.innerHTML += (`pName : ${product.ingredient}<br>`);
+
+            //방법2. []을 이용해서 접근하는 방법 : 객체["속성명"]
+            area1.innerHTML += ("pName : " + product["pName"] + "<br>");
+            area1.innerHTML += ("pName : " + product["price"] + "<br>");
+            area1.innerHTML += (`pName : ${product["ingredient"]}<br>`);
+        }
+    </script>
+
+    <br><br><br>
+
+    <h3>*객체의 메서드 속성</h3>
+    <p>객체의 속성중 함수자료형인 속성을 메서드라고 부름</p>
+
+    <button onclick="test2()">실행확인</button>
+    <div id="area2" class="area small"></div>
+    <script>
+        function test2(){
+            const area2 = document.getElementById("area2");
+
+            const name = "차은우";
+            const eat = function(){
+                console.log(name + "이 밥을 먹는다.");
+            }
+
+            const dog = {
+                name: "복실이",
+                kind: "비글",
+                eat: function(food){
+                    area2.innerHTML += `${this.kind}견인 ${this.name}이 ${food}를 먹는다.<br>`
+                }
+            }
+            
+            dog.eat("사과");
+        }
+    </script>
+
+    <br><br>
+
+    <h3>객체배열을 사용한 다량의 데이터관리</h3>
+    <button onclick="test3()">실행확인</button>
+    <div id="area3" class="area big"></div>
+    
+    <script>
+        function test3(){
+            //학생리스트
+            const student = [
+                {name: "최지원", java : 75, db : 80, front : 90},
+                {name: "최지투", java : 85, db : 50, front : 80},
+                {name: "최지삼", java : 50, db : 55, front : 100},
+                {name: "최지사", java : 70, db : 60, front : 75},
+                {name: "최지오", java : 60, db : 70, front : 65}
+            ]
+
+            for(let i=0; i<student.length; i++){
+                student[i].getSum = function(){
+                    return this.java + this.db + this.front;
+                }
+
+                student[i].getAvg = function(){
+                    return this.getSum() / 3;
+                }
+
+                //사용자 정보를 담은 ui를 반환하는 함수
+                student[i].getInfoEl = function(){
+                    let str = `<div>
+                            <h4>이름 : ${this.name}</h4>
+                            <h5>총점 : ${this.getSum()}</h5>
+                            <h5>평균 : ${this.getAvg()}</h5>
+                        </div>`;
+                    return str;
+                }
+            }
+
+            const area3 = document.querySelector("#area3");
+            //java의 for(v : list)와 동일함
+            for(let std of student){
+                area3.innerHTML += std.getInfoEl();
+            }
+        }
+    </script>
+</body>
+</html>

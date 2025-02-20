@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .area{
+            border: 1px solid black;
+            width: 500px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>함수(function)</h1>
+    
+    <h3>선언적 함수</h3>
+    <pre>
+        function 함수명([매개변수, 매개변수...]){
+            함수 호출시 실행할 코드
+
+            [return 결과값;]
+        }
+    </pre>
+
+    <button onclick="test1()">실행</button>
+    <div id="area1" class="area"></div>
+
+    <script>
+        function test1(){
+            document.querySelector('#area1').innerHTML += "test1함수 실행됨<br>";
+        }
+    </script>
+
+    <br>
+
+    <h3>익명함수</h3>
+    <pre>
+        변수 | 속성 = fuction([매개변수, 매개변수...]){
+            함수 호출시 실행할 코드
+
+            [return 결과값;]
+        }
+    </pre>
+
+    <button id="btn">실행</button>
+    <div id="area2" class="area"></div>
+    <script>
+        let test2 = function(){
+            document.getElementById('area2').innerHTML += "익명함수로 실행";
+        }
+
+        const btn = document.getElementById('btn');
+        btn.onclick = function(){ //이벤트 핸들러 : 이벤트 속성에 대입되는 function
+            document.getElementById('area2').innerHTML += "이벤트 핸들러로 실행";
+        }
+    </script>
+
+    <hr>
+
+    <h2>함수의 매개변수</h2>
+    <button onclick="test3('최지원', 15)">실행확인</button>
+    <button onclick="test3('최지원')">실행확인</button>
+    <button onclick="test3()">실행확인</button>
+    <button onclick="test3('최지원', null, '경기도 광명시', false)">실행확인</button>
+    <button>실행확인</button>
+
+    <div id="area3" class="area"></div>
+    <script>
+        function test3(name, age, address){
+            console.log(arguments); //함수 호출시 전달되는 값은 내부적으로 arguments에 담겨있음.
+            document.getElementById('area3').innerHTML = name + " " + age + " " + address;
+        }
+    </script>
+
+    <br>
+
+    <h2>함수를 맥개변수로 활용</h2>
+    <script>
+        function sendUserInfo(userInfo, callback){
+            //서버로 user정보를 전달
+            //결과에따라서 로그인 성공
+
+            //userInfo -> 서버전달 -> 성공
+            console.log("서버에 로그인요청")
+            setTimeout(function(){
+                console.log("로그인성공");
+                userInfo.name = "최지원";
+                callback(userInfo);
+            }, 3000)
+        }
+
+        let id = "user01";
+        let pwd = "pass01";
+        sendUserInfo({
+            userId : id,
+            userPwd : pwd
+        }, function(res){
+            console.log("결제화면으로이동");
+            console.log(res.name + "님 반갑습니다.")
+        });
+    </script>
+
+    <br>
+
+    <!-- this : 사용시점의 스코프를 가르킴-->
+    <!-- inline에서 this를 사용시 사용한 태그요소를 객체로 전달-->
+    <button onclick="test4(this)">1</button>
+    <button onclick="test4(this.innerHTML)">2</button>
+    <input type="button" value="3" onclick="test4(this.value)">
+    <button id="btn4" onclick="test4(this.id)">4</button>
+    <script>
+        function test4(tmp){
+            console.log(tmp);
+        }
+    </script>
+
+    <button onclick="test5(this)">클릭</button>
+    <script>
+        function test5(btn){
+            if(btn.style.background !== "red"){
+                btn.style.background = "red";
+            } else {
+                btn.style.background = "white";
+            }
+        }
+    </script>
+
+    <br><br>
+
+    <h2>함수의 리턴</h2>
+    <h3>일반적인 값 리턴</h3>
+
+    <button onclick="test6()">실행</button>
+    <div id="area5" class="area"></div>
+
+    <script>
+        function ran(){
+            const value = parseInt(Math.random() * 100 + 1);
+            console.log(value)
+            return value;
+        }
+
+        function test6(){
+            document.getElementById("area5").innerHTML += ("랜덤값 : " + ran() + "<br>");
+        }
+    </script>
+
+    <h3>함수를 리턴</h3>
+    이름 : <input type="text" id="user-name">
+    <button onclick="test7()()">실행</button>
+    <script>
+        function test7(){
+            const inputEl = document.getElementById("user-name");
+
+            return function(){
+                alert(inputEl.value);
+            }
+        }
+    </script>
+    <br><br><br>
+</body>
+</html>
+
+
