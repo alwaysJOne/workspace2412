@@ -22,12 +22,32 @@
 	<h1>피자 결제 페이지</h1>
 	<h2>주문내역</h2>
 	<h4>[ 주문자 정보 ]</h4>
-
 	<ul>
 		<li>성함 : <%=name%></li>
 		<li>전화번호 : <%=phone%></li>
 		<li>주소 : <%=address%></li>
 		<li>요청사항 : <%=message%></li>
 	</ul>
+
+	<br>
+
+	<h4>[ 주문 정보 ]</h4>
+	<ul>
+		<li>피자 : <%=pizza%></li>
+		<% if(toppingList == null){ %>
+			<li>토핑 : 선택안함</li>
+		<% } else { %>
+			<li>토핑 : <%=String.join(",", toppingList)%></li>
+		<% }%>
+		<% if(sideList == null){ %>
+			<li>사이드 : 선택안함</li>
+		<% } else { %>
+			<li>사이드 : <%=String.join(",", sideList)%></li>
+		<% }%>
+		<li>결제방식 : <%=payment%></li>
+	</ul>
+
+	<h3>위와같이 주문하셨습니다.</h3>
+	<h2>총 가격 : <%=price%>원</h2>
 </body>
 </html>
