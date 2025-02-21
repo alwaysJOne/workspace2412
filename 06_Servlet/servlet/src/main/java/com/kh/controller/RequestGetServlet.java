@@ -1,11 +1,13 @@
 package com.kh.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * http://localhost:8001/servlet/gettest.do
@@ -54,6 +56,50 @@ public class RequestGetServlet extends HttpServlet {
 		System.out.println("city : " + city);
 		System.out.println("height : " + height);
 		System.out.println("foods : " + String.join(", ", foods));
+		
+		// service > dao > db
+		
+		/*
+		 * int result = new MemberService().insertMember(name,gender...);
+		 * if(result > 0){
+		 * 		//성공
+		 * } else {
+		 * 		//실패
+		 * }
+		 */
+		
+		//위의 결과에따라 응다페이지(html) 만들어서 전송
+		//즉, 여기 java코드내에 사용자가 보게될 응다 html구문을 작성
+		
+		//response객체를 통해서 사용자에게 응답화면 전달
+		
+		//1)응답으로 출력할 내용은 html이고 문자셋은 utf-8이다 -> 선언
+		response.setContentType("text/html; charset=utf-8");
+		
+		//2)응답받는 사용자와의 스트림 연결
+		PrintWriter out = response.getWriter();
+		
+		out.println("<html>");
+		out.println("<head>");
+		out.println("</head>");
+		
+		out.println("<body>");
+		
+		out.println("<h2>개인정보 응답화면</h2>");
+		out.printf("<span>%s</span>님은", name);
+		out.printf("<span>%d</span>살이며", age);
+		out.printf("<span>%s</span>에 삽니다", city);
+		out.println("성별은");
+		if(gender == null) {
+			out.println(" 미입력 상태입니다.");
+		} else if(gender.equals("M")) {
+			out.println(" 남자입니다.");
+		} else {
+			out.println(" 여자입니다");
+		}
+		
+		out.println("</body>");
+		out.println("</html>");
 	}
 
 	/**
