@@ -56,5 +56,14 @@
     scope값 : ${scope}
 
     <p>EL은 공유범위가 가장 작은 scope부터 해당 키값을 검색함(page -> request -> session -> application)</p>
+    test값 : ${test}
+
+    <h4>직접 scope를 지정해서 접근</h4>
+    <% pageContext.setAttribute("scope", "page"); %>
+
+    pageScope : ${scope}, ${pageScope.scope} <br>
+    requestScope : ${requestScope.scope} <br>
+    sessionScope : ${sessionScope.scope} <br>
+    applicationScope : ${applicationScope.scope} <br>
 </body>
 </html>

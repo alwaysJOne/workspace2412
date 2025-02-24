@@ -15,5 +15,6 @@
     </p>
     
     <h4><a href="el.do">01_EL의 기본구문</a></h4>
+    <h4><a href="operation.do">02_EL의 연산자</a></h4>
 </body>
 </html>
