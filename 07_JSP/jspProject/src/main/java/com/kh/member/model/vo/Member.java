@@ -2,6 +2,17 @@ package com.kh.member.model.vo;
 
 import java.sql.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 	private int userNo;
 	private String userId;
@@ -14,6 +25,4 @@ public class Member {
 	private Date enrollDate;
 	private Date modifyDate;
 	private String status;
-	
-	
 }
