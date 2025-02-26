@@ -66,4 +66,10 @@
 		 WHERE USER_ID = ?
 		   AND STATUS = 'Y'
 	</entry>
+	<entry key="updateMemberPwd">
+		UPDATE MEMBER
+		   SET USER_PWD = ?,
+		       MODIFY_DATE = SYSDATE
+		 WHERE USER_ID = ?
+	</entry>
 </properties>

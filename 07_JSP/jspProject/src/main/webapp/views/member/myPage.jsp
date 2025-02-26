@@ -19,6 +19,11 @@
 		.outer table{
 			margin: auto;
 		}
+
+		#update-pwd-modal .modal-body form{
+			display: flex;
+			flex-direction: column;
+		}
 	</style>
 </head>
 <body>
@@ -137,8 +142,8 @@
 	
 	      <!-- Modal body -->
 	      <div class="modal-body">
-			<form action="">
-				<table>
+			<form action="${pageContext.request.contextPath}/updatePwd.me" method="post">
+				<table align="center">
 					<tr>
 						<td>현재 비밀번호</td>
 						<td><input type="password" name="userPwd" required></td>
@@ -153,8 +158,21 @@
 					</tr>
 				</table>
 				<br>
-				<button type="submit" class="btn btn-sm btn-primary">비밀번호 변경</button>
+				<button id="edit-pwd-btn" type="submit" class="btn btn-sm btn-primary">비밀번호 변경</button>
 			</form>
+
+			<script>
+				document.getElementById('edit-pwd-btn').onclick = function(){
+					const pwd = document.querySelector("#update-pwd-modal input[name=updatePwd]").value;
+					const pwdCheck = document.querySelector("#update-pwd-modal input[name=checkPwd]").value;
+
+					if(pwd !== pwdCheck){
+						alert("변경할 비밀번호가 일치하지 않습니다.");
+						return false;
+					}
+				}
+
+			</script>
 	      </div>
 	    </div>
 	  </div>
