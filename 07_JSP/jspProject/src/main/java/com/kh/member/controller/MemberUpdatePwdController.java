@@ -40,14 +40,25 @@ public class MemberUpdatePwdController extends HttpServlet {
 		
 		if(loginUser == null || !loginUser.getUserPwd().equals(userPwd)) {
 			request.setAttribute("errorMsg", "정상적인 접근이 아닙니다.");
-			request.getRequestDispatcher("veiws/common/errorPage.jsp").forward(request, response);
+			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+			return;
 		}
 		
-		Member updateMember =new MemberService().updateMemberPwd(loginUser.getUserId(), updatePwd);
+		Member updateMember = new MemberService().updateMemberPwd(loginUser.getUserId(), updatePwd);
 		
 		
 		// pwd == 세션에 로그인된 pwd -> 실패(errroMsg)
 		// 비밀번호 변경 -> 성공(myPage), 실패(errroMsg)
+		
+		if(updateMember == null) {
+			request.setAttribute("errorMsg", "비밀번호 변경에 실패하였습니다.");
+			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+		} else {
+			session.setAttribute("loginUser", updateMember);
+			session.setAttribute("alertMsg", "성공적으로 비밀번호를 변경하였습니다.");
+			
+			response.sendRedirect(request.getContextPath() + "/myPage.me");
+		}
 	}
 
 	/**

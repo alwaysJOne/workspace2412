@@ -114,6 +114,14 @@
 			</div>
 		</form>
 	</div>
+	<!-- 
+		탈퇴하기 버튼 클릭시
+		탈퇴 후 복구가 불가능합니다.
+		정말 탈퇴하시겠습니까?
+		비밀벊호 : 
+		탈퇴하기버튼 -> /delete.me
+		=>  /delete.me받은 서버는 비밀번호가 맞는지 확인 후 status -> N으로 변경하고 로그아웃
+	 -->
 
 	<script>
 		function checkPwd(){
