@@ -27,7 +27,7 @@
 	<div class="outer">
 		<br>
 		<h2 align="center">내 정보</h2>
-		<form action="" method="post" id="update-form">
+		<form action="${pageContext.request.contextPath}/update.me" method="post" id="update-form">
 			<table>
 				<tr>
 					<td>* 아이디</td>
@@ -93,8 +93,8 @@
 				const interest = "${loginUser.interest}"; //"낚시,등산"
 				const inputArr = document.querySelectorAll("input[name=interest]");
 				
-				for(let input of inputArr){
-					if(interest.includes(input.value)){
+				for(let input of inputArr){ 
+					if(interest.includes(input.value)){ // interest에 input.value의 값이 포함되어 있다면
 						input.checked = true;
 					}
 				}
@@ -103,9 +103,9 @@
 			<br><br>
 
 			<div align="center">
-				<button type="submit">정보수정</button>
-				<button type="button">비밀번호 변경</button>
-				<button type="button">회원탈퇴</button>
+				<button type="submit" class="btn btn-sm btn-success">정보수정</button>
+				<button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#update-pwd-modal">비밀번호 변경</button>
+				<button type="button" class="btn btn-sm btn-danger">회원탈퇴</button>
 			</div>
 		</form>
 	</div>
@@ -121,5 +121,43 @@
 			}
 		}
 	</script>
+	
+	
+	
+	<!-- 비밀번호 변경 팝업 -->
+	<div class="modal" id="update-pwd-modal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title">비밀번호 변경</h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	
+	      <!-- Modal body -->
+	      <div class="modal-body">
+			<form action="">
+				<table>
+					<tr>
+						<td>현재 비밀번호</td>
+						<td><input type="password" name="userPwd" required></td>
+					</tr>
+					<tr>
+						<td>변경할 비밀번호</td>
+						<td><input type="password" name="updatePwd" required></td>
+					</tr>
+					<tr>
+						<td>변경할 비밀번호 학인</td>
+						<td><input type="password" name="checkPwd" required></td>
+					</tr>
+				</table>
+				<br>
+				<button type="submit" class="btn btn-sm btn-primary">비밀번호 변경</button>
+			</form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </body>
 </html> 
