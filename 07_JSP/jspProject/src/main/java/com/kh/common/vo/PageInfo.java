@@ -45,7 +45,7 @@ public class PageInfo {
 		 * currentPage		pageLimit        startPage
 		 *     1			   10				1
 		 *     5			   10				1
-		 *     11			   10               2
+		 *     11			   10               11
 		 *     
 		 * startPage = (((currentPage - 1) / pageLimit)* pageLimit + 1)
 		 * */
@@ -61,6 +61,9 @@ public class PageInfo {
 		 * */
 		
 		this.endPage = startPage + pageLimit - 1;
+		
+		//startPage가 11이면 endPage 20이다.(maxPage 13이라면?)
+		this.endPage = endPage > maxPage ? maxPage : endPage;
 	}
 	
 	

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,35 +51,49 @@
                 <th width="100">작성일</th>
             </thead>
             <tbody>
+              <c:forEach var="b" items="${list}">
                 <tr>
-                    <td>150</td>
-                    <td>게임</td>
-                    <td>메이플 150 3분 달성법!</td>
-                    <td>user01</td>
-                    <td>153</td>
-                    <td>2025.02.27</td>
+                    <td>${b.boardNo}</td>
+                    <td>${b.categoryName}</td>
+                    <td>${b.boardTitle}</td>
+                    <td>${b.userId}</td>
+                    <td>${b.count}</td>
+                    <td>${b.createDate}</td>
                 </tr>
-                <tr>
-                    <td>148</td>
-                    <td>게임</td>
-                    <td>메이플 150 10분 달성법!</td>
-                    <td>user02</td>
-                    <td>500</td>
-                    <td>2025.02.26</td>
-                </tr>
+              </c:forEach>
             </tbody>
         </table>
 
         <br><br>
 
         <div align="center">
-            <button class="btn btn-sm btn-primary">&lt;이전</button>
-            <button class="btn btn-sm btn-primary">1</button>
-            <button class="btn btn-sm btn-primary">2</button>
-            <button class="btn btn-sm btn-primary">3</button>
-            <button class="btn btn-sm btn-primary">4</button>
-            <button class="btn btn-sm btn-primary">5</button>
-            <button class="btn btn-sm btn-primary">다음&gt;</button>
+        	<c:if test="${pi.currentPage > 1}">
+	            <button class="btn btn-sm btn-primary"
+	            		onclick="location.href='${pageContext.request.contextPath}/list.bo?cpage=${pi.currentPage - 1}'">
+	            &lt;이전
+	            </button>
+            </c:if>
+            <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}" >
+            	<c:choose>
+            		<c:when test="${p == pi.currentPage}">
+            			<button class="btn btn-sm btn-primary" disabled>
+	            	        ${p}
+	            		</button>
+            		</c:when>
+            		<c:otherwise>
+            			<button class="btn btn-sm btn-primary" onclick="location.href='${pageContext.request.contextPath}/list.bo?cpage=${p}'">
+	            	        ${p}
+	            		</button>
+            		</c:otherwise>
+            	</c:choose>
+            </c:forEach>
+            
+            <c:if test="${pi.currentPage < pi.maxPage}">
+	            <button class="btn btn-sm btn-primary" 
+	            		onclick="location.href='${pageContext.request.contextPath}/list.bo?cpage=${pi.currentPage + 1}'">
+	            	다음&gt;
+	            </button>
+            </c:if>
         </div>
     </div>
 </body>

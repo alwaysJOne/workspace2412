@@ -47,6 +47,14 @@ public class BoardListController extends HttpServlet {
 		PageInfo pi = new PageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		ArrayList<Board> list = new BoardService().selectList(pi);
+		
+		request.setAttribute("list", list);
+		request.setAttribute("pi", pi);
+		
+		System.out.println(list);
+		System.out.println(pi);
+		
+		request.getRequestDispatcher("views/board/boardListView.jsp").forward(request, response);
 	}
 
 	/**
