@@ -104,7 +104,7 @@
 
     <br clear="both">
     <div class="nav-area">
-        <div class="menu"><a href="">HOME</a></div>
+        <div class="menu"><a href="${pageContext.request.contextPath}">HOME</a></div>
         <div class="menu"><a href="">공지사항</a></div>
         <div class="menu"><a href="">일반게시판</a></div>
         <div class="menu"><a href="">사진게시판</a></div>

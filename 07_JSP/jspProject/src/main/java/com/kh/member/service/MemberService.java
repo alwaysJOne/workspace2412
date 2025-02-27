@@ -44,6 +44,8 @@ public class MemberService {
 			rollback(conn);
 		}
 		
+		close(conn);
+		
 		return updateMember;
 	}
 	
@@ -59,7 +61,23 @@ public class MemberService {
 			rollback(conn);
 		}
 		
+		close(conn);
+		
 		return updateMember;
 	}
 	
+	public int deleteMeber(String userId) {
+		Connection conn = getConnection();
+		int result = new MemberDao().deleteMeber(conn, userId);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+	}
 }

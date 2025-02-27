@@ -72,4 +72,10 @@
 		       MODIFY_DATE = SYSDATE
 		 WHERE USER_ID = ?
 	</entry>
+	<entry key="deleteMeber">
+		UPDATE MEMBER
+		   SET STATUS = 'N',
+		       MODIFY_DATE = SYSDATE
+		 WHERE USER_ID = ?
+	</entry>
 </properties>
