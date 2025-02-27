@@ -23,6 +23,10 @@ public class BoardService {
 	public ArrayList<Board> selectList(PageInfo pi){
 		Connection conn = getConnection();
 		
-		new BoardDao().selectList(conn, pi);
+		ArrayList<Board> list = new BoardDao().selectList(conn, pi);
+		
+		close(conn);
+		
+		return list;
 	}
 }

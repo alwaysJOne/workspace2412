@@ -65,6 +65,42 @@ public class BoardDao {
 		
 		String sql = prop.getProperty("selectList");
 		
+		try {
+			/*
+			 * currnetPage : 1 -> 1~10
+			 * currnetPage : 2 -> 11~20
+			 * currnetPage : 3 -> 21~30
+			 * */
+			
+			int startRow = (pi.getCurrentPage() - 1) * pi.getBoardLimit() + 1;
+			int endRow = startRow + pi.getBoardLimit() - 1;
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Board b = new Board();
+				b.setBoardNo(rset.getInt("BOARD_NO"));
+				b.setCategoryName(rset.getString("CATEGORY_NAME"));;
+				b.setBoardTitle(rset.getString("BOARD_TITLE"));
+				b.setUserId(rset.getString("USER_ID"));
+				b.setCount(rset.getInt("COUNT"));
+				b.setCreateDate(rset.getString("CREATE_DATE"));
+				
+				list.add(b);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
 	}
 }
 

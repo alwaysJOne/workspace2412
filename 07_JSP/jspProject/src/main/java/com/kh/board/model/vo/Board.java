@@ -19,8 +19,11 @@ public class Board {
 	private int categoryNo;
 	private String boardTitle;
 	private String boardContent;
-	private String boardWriter;
+	private int boardWriter;
 	private int count;
 	private String createDate;
 	private String status;
+	
+	private String categoryName;
+	private String userId;
 }

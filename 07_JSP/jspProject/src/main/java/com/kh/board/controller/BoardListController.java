@@ -1,7 +1,9 @@
 package com.kh.board.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import com.kh.board.model.vo.Board;
 import com.kh.board.service.BoardService;
 import com.kh.common.vo.PageInfo;
 
@@ -44,7 +46,7 @@ public class BoardListController extends HttpServlet {
 		
 		PageInfo pi = new PageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
-		new BoardService().selectList(pi);
+		ArrayList<Board> list = new BoardService().selectList(pi);
 	}
 
 	/**
