@@ -27,6 +27,7 @@
 	 <%-- JDBCTemplate.getConnection(); --%>
 	 
 	 <%@ include file="views/common/menubar.jsp" %>
+	 
 	 <jsp:forward page="views/board/boardListView.jsp" />
 </body>
 </html>
