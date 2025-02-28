@@ -1,5 +1,6 @@
 package com.kh.board.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -8,7 +9,9 @@ import org.apache.commons.fileupload2.core.DiskFileItemFactory;
 import org.apache.commons.fileupload2.core.FileItem;
 import org.apache.commons.fileupload2.jakarta.JakartaServletFileUpload;
 
+import com.kh.board.model.vo.Attachment;
 import com.kh.board.model.vo.Board;
+import com.kh.board.service.BoardService;
 import com.kh.member.model.vo.Member;
 
 import jakarta.servlet.ServletException;
@@ -79,6 +82,8 @@ public class BoardInsertController extends HttpServlet {
 			List<FileItem> formItems = upload.parseRequest(request);
 			
 			Board b = new Board();
+			Attachment at = null;
+			
 			Member m = (Member)session.getAttribute("loginUser");
 			b.setBoardWriter(m.getUserNo());
 			
@@ -99,8 +104,41 @@ public class BoardInsertController extends HttpServlet {
 							break;
 					}
 				} else {//파일
+					String originName = item.getName();
 					
+					if(originName.length() > 0) { //파일업로드를 했을 때
+						//파일명이 겹치면 덮어씌우기 때문에 고윻한 파일명 만듬
+						String tmpName = "kh_" + System.currentTimeMillis() + ((int)(Math.random() * 100000) + 1);
+						String type = originName.substring(originName.lastIndexOf("."));
+						String chageName = tmpName + type; //서버에 저장할 파일명
+						
+						File f = new File(savePath, chageName);
+						item.write(f.toPath()); //지정한 경로에 파일 업로드
+						
+						at = new Attachment();
+						at.setOriginName(originName);
+						at.setChangeName(chageName);
+						at.setFilePath("resources/board-upfile/");
+					}
 				}
+			}
+			
+			//저장정보를 request객체에서 가져온 상태
+			System.out.println(b);
+			System.out.println(at);
+			
+			int result = new BoardService().insertBoard(b, at);
+			if(result > 0) { //성공
+				request.getSession().setAttribute("alertMsg", "일반게시글 작성 성공");
+				response.sendRedirect(request.getContextPath() + "/list.bo?cpage=1");
+			} else {
+				if(at != null) {
+					new File(savePath + at.getChangeName()).delete();
+				}
+				
+				request.setAttribute("errorMsg", "게시글 작성 실패.");
+				request.getRequestDispatcher("veiws/common/errorPage.jsp").forward(request, response);
+				
 			}
 		}
 	}
