@@ -1,11 +1,14 @@
 package com.kh.board.controller;
 
+import java.io.IOException;
+
+import com.kh.board.service.BoardService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Servlet implementation class BoardDetailController
@@ -28,6 +31,10 @@ public class BoardDetailController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//조회수 1증가
 		//Board정보 가지고 
+		int boardNo = Integer.parseInt(request.getParameter("bno"));
+		
+		BoardService bService = new BoardService();
+		int result = bService.increaseCount(boardNo);
 		
 		request.getRequestDispatcher("views/board/boardDetailView.jsp").forward(request, response);
 	}
