@@ -42,8 +42,13 @@
 		<br>
 		<h2 align="center">일반게시글 작성하기</h2>
 		<br>
+		
+		<%--
+			파일을 전송하기위해서는 enctype="multipart/form-data"
+			기본적인 form 전송시 인코딩 타입 -> application/x-www-form-urlencoded
+		 --%>
 
-		<form action="">
+		<form action="${pageContext.request.contextPath}/insert.bo" method="post" enctype="multipart/form-data">
 			<table align="center" class="list-area">
 				<tr>
 					<th width="70">카테고리</th>
