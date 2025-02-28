@@ -57,7 +57,7 @@
             </thead>
             <tbody>
               <c:forEach var="b" items="${list}">
-                <tr>
+                <tr onclick="location.href='${pageContext.request.contextPath}/detail.bo?bno=${b.boardNo}'">
                     <td>${b.boardNo}</td>
                     <td>${b.categoryName}</td>
                     <td>${b.boardTitle}</td>
