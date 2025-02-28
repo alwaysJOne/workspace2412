@@ -24,4 +24,9 @@
 		        ORDER BY BOARD_NO DESC) A)
 	WHERE RNUM BETWEEN ? AND ?
 	</entry>
+	<entry key="selectCategory">
+		SELECT CATEGORY_NO,
+			   CATEGORY_NAME
+		FROM CATEGORY
+	</entry>
 </properties>

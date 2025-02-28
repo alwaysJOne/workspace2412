@@ -41,6 +41,11 @@
         <h2 align="center">일반게시판</h2>
         <br>
 
+		<c:if test="${not empty loginUser}">
+			<div align="right" style="width: 870px; margin-bottom: 6px;">
+				<a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/enrollForm.bo">글쓰기</a>
+			</div>
+		</c:if>
         <table align="center" class="list-area">
             <thead>
                 <th width="70">글번호</th>
