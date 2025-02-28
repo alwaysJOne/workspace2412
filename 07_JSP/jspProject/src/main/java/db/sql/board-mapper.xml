@@ -77,5 +77,16 @@
 				USER_ID,
 				TO_CHAR(CREATE_DATE, 'YYYY.MM.DD') AS "CREATE_DATE"
 		  FROM BOARD
+     LEFT JOIN CATEGORY USING(CATEGORY_NO)
+          JOIN MEMBER ON(BOARD_WRITER = USER_NO)
+         WHERE BOARD_NO = ?
+	</entry>
+	<entry key="selectAttachment">
+		SELECT FILE_NO,
+				ORIGIN_NAME,
+				CHANGE_NAME,
+				FILE_PATH
+		  FROM ATTACHMENT
+         WHERE REF_BNO = ?
 	</entry>
 </properties>

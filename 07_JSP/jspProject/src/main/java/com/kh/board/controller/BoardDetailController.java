@@ -2,6 +2,8 @@ package com.kh.board.controller;
 
 import java.io.IOException;
 
+import com.kh.board.model.vo.Attachment;
+import com.kh.board.model.vo.Board;
 import com.kh.board.service.BoardService;
 
 import jakarta.servlet.ServletException;
@@ -34,9 +36,23 @@ public class BoardDetailController extends HttpServlet {
 		int boardNo = Integer.parseInt(request.getParameter("bno"));
 		
 		BoardService bService = new BoardService();
+		//조회수 1증가
 		int result = bService.increaseCount(boardNo);
+		//상세정보 no로 가져오기
+		Board b = bService.selectBoard(boardNo);
 		
-		request.getRequestDispatcher("views/board/boardDetailView.jsp").forward(request, response);
+		if(result > 0 && b != null) {
+			Attachment at = bService.selectAttachment(boardNo);
+			
+			request.setAttribute("board", b);
+			request.setAttribute("attachment", at);
+			
+			request.getRequestDispatcher("views/board/boardDetailView.jsp").forward(request, response);	
+		} else {
+			request.setAttribute("errorMsg", "정상적인 접근이 아닙니다.");
+			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+		}
+		
 	}
 
 	/**

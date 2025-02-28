@@ -47,28 +47,38 @@
         <table align="center" class="list-area">
             <tr>
                 <th width="70">카테고리</th>
-                <td width="70">등산</td>
+                <td width="70">${board.categoryName}</td>
                 <th width="70">제목</th>
-                <td width="350">안녕하세요. 집에 어떻게 가나요?</td>
+                <td width="350">${board.boardTitle }</td>
             </tr>
             <tr>
                 <th>작성자</th>
-                <td>admin</td>
+                <td>${board.userId}</td>
                 <th>작성일</th>
-                <td>2025.02.08</td>
+                <td>${board.createDate}</td>
             </tr>
             <tr>
                 <th>내용</th>
                 <td colspan="3">
                    <p style="height: 200px;">
-                        안녕하세요. 저는 최지원입니다. 날씨가 많이 덥군요.
+                        ${board.boardContent}
                    </p>
                 </td>
             </tr>
             <tr>
                 <th>첨부파일</th>
                 <td colspan="3">
-                    첨부파일이 없습니다.
+                    <c:choose>
+                    	<c:when test="${empty attachment}">
+                    		첨부파일이 없습니다.
+                    	</c:when>
+                    	<c:otherwise>
+                    		<a download="${attachment.originName }" 
+                    		   href="${pageContext.request.contextPath}/${attachment.filePath}${attachment.changeName}">
+                    		   ${attachment.originName}
+                    		</a>
+                    	</c:otherwise>
+                    </c:choose>
                 </td>
             </tr>
         </table>
