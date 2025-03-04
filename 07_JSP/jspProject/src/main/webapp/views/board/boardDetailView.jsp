@@ -86,9 +86,11 @@
         <br>
 
         <div align="center">
-            <a class="btn btn-sm btn-primary">목록가기</a>
-            <a class="btn btn-sm btn-primary">수정하기</a>
-            <a class="btn btn-sm btn-primary">삭제하기</a>
+            <a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/list.bo?cpage=1">목록가기</a>
+            <c:if test="${loginUser != null && loginUser.userId == board.userId}">
+	            <a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/updateForm.bo?bno=${board.boardNo}">수정하기</a>
+	            <a class="btn btn-sm btn-primary">삭제하기</a>
+            </c:if>
         </div>
 
 	</div>
