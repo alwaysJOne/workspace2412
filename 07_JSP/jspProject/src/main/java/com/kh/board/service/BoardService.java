@@ -1,6 +1,9 @@
 package com.kh.board.service;
 
-import static com.kh.common.JDBCTemplate.*;
+import static com.kh.common.JDBCTemplate.close;
+import static com.kh.common.JDBCTemplate.commit;
+import static com.kh.common.JDBCTemplate.getConnection;
+import static com.kh.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -97,5 +100,32 @@ public class BoardService {
 		close(conn);
 		
 		return at;
+	}
+	
+	public int updateBoard(Board b, Attachment at) {
+		Connection conn = getConnection();
+		
+		BoardDao bDao = new BoardDao();
+		int result1 = bDao.updateBoard(conn, b);
+		
+		int result2 = 1;
+		if(at != null) { //첨부파일이 있을 때
+			if(at.getFileNo() != 0) { //기존첨부파일 있을 때 -> update
+				result2 = bDao.updateAttachment(conn, at);
+			} else { //기존첨부파일 없을 때 -> insert
+				result2 = bDao.insertAttachment(conn, at);
+			}			
+		}
+		
+		if(result1 > 0 && result2 > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result1 * result2;
+		
 	}
 }
