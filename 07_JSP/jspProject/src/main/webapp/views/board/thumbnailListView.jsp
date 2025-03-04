@@ -29,6 +29,14 @@
             margin: 14px;
             box-sizing: border-box;
         }
+
+        .thumbnail p > span{
+            display: inline-block;
+            width: 220px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -40,41 +48,27 @@
         <br>
 
         <div class="list-area">
-            <div class="thumbnail" align="center">
-                <img width="200px" height="150px" src="/jp/resources/board-upfile/kh_174071454643638776.jpg" alt="썸네일이미지">
-                <p>
-                    <span>No. 25 안녕하세요</span><br>
-                    조회수 : 200
-                </p>
-            </div>
-            <div class="thumbnail" align="center">
-                <img width="200px" height="150px" src="/jp/resources/board-upfile/kh_174071454643638776.jpg" alt="썸네일이미지">
-                <p>
-                    <span>No. 25 안녕하세요</span><br>
-                    조회수 : 200
-                </p>
-            </div>
-            <div class="thumbnail" align="center">
-                <img width="200px" height="150px" src="/jp/resources/board-upfile/kh_174071454643638776.jpg" alt="썸네일이미지">
-                <p>
-                    <span>No. 25 안녕하세요</span><br>
-                    조회수 : 200
-                </p>
-            </div>
-            <div class="thumbnail" align="center">
-                <img width="200px" height="150px" src="/jp/resources/board-upfile/kh_174071454643638776.jpg" alt="썸네일이미지">
-                <p>
-                    <span>No. 25 안녕하세요</span><br>
-                    조회수 : 200
-                </p>
-            </div>
-            <div class="thumbnail" align="center">
-                <img width="200px" height="150px" src="/jp/resources/board-upfile/kh_174071454643638776.jpg" alt="썸네일이미지">
-                <p>
-                    <span>No. 25 안녕하세요</span><br>
-                    조회수 : 200
-                </p>
-            </div>
+            <c:choose>
+                <c:when test="${not empty list}">
+                    <c:forEach var="b" items="list">
+                        <div class="thumbnail" align="center">
+                            <img width="200px" height="150px" src="${pageContext.request.contextPath}/${b.thumbnailImg}" alt="썸네일이미지">
+                            <p>
+                                <span>No. ${b.boardNo} ${b.boardTitle}</span><br>
+                                조회수 : ${b.count}
+                            </p>
+                        </div>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <h1 align="center">게시글이 없습니다.</h1>
+                    <c:if test="${loginUser != null}">
+                        <div align="center">
+                            <a href="${pageContext.request.contextPath}/enrollForm.th" class="btn btn-sm btn-primary">게시글 작성</a>
+                        </div>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
         </div>
 	</div>
 </body>
