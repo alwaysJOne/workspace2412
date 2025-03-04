@@ -45,7 +45,7 @@
         <h2 align="center">사진게시글 작성하기</h2>
         <br>
 
-        <form action="">
+        <form action="${pageContext.request.contextPath}/insert.th" method="post" enctype="multipart/form-data">
             <table border="1" align="center">
                 <tr>
                     <th>제목</th>

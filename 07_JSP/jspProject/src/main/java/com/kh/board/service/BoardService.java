@@ -138,4 +138,12 @@ public class BoardService {
 		
 		return list;
 	}
+	
+	public int insertThumbnailBoard(Board b, ArrayList<Attachment> list) {
+		Connection conn = getConnection();
+		
+		BoardDao bDao = new BoardDao();
+		int result1 = bDao.insertThumbnailBoard(conn, b);
+		int result2 = bDao.insertAttachmentList(conn, list);
+	}
 }
