@@ -345,6 +345,38 @@ public class BoardDao {
 		
 		return result;
 	}
+	
+	public ArrayList<Board> selectThumbnailList(Connection conn){
+		//select -> ResultSet(여러행) -> ArrayList<Board>
+		
+		ArrayList<Board> list = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectThumbnailList");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Board b = new Board();
+				b.setBoardNo(rset.getInt("BOARD_NO"));
+				b.setBoardTitle(rset.getString("BOARD_TITLE"));
+				b.setCount(rset.getInt("COUNT"));
+				b.setThumbnailImg(rset.getString("THUMBNAIL_IMG"));
+				
+				list.add(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+	
+		return list;
+	}
 }
 
 
