@@ -46,18 +46,26 @@
         <br>
         <h2 align="center">사진게시판</h2>
         <br>
+        
+        <c:if test="${loginUser != null}">
+            <div align="right" style="width: 870px; margin-bottom: 6px;">
+                <a href="${pageContext.request.contextPath}/enrollForm.th" class="btn btn-sm btn-primary">게시글 작성</a>
+            </div>
+        </c:if>
 
         <div class="list-area">
             <c:choose>
                 <c:when test="${not empty list}">
-                    <c:forEach var="b" items="list">
-                        <div class="thumbnail" align="center">
+                    <c:forEach var="b" items="${list}">
+                    
+                        <div class="thumbnail" align="center" onclick="location.href='${${pageContext.request.contextPath}/detail.th?bno=${b.boardNo}'">
                             <img width="200px" height="150px" src="${pageContext.request.contextPath}/${b.thumbnailImg}" alt="썸네일이미지">
                             <p>
                                 <span>No. ${b.boardNo} ${b.boardTitle}</span><br>
                                 조회수 : ${b.count}
                             </p>
                         </div>
+                        
                     </c:forEach>
                 </c:when>
                 <c:otherwise>

@@ -107,14 +107,14 @@ public class ThumbnailInsertController extends HttpServlet {
 			int result = new BoardService().insertThumbnailBoard(b, list);
 			
 			if(result > 0) { //성공
-				request.getSession().setAttribute("alertMsg", "일반게시글 작성 성공");
-				response.sendRedirect(request.getContextPath() + "/list.bo?cpage=1");
+				request.getSession().setAttribute("alertMsg", "사진게시글 작성 성공");
+				response.sendRedirect(request.getContextPath() + "/list.th");
 			} else {
-				if(at != null) {
+				for(Attachment at : list) {
 					new File(savePath + at.getChangeName()).delete();
 				}
 				
-				request.setAttribute("errorMsg", "게시글 작성 실패.");
+				request.setAttribute("errorMsg", "사진게시글 작성 실패.");
 				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 			}
 		}

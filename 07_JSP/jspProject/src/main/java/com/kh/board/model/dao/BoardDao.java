@@ -406,7 +406,7 @@ public class BoardDao {
 	public int insertAttachmentList(Connection conn, ArrayList<Attachment> list) {
 		//insert -> int
 		
-		int result = 0;
+		int result = 1;
 		
 		PreparedStatement pstmt = null;
 		String sql = prop.getProperty("insertAttachmentList");
