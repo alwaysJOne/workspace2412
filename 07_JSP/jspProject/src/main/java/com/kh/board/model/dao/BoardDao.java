@@ -184,6 +184,32 @@ public class BoardDao {
 		return result;
 	}
 	
+	public int insertNewAttachment(Connection conn, Attachment at) {
+		//insert -> int
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("insertNewAttachment");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, at.getRefBoardNo());
+			pstmt.setString(2, at.getOriginName());
+			pstmt.setString(3, at.getChangeName());
+			pstmt.setString(4, at.getFilePath());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
 	public int increaseCount(Connection conn, int boardNo) {
 		int result = 0;
 		PreparedStatement pstmt = null;

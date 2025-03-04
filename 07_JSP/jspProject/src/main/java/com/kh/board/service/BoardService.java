@@ -113,7 +113,7 @@ public class BoardService {
 			if(at.getFileNo() != 0) { //기존첨부파일 있을 때 -> update
 				result2 = bDao.updateAttachment(conn, at);
 			} else { //기존첨부파일 없을 때 -> insert
-				result2 = bDao.insertAttachment(conn, at);
+				result2 = bDao.insertNewAttachment(conn, at);
 			}			
 		}
 		
