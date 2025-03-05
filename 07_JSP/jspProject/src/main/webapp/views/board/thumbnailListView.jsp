@@ -37,6 +37,11 @@
             white-space: nowrap;
             overflow: hidden;
         }
+        
+        .thumbnail:hover{
+        	background: #93b8fd;
+        	cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -57,15 +62,13 @@
             <c:choose>
                 <c:when test="${not empty list}">
                     <c:forEach var="b" items="${list}">
-                    
-                        <div class="thumbnail" align="center" onclick="location.href='${${pageContext.request.contextPath}/detail.th?bno=${b.boardNo}'">
+                        <div class="thumbnail" align="center" onclick="location.href='${pageContext.request.contextPath}/detail.th?bno=${b.boardNo}'">
                             <img width="200px" height="150px" src="${pageContext.request.contextPath}/${b.thumbnailImg}" alt="썸네일이미지">
                             <p>
                                 <span>No. ${b.boardNo} ${b.boardTitle}</span><br>
                                 조회수 : ${b.count}
                             </p>
-                        </div>
-                        
+                        </div>      
                     </c:forEach>
                 </c:when>
                 <c:otherwise>

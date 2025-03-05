@@ -431,7 +431,39 @@ public class BoardDao {
 		return result;
 	}
 	
-	
+	public ArrayList<Attachment> selectAttachmentList(Connection conn, int boardNo){
+		
+		ResultSet rset = null;
+		PreparedStatement pstmt = null;
+		ArrayList<Attachment> list = new ArrayList<>();
+		
+		String sql = prop.getProperty("selectAttachmentList");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardNo);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Attachment at = new Attachment();
+				at.setFileNo(rset.getInt("file_no"));
+				at.setOriginName(rset.getString("origin_name"));
+				at.setChangeName(rset.getString("change_name"));
+				at.setFilePath(rset.getString("file_path"));
+				at.setFileLevel(rset.getInt("file_level"));
+				
+				list.add(at);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
+	}
 }
 
 

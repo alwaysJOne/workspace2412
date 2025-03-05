@@ -140,6 +140,15 @@
 		  FROM ATTACHMENT
          WHERE REF_BNO = ?
 	</entry>
+	<entry key="selectAttachmentList">
+		SELECT FILE_NO,
+				ORIGIN_NAME,
+				CHANGE_NAME,
+				FILE_LEVEL,
+				FILE_PATH
+		  FROM ATTACHMENT
+         WHERE REF_BNO = ?
+	</entry>
 	<entry key="updateBoard">
 		UPDATE BOARD
 		   SET CATEGORY_NO = ?,
