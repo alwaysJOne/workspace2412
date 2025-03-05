@@ -103,7 +103,7 @@
 			<br><br>
 
 			<div align="center">
-				<button type="submit" onclick="return checkPwd()">회원가입</button>
+				<button type="submit" onclick="return checkPwd()" disabled>회원가입</button>
 				<button type="reset">초기화</button>
 			</div>
 		</form>
@@ -122,11 +122,25 @@
 				data : {
 					checkId : checkId
 				},
-				success: function(){
+				success: function(result){
+					const idInput = document.querySelector("#enroll-form input[name=userId]");
+					
+					if(result === "NNNNY"){
+						if(confirm("사용가능한 ID입니다. 정말 사용할꺼? ")){
+							idInput.setAttribute("readonly", true);
 
+							const submitBtn = document.querySelector("#enroll-form button[type=submit]")
+							submitBtn.removeAttribute("disabled");
+						} else {
+							idInput.focus();
+						}
+					} else {
+						alert("이미 존재하는 ID입니다.");
+						idInput.focus();
+					}
 				},
-				error: function(){
-
+				error: function(err){
+					console.log("실패 : ", err);
 				}
 			})
 

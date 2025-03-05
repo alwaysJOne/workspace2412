@@ -31,6 +31,12 @@ public class AjaxIdCheckController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String checkId = request.getParameter("checkId");
 		int count = new MemberService().idCheck(checkId);
+		
+		if (count > 0) { // 회원이 존재함
+			response.getWriter().print("NNNNN");
+		} else { //회원이 존재하지 않음
+			response.getWriter().print("NNNNY");
+		}
 	}
 
 	/**

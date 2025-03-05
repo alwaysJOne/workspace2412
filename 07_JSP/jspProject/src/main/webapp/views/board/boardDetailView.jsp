@@ -93,6 +93,59 @@
             </c:if>
         </div>
 
+        <br>
+
+        <div id="reply-area">
+            <table align="center" class="list-area">
+                <thead>
+                    <tr>
+                        <th>댓글작성</th>
+                        <c:choose>
+                            <c:when test="${loginUser == null}">
+                                <td>
+                                    <textarea cols="50" rows="3" style="resize: none;" readonly>댓글등록을 하시려면 로그인이 필요합니다.</textarea>
+                                </td>
+                                <td>
+                                    <button disabled>댓글등록</button>
+                                </td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>
+                                    <textarea cols="50" rows="3" style="resize: none;"></textarea>
+                                </td>
+                                <td>
+                                    <button onclick="insertReply(${board.boardNo})">댓글등록</button>
+                                </td>
+                            </c:otherwise>
+                        </c:choose>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>user01</td>
+                        <td>안녕하세요. 저는 ~입니다.</td>
+                        <td>2025.03.05</td>
+                    </tr>
+                    <tr>
+                        <td>admin</td>
+                        <td>후후하하호호 야호</td>
+                        <td>2025.03.02</td>
+                    </tr>
+                    <tr>
+                        <td>pass11</td>
+                        <td>엄청나군요.</td>
+                        <td>2025.03.01</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <script>
+                function insertReply(bno){
+                   
+                }
+            </script>
+        </div>
+
 	</div>
 </body>
 
