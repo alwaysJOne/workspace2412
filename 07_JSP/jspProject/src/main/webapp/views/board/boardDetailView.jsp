@@ -35,7 +35,7 @@
 	</style>
 </head>
 
-<body>
+<body onload="init(${board.boardNo})">
 	<%@ include file="../common/menubar.jsp" %>
 
 	<div class="outer">
@@ -111,7 +111,7 @@
                             </c:when>
                             <c:otherwise>
                                 <td>
-                                    <textarea cols="50" rows="3" style="resize: none;"></textarea>
+                                    <textarea id="reply-content" cols="50" rows="3" style="resize: none;"></textarea>
                                 </td>
                                 <td>
                                     <button onclick="insertReply(${board.boardNo})">댓글등록</button>
@@ -140,9 +140,47 @@
             </table>
 
             <script>
-                function insertReply(bno){
-                   
+                function init(bno){
+                    getReplyList(bno);
                 }
+
+                function insertReply(bno){
+                   const contentArea = document.querySelector("#reply-content");
+
+                   $.ajax({
+                    url: "rinsert.bo",
+                    type: "post",
+                    data: {
+                        boardNo: bno,
+                        content: contentArea.value  
+                    },
+                    success: function(res){
+                        contentArea.value = ""; //댓글 입력창 초기화
+                        //댓글목록 다시 불러와서 그려주기
+                        console.log(res);
+                    },
+                    error: function(error){
+                        console.log("댓글 작성 ajax통신 실패");
+                    }
+                   })
+                }
+
+                function getReplyList(boardNo){
+                    $.ajax({
+                        url : "rlist.bo",
+                        data : {
+                            bno : boardNo
+                        },
+                        success: function(replyList){
+                            console.log(replyList);
+                        }, 
+                        error: function(){
+                            console.log("댓글 조회 ajax통신 실패");
+                        }
+                    })
+                }
+
+               
             </script>
         </div>
 
