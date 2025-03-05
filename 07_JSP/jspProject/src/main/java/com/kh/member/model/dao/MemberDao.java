@@ -1,5 +1,7 @@
 package com.kh.member.model.dao;
 
+import static com.kh.common.JDBCTemplate.close;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,8 +11,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import com.kh.member.model.vo.Member;
-
-import static com.kh.common.JDBCTemplate.*;
 
 public class MemberDao {
 	private Properties prop = new Properties();
@@ -204,5 +204,34 @@ public class MemberDao {
 		}
 		
 		return result;
+	}
+	
+	public int idCheck(Connection conn, String checkId) {
+		//select -> 같은 ID로 되어있는 멤버 숫자로만 조회 -> resultSet
+		
+		int count = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("idCheck");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, checkId);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				count = rset.getInt("count");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return count;
 	}
 }

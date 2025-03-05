@@ -32,7 +32,7 @@
 				<tr>
 					<td>* 아이디</td>
 					<td><input type="text" name="userId" maxlength="15" required></td>
-					<td><button type="button">중복확인</button></td>
+					<td><button type="button" onclick="idCheck()">중복확인</button></td>
 				</tr>
 				<tr>
 					<td>* 비밀번호</td>
@@ -110,6 +110,44 @@
 	</div>
 
 	<script>
+		function idCheck(){
+			//중복확인버튼 클릭시 사용자가 입력한 아이디값을 서버로 전달하여 요청
+			// 응답1 --> 사용불가 --> alert메세지출력(이미 존재하는 아이디입니다.)
+			// 응답2 --> 사용가능 --> 진짜 사용할거니? ok : 더이상 변경못하게
+			//										 no : 다시 입력하도록 유도
+			const checkId = document.querySelector("#enroll-form input[name=userId]").value;
+			$.ajax({
+				type: "get",
+				url: "idCheck.me",
+				data : {
+					checkId : checkId
+				},
+				success: function(){
+
+				},
+				error: function(){
+
+				}
+			})
+
+			/*
+				const xhr = new XMLHttpRequest();
+				xhr.open("GET", "idCheck.me?checkId=" + encodeURIComponent(checkId), true);
+
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState === 4){ //요청완료상태
+						if(xhr.status === 200) { //응답성공
+							const result = xhr.responseText;
+							if(result === "Y"){
+								//응답이 Y일때 실행하고싶은 코드
+							} else {
+								//응답이 N일때 실행하고싶은 코드
+							}
+						}
+					}
+				}
+			*/
+		}
 		function checkPwd(){
 			const pwd = document.querySelector("#enroll-form input[name=userPwd]").value;
 			const pwdCheck = document.querySelector("#enroll-form input[name=userPwdCheck]").value;
