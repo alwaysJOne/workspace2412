@@ -121,7 +121,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <!-- <tr>
                         <td>user01</td>
                         <td>안녕하세요. 저는 ~입니다.</td>
                         <td>2025.03.05</td>
@@ -135,13 +135,15 @@
                         <td>pass11</td>
                         <td>엄청나군요.</td>
                         <td>2025.03.01</td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
 
             <script>
                 function init(bno){
-                    getReplyList(bno);
+                    getReplyList(bno, function(data){
+                        drawReplyList(data);
+                    });
                 }
 
                 function insertReply(bno){
@@ -157,7 +159,9 @@
                     success: function(res){
                         contentArea.value = ""; //댓글 입력창 초기화
                         //댓글목록 다시 불러와서 그려주기
-                        console.log(res);
+                        getReplyList(bno, function(data){
+                            drawReplyList(data);
+                        });
                     },
                     error: function(error){
                         console.log("댓글 작성 ajax통신 실패");
@@ -165,20 +169,37 @@
                    })
                 }
 
-                function getReplyList(boardNo){
+                function getReplyList(boardNo, callback){
                     $.ajax({
                         url : "rlist.bo",
+                        // contextType: "application/json",
+                        dataType: "json", //응답 데이터 타입(json, text, html, xml)
                         data : {
                             bno : boardNo
                         },
                         success: function(replyList){
-                            console.log(replyList);
+                            callback(replyList);
                         }, 
                         error: function(){
                             console.log("댓글 조회 ajax통신 실패");
                         }
                     })
                 }
+
+                function drawReplyList(replyList){
+                    let str = "";
+                    for(let r of replyList) {
+                        str = "<tr>" +
+                                "<td>" + r.userId + "</td>" +
+                                "<td>" + r.replyContent + "</td>" +
+                                "<td>" + r.createDate + "</td>" +
+                              "</tr>";
+                    }
+
+                    const replyBody = document.querySelector("#reply-area tbody");
+                    replyBody.innerHTML = str;
+                }
+
 
                
             </script>
