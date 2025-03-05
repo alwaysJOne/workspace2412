@@ -160,6 +160,7 @@
                         contentArea.value = ""; //댓글 입력창 초기화
                         //댓글목록 다시 불러와서 그려주기
                         getReplyList(bno, function(data){
+                            console.log(data)
                             drawReplyList(data);
                         });
                     },
@@ -189,7 +190,7 @@
                 function drawReplyList(replyList){
                     let str = "";
                     for(let r of replyList) {
-                        str = "<tr>" +
+                        str += "<tr>" +
                                 "<td>" + r.userId + "</td>" +
                                 "<td>" + r.replyContent + "</td>" +
                                 "<td>" + r.createDate + "</td>" +
