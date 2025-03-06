@@ -11,4 +11,8 @@ public class MemberDao {
 		Member loginMember = sqlSession.selectOne("MemberMapper.loginMember", m);
 		return loginMember;
 	}
+	
+	public int insertMember(SqlSession sqlSession, Member m) {
+		return sqlSession.insert("MemberMapper.insertMember", m);
+	}
 }
