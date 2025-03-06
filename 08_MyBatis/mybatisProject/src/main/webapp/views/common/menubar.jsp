@@ -43,7 +43,7 @@
     <div class="login-area" align="right">
        <c:choose>
        <c:when test="${empty loginUser}">
-	        <form action="/${pageContext.request.contextPath}/login.me" method="post">
+	        <form action="${pageContext.request.contextPath}/login.me" method="post">
 		        <table>
 		            <tr>
 		                <td>아이디</td>
