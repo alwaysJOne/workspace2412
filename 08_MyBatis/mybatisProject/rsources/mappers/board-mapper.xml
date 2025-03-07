@@ -14,4 +14,15 @@
  		  FROM BOARD
  		 WHERE STATUS = 'Y' 
  	</select>
+ 	<select id="selectList" resultType="Board">
+ 		SELECT BOARD_NO boardNo,
+				BOARD_TITLE boardTitle,
+				USER_ID userId,
+				COUNT count,
+				CREATE_DATE createDate
+ 		  FROM BOARD B
+ 		  JOIN MEMBER ON(BOARD_WRITER = USER_NO)
+ 		 WHERE B.STATUS = 'Y' 
+ 		 ORDER BY BOARD_NO DESC
+ 	</select>
 </mapper>

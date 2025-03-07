@@ -25,8 +25,12 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public ArrayList<Board> selectList(PageInfo pi) {
-		// TODO Auto-generated method stub
-		return null;
+		SqlSession sqlSession = Template.getSqlSession();
+		ArrayList<Board> list = bDao.selectList(sqlSession, pi);
+
+		sqlSession.close();
+		
+		return list;
 	}
 
 }

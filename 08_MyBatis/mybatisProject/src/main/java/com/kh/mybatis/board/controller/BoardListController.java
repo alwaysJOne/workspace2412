@@ -1,7 +1,9 @@
 package com.kh.mybatis.board.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import com.kh.mybatis.board.model.vo.Board;
 import com.kh.mybatis.board.service.BoardService;
 import com.kh.mybatis.board.service.BoardServiceImpl;
 import com.kh.mybatis.common.PageInfo;
@@ -37,6 +39,13 @@ public class BoardListController extends HttpServlet {
 		int listCount = boardService.selectListCount();
 		
 		PageInfo pi = new PageInfo(listCount, currentPage, 10, 5);
+		
+		ArrayList<Board> list = boardService.selectList(pi);
+		
+		request.setAttribute("list", list);
+		request.setAttribute("pi", pi);
+		
+		request.getRequestDispatcher("views/board/boardListView.jsp").forward(request, response);
 	}
 
 	/**

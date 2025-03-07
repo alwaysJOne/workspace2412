@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+    
     .login-area a{
         text-decoration: none;
         color: black;
@@ -18,6 +19,12 @@
         color: white;
         height: 50px;
     }
+    
+   	.nav-area a{
+        text-decoration: none;
+        color: white;
+    }
+    
     .menu{
         display: table-cell;
         width: 250px;
@@ -88,7 +95,7 @@
     <div class="nav-area" align="center">
         <div class="menu">HOME</div>
         <div class="menu">공지사항</div>
-        <div class="menu">게시판</div>
+        <div class="menu"><a href="list.bo?cpage=1">게시판</a></div>
         <div class="menu">ETC</div>
     </div>
 </body>
