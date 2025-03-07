@@ -9,6 +9,14 @@
 			select쿼리문
 		</select>
 	 -->
+	<resultMap type="Board" id="boardResultMap">
+	  	<!-- <result column="테이블의 컬럼명" property="객체의 필드명"/> -->
+	  	<result column="BOARD_NO" property="boardNo"/>
+	  	<result column="BOARD_TITLE" property="boardTitle"/>
+	  	<result column="USER_ID" property="userId"/>
+	  	<result column="COUNT" property="count"/>
+	  	<result column="CREATE_DATE" property="createDate"/>
+  	</resultMap>
  	<select id="selectListCount" resultType="_int">
  		SELECT COUNT(*)
  		  FROM BOARD
@@ -23,6 +31,47 @@
  		  FROM BOARD B
  		  JOIN MEMBER ON(BOARD_WRITER = USER_NO)
  		 WHERE B.STATUS = 'Y' 
+ 		 ORDER BY BOARD_NO DESC
+ 	</select>
+ 	<select id="selectSearchCount" resultType="_int">
+ 		SELECT COUNT(*)
+ 		  FROM BOARD B
+ 		  JOIN MEMBER ON(BOARD_WRITER = USER_NO)
+ 		 WHERE B.STATUS = 'Y' 
+ 		 <choose>
+ 		 	<when test="condition == 'writer'">
+ 		 		AND USER_ID
+ 		 	</when>
+ 		 	<when test="condition == 'title'">
+ 		 		AND BOARD_TITLE 
+ 		 	</when>
+ 		 	<otherwise>
+ 		 	 	AND BOARD_CONTENT 
+ 		 	</otherwise>
+ 		 </choose>
+ 		  LIKE '%${keyword}%' 
+ 	</select>
+ 	<select id="selectSearchList" resultMap="boardResultMap">
+ 		SELECT BOARD_NO,
+				BOARD_TITLE,
+				USER_ID,
+				COUNT,
+				CREATE_DATE
+ 		  FROM BOARD B
+ 		  JOIN MEMBER ON(BOARD_WRITER = USER_NO)
+ 		 WHERE B.STATUS = 'Y' 
+ 		  <choose>
+ 		 	<when test="condition == 'writer'">
+ 		 		AND USER_ID
+ 		 	</when>
+ 		 	<when test="condition == 'title'">
+ 		 		AND BOARD_TITLE 
+ 		 	</when>
+ 		 	<otherwise>
+ 		 	 	AND BOARD_CONTENT 
+ 		 	</otherwise>
+ 		 </choose>
+ 		  LIKE '%${keyword}%' 
  		 ORDER BY BOARD_NO DESC
  	</select>
 </mapper>

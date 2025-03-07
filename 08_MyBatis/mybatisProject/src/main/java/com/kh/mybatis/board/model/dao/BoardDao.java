@@ -29,4 +29,13 @@ public class BoardDao {
 	public int selectSearchCount(SqlSession sqlSession, HashMap<String, String> map) {
 		return sqlSession.selectOne("BoardMapper.selectSearchCount", map);
 	}
+	
+	public ArrayList<Board> selectSearchList(SqlSession sqlSession, HashMap<String, String> map, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Board> list = (ArrayList)sqlSession.selectList("BoardMapper.selectSearchList", map, rowBounds);
+		return list;
+	}
 }
