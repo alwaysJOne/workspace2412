@@ -3,8 +3,12 @@ package com.kh.boot.controller;
 import com.kh.boot.domain.vo.Member;
 import com.kh.boot.service.MemberService;
 import com.kh.boot.service.MemberServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -40,10 +44,12 @@ public class MemberController {
      */
 
     private final MemberService memberService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberService = memberService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     /*
@@ -133,12 +139,49 @@ public class MemberController {
     3. ModelAndView객체를 이용한 방법 -> 데이터를 담고 리턴형식까지 지정할 수 있음
      */
     @PostMapping("login.me")
-    public ModelAndView login(@ModelAttribute Member member, ModelAndView mv) {
+    public ModelAndView login(Member member, ModelAndView mv, HttpSession session) {
 
         //url재요청을 원할시 return내용을 redirect:재요청url로 해주면 됨
         Member loginMember = memberService.loginMember(member);
 
-        System.out.println(loginMember);
+        if(loginMember == null){
+            mv.addObject("errorMsg", "로그인 실패");
+            mv.setViewName("/common/errorPage");
+        } else {
+            session.setAttribute("loginUser", loginMember);
+            mv.setViewName("redirect:/");
+        }
+
         return mv;
+    }
+
+    @GetMapping("logout.me")
+    public String logout(HttpSession session) {
+        session.setAttribute("alertMsg", "로그아웃 완료");
+        session.removeAttribute("loginUser");
+
+        return "redirect:/";
+    }
+
+    @GetMapping("enrollForm.me")
+    public String enrollForm() {
+        return "member/memberEnrollForm";
+    }
+
+    @PostMapping("insert.me")
+    public String insertMember(Member member) {
+        /*
+            age값은 int로 필드를 구성할 경우 빈문자열이 전달되면 형변환 과정에서 400에러가 발생
+            보통 400에러는 보내는 데이터와 받는 데이터의 타입이 일치하지 않을 때 발생한다.
+
+            비밀번호를 사용자 입력 그대로 저장한다.(평문)
+            Bcrypt방식을 이용해서 암호화작업 후 저장함
+            -> 스프링 시큐리티에서 제공하는 모듈을 이용 (pom.xml에 라이브러리 추가 후 빈에 객체등록)
+         */
+        String pwd = bCryptPasswordEncoder.encode(member.getUserPwd());
+        member.setUserPwd(pwd);
+
+        memberService.insertMember(member);
+        return "member/memberInsertForm";
     }
 }
