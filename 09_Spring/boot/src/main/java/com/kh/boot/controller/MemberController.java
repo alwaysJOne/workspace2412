@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -169,7 +170,7 @@ public class MemberController {
     }
 
     @PostMapping("insert.me")
-    public String insertMember(Member member) {
+    public String insertMember(Member member, HttpSession session, Model model) {
         /*
             age값은 int로 필드를 구성할 경우 빈문자열이 전달되면 형변환 과정에서 400에러가 발생
             보통 400에러는 보내는 데이터와 받는 데이터의 타입이 일치하지 않을 때 발생한다.
@@ -181,7 +182,13 @@ public class MemberController {
         String pwd = bCryptPasswordEncoder.encode(member.getUserPwd());
         member.setUserPwd(pwd);
 
-        memberService.insertMember(member);
-        return "member/memberInsertForm";
+        int result = memberService.insertMember(member);
+        if (result > 0){
+           session.setAttribute("alertMsg", "성공적으로 회원가입을 완료하였습니다.");
+            return "redirect:/";
+        } else {
+            model.addAttribute("errorMsg", "회원가입 실패");
+            return "common/errorPage";
+        }
     }
 }

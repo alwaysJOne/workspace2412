@@ -11,4 +11,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface MemberMapper {
     Member loginMember(Member member);
+    int insertMember(Member member);
 }

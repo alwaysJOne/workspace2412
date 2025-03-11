@@ -33,4 +33,26 @@
           AND USER_PWD = #{userPwd}
           AND STATUS = 'Y'
     </select>
+    <insert id="insertMember">
+        INSERT
+        INTO MEMBER(
+            USER_ID,
+            USER_PWD,
+            USER_NAME,
+            EMAIL,
+            GENDER,
+            AGE,
+            PHONE,
+            ADDRESS
+        ) VALUES(
+            #{userId},
+            #{userPwd},
+            #{userName},
+            #{email},
+            #{gender},
+            #{age},
+            #{phone},
+            #{address}
+        )
+    </insert>
 </mapper>
