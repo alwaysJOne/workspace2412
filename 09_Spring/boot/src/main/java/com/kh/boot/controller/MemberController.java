@@ -1,22 +1,50 @@
-package com.kh.boot.member.controller;
+package com.kh.boot.controller;
 
-import com.kh.boot.member.model.vo.Member;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import com.kh.boot.domain.vo.Member;
+import com.kh.boot.service.MemberService;
+import com.kh.boot.service.MemberServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
 @Controller
 public class MemberController {
+
+    /*
+          @Autowired
+          의존성주입을 사용할 때 사용하는 어노테이션
+          클래스내에서 필요한 개체를 직접 생성하지않고 spring컨테이너가 관리하는 객체(Bean에 등록)를 주입받아서 사용할 수 있게 해줌
+          필드주입방식/생성자주입방식
+
+          private MemberService memberService = new MemberServiceImpl();
+          기존 객체 생성방식
+          객체간의 결합도가 높아짐(소스코드 수정이 일어날 경우 하나하나 전부 바꿔줘야한다.)
+          서비스가 동시에 매우 많은 요청이 될 경우 그만큼 객체가 생성된다.
+
+          Di(Dependency Injection) - 의존성 주입
+          코드 결합도가 낮아지고 코드를 분리할 수 있음
+
+          필드주입방식
+          스프링 컨테이너가 객체를 생성 후, @Autowired붙은 필드에 의존성을 주입해주는 방식
+          장점 : 간결하다. 따로 생성자나 setter를 작성하지 않아도 된다.
+          단점 : 테스트가 어려움(핃드주입방식은 객체생성시 의존성이 주입되지 않고 been에서 생성 후 주입받는 방식이기때문에
+                              테스트 진행시 임의에 객체를 생성하기가 어렵다)
+                불변성을 보장할 수 없음. 객체생성시 의존성이 주입되어 고정되지 않기때문에 클래스 생성 이후에 의존성이 변경될 수 있음
+
+          생성자주입방식
+          스프링 컨테이너가 객체를 생성할 때 @Autowired어노테이션이 붙은 생성자를 통해 필요한 의존성을 주입하는 방식
+          장점 : 불변셩 보장, 테스트가 편리하다. 순환참조방지
+     */
+
+    private final MemberService memberService;
+
+    @Autowired
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     /*
     spring에서 클라이언트가 보낸 정보를 받는 방법
@@ -106,17 +134,11 @@ public class MemberController {
      */
     @PostMapping("login.me")
     public ModelAndView login(@ModelAttribute Member member, ModelAndView mv) {
-        DispatcherServlet dispatcherServlet = new DispatcherServlet();
-
-        System.out.println(member.getUserId());
-        System.out.println(member.getUserPwd());
-
-        mv.addObject("id", member.getUserId());
-        mv.addObject("pwd", member.getUserPwd());
-
-        mv.setViewName("redirect:/");
 
         //url재요청을 원할시 return내용을 redirect:재요청url로 해주면 됨
+        Member loginMember = memberService.loginMember(member);
+
+        System.out.println(loginMember);
         return mv;
     }
 }

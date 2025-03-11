@@ -1,4 +1,4 @@
-package com.kh.boot.member.model.vo;
+package com.kh.boot.domain.vo;
 
 import lombok.*;
 
