@@ -3,6 +3,8 @@ package com.kh.boot.controller;
 import com.kh.boot.domain.vo.Board;
 import com.kh.boot.domain.vo.PageInfo;
 import com.kh.boot.service.BoardService;
+import com.kh.boot.utils.Template;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,13 +38,25 @@ public class BoardController {
     public String enrollForm() {return "board/boardEnrollForm";}
 
     @PostMapping("insert.bo")
-    public String insertBoard(@ModelAttribute Board board, MultipartFile upfile) {
+    public String insertBoard(@ModelAttribute Board board, MultipartFile upfile, HttpSession session, Model model) {
         System.out.println(board);
         System.out.println(upfile);
 
         if(!upfile.getOriginalFilename().equals("")){
+            String changeName = Template.saveFile(upfile, session, "/resources/uploadfile/");
 
+            board.setChangeName("/resources/uploadfile/" + changeName);
+            board.setOriginName(upfile.getOriginalFilename());
         }
-        return null;
+
+        int result = boardService.insertBoard(board);
+
+        if(result > 0){
+            session.setAttribute("alertMsg", "게시글 작성 성공");
+            return "redirect:/list.bo";
+        } else {
+            model.addAttribute("errorMsg", "게시글 작성 실패");
+            return "common/errorPage";
+        }
     }
 }

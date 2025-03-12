@@ -27,4 +27,11 @@ public class BoardServiceImpl implements BoardService {
         RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
         return boardMapper.selectBoardList(rowBounds);
     }
+
+    @Override
+    public int insertBoard(Board board) {
+        return boardMapper.insertBoard(board);
+    }
+
+
 }

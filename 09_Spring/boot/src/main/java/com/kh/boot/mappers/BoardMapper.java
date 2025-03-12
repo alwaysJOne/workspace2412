@@ -11,4 +11,6 @@ public interface BoardMapper {
     int selectBoardCount();
     //게시글 목록 조회
     ArrayList<Board> selectBoardList(RowBounds rowBounds);
+    //게시글 추가
+    int insertBoard(Board board);
 }

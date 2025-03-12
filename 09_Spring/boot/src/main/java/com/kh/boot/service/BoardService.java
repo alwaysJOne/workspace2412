@@ -10,4 +10,6 @@ public interface BoardService {
     int selectBoardCount();
     //게시글 정보(페이징)
     ArrayList<Board> selectBoardList(PageInfo pi);
+    //게시글 추가
+    int insertBoard(Board board);
 }
