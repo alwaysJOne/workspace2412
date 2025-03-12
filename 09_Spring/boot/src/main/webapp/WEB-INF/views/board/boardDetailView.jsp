@@ -132,6 +132,40 @@
             </table>
         </div>
         <br><br>
+
+        <script>
+            function addReply(){
+                //댓글내용, 작성자, 게시글번호
+                const boardNo = ${b.boardNo};
+                const userId = "${loginUser.userId}";
+                const content = document.querySelector("#content").value;
+
+                insertReply({
+                    refBno: boardNo,
+                    replyWriter: userId,
+                    replyContent: content
+                }, drawReplyList)
+            }
+
+            function drawReplyList(data){
+                //TODO 1 댓글목록 가져와서 그리기
+                //data를 이용해서 댓글목록을 불러오고
+                //화면에 맞게 그려주기
+            }
+
+            function insertReply(data, callback){
+                $.ajax({
+                    url: "/api/board/reply",
+                    type: "post",
+                    data: data,
+                    success: function (res){
+                        callback(data)
+                    }, error: function (){
+
+                    }
+                })
+            }
+        </script>
     </div>
     
     <jsp:include page="../common/footer.jsp" />

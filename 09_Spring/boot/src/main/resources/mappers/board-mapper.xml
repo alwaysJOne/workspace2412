@@ -49,4 +49,37 @@
             #{changeName}
         )
     </insert>
+    <update id="increaseCount">
+        UPDATE BOARD
+           SET COUNT = COUNT + 1
+         WHERE BOARD_NO = #{bno}
+           AND STATUS = 'Y'
+    </update>
+    <select id="selectBoard" resultMap="boardResult">
+        SELECT BOARD_NO,
+                BOARD_TITLE,
+                BOARD_WRITER,
+                BOARD_CONTENT,
+                ORIGIN_NAME,
+                CHANGE_NAME,
+                COUNT,
+                TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+        FROM BOARD
+        WHERE STATUS = 'Y'
+          AND BOARD_NO = #{bno}
+    </select>
+    <insert id="insertReply">
+        INSERT
+        INTO REPLY(
+            REPLY_NO,
+            REPLY_CONTENT,
+            REF_BNO,
+            REPLY_WRITER
+        ) VALUES(
+            SEQ_RNO.NEXTVAL,
+            #{replyContent},
+            #{refBno},
+            #{replyWriter}
+        )
+    </insert>
 </mapper>
