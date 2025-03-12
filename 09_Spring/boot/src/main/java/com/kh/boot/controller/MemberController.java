@@ -201,4 +201,7 @@ public class MemberController {
             return "common/errorPage";
         }
     }
+
+    @GetMapping("myPage.me")
+    public String myPage() {return "member/myPage";}
 }
