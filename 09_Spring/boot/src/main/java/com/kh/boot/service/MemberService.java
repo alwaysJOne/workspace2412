@@ -7,4 +7,6 @@ public interface MemberService {
     Member loginMember(String userId);
     //회원가입
     int insertMember(Member m);
+    //id중복조회(count)
+    int idCheck(String userId);
 }

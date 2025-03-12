@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -149,7 +150,7 @@ public class MemberController {
         //loginMember의 userPwd --> 암호된 userPwd
         //member의 userPwd --> 암호화 전의 userPwd(평문)
         //bCryptPasswordEncoder.matches(평문, 암호문) -> 해당 비밀번호가 암호화된 비밀번호와 일치하면 true 아니면 false반환
-        bCryptPasswordEncoder.matches(member.getUserPwd(), loginMember.getUserPwd());
+
 
         if(loginMember == null){
             mv.addObject("errorMsg", "아이디를 찾을 수 없습니다.");

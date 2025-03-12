@@ -53,7 +53,7 @@
                 </div> 
                 <br>
                 <div class="btns" align="center">
-                    <button type="submit" class="btn btn-primary" >회원가입</button>
+                    <button type="submit" class="btn btn-primary" disabled>회원가입</button>
                     <button type="reset" class="btn btn-danger">초기화</button>
                 </div>
             </form>
@@ -67,19 +67,46 @@
     <jsp:include page="../common/footer.jsp" />
 
     <script>
+        let eventFlag;
         function idCheck(idInput){
             const id = idInput.value;
 
+            //id.trim() -> 공백제거
             if(id.trim().length >= 5){
-                $.ajax({
-                    url: "/api/member",
-                    data: {checkId : id},
-                    success: function (res){
-                        console.log(res);
-                    }, error: function (){
-                        console.log("아이디 중복체크 ajax 실패");
-                    }
-                })
+                clearTimeout(eventFlag); //아직 실행되지않은 setTimeout 취소
+                eventFlag = setTimeout(function (){
+                                getIdCheck({checkId : id}, drawIdCheckText)
+                            },500)
+            } else {
+                document.querySelector("#checkResult").style.display = "none";
+                document.querySelector("#enrollForm button[type='submit']").disabled = true;
+            }
+        }
+
+        function getIdCheck(data, callback){
+            $.ajax({
+                url: "/api/member/id",
+                data: data,
+                success: function (res){
+                    callback(res);
+                }, error: function (){
+                    console.log("아이디 중복체크 ajax 실패");
+                }
+            })
+        }
+
+        function drawIdCheckText(isCheck){
+            const submitBtn = document.querySelector("#enrollForm button[type='submit']");
+            const checkResult = document.querySelector("#checkResult");
+            checkResult.style.display = "block";
+            if(isCheck === "NNNNN"){
+                checkResult.style.color = "red";
+                checkResult.innerText = "이미 사용중인 아이디입니다.";
+                submitBtn.disabled = true;
+            } else {
+                checkResult.style.color = "green";
+                checkResult.innerText = "사용 가능한 아이디입니다.";
+                submitBtn.disabled = false;
             }
         }
     </script>

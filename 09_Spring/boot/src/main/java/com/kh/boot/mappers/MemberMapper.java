@@ -12,4 +12,5 @@ import org.apache.ibatis.annotations.Param;
 public interface MemberMapper {
     Member loginMember(@Param("userId") String userId);
     int insertMember(Member member);
+    int idCheck(@Param("userId") String userId);
 }
