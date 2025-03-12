@@ -17,9 +17,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member loginMember(Member m) {
-        System.out.println(m.getUserId());
-        return memberMapper.loginMember(m);
+    public Member loginMember(String userId) {
+        return memberMapper.loginMember(userId);
     }
 
     @Override

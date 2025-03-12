@@ -21,7 +21,7 @@
             <form action="insert.me" method="post" id="enrollForm">
                 <div class="form-group">
                     <label for="userId">* ID : </label> 
-                    <input type="text" class="form-control" id="userId" placeholder="Please Enter ID" name="userId" required>
+                    <input type="text" class="form-control" id="userId" placeholder="Please Enter ID" name="userId" onkeyup="idCheck(this)" required>
                     <div id="checkResult" style="font-size:0.7em; display:none;"></div>
 					<br>
                     <label for="userPwd">* Password : </label>
@@ -65,6 +65,24 @@
 
     <!-- 푸터바 -->
     <jsp:include page="../common/footer.jsp" />
+
+    <script>
+        function idCheck(idInput){
+            const id = idInput.value;
+
+            if(id.trim().length >= 5){
+                $.ajax({
+                    url: "/api/member",
+                    data: {checkId : id},
+                    success: function (res){
+                        console.log(res);
+                    }, error: function (){
+                        console.log("아이디 중복체크 ajax 실패");
+                    }
+                })
+            }
+        }
+    </script>
     
 </body>
 </html>

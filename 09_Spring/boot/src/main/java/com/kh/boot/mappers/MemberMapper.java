@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface MemberMapper {
-    Member loginMember(Member member);
+    Member loginMember(@Param("userId") String userId);
     int insertMember(Member member);
 }
