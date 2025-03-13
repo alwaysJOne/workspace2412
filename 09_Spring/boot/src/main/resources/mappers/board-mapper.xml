@@ -98,4 +98,22 @@
            AND REF_BNO = #{boardNo}
          ORDER BY REPLY_NO DESC
     </select>
+    <select id="getBoardTopN" resultMap="boardResult">
+        SELECT BOARD_NO,
+        BOARD_TITLE,
+        BOARD_WRITER,
+        ORIGIN_NAME,
+        COUNT,
+        TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+        FROM BOARD
+        WHERE STATUS = 'Y'
+        <choose>
+            <when test="order == 'count'">
+                ORDER BY COUNT DESC
+            </when>
+            <otherwise>
+                ORDER BY BOARD_NO DESC
+            </otherwise>
+        </choose>
+    </select>
 </mapper>

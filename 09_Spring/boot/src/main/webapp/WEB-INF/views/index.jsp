@@ -3,7 +3,7 @@
 <head>
     <title>Title</title>
 </head>
-<body>
+<body onload="init()">
     <jsp:include page="common/header.jsp" />
     <div class="content">
         <br><br>
@@ -34,9 +34,49 @@
         </div>
     </div>
     <script>
-        //서버로부터 조회수가 높은 게시글 5개를 조회해서 가져오기(ajax)
-        //tbody요소에 추가
+        function init(){
+            //서버로부터 조회수가 높은 게시글 5개를 조회해서 가져오기(ajax)
+            //tbody요소에 추가
+
+            getTopBoardList({
+                "order" : "count",
+                "limit" : 5
+            },drawBoardList);
+        }
+
+        function getTopBoardList(data, callback){
+            $.ajax({
+                url: "/api/board/topn",
+                data: data,
+                success: callback,
+                error: function (err){
+                    console.log("topn ajax실패")
+                }
+            })
+        }
+
+        function moveDetail(boardNo){
+            location.href = "/detail.bo?bno=" + boardNo;
+        }
+        
+        function drawBoardList(boardList) {
+            const boardBody = document.querySelector("#top5-board-list tbody");
+
+            let str = "";
+            for (const b of boardList) {
+                str += ("<tr onclick='moveDetail(" + b.boardNo + ")'>"
+                            + "<td>" + b.boardNo + "</td>"
+                            + "<td>" + b.boardTitle + "</td>"
+                            + "<td>" + b.boardWriter + "</td>"
+                            + "<td>" + b.count + "</td>"
+                            + "<td>" + b.createDate + "</td>"
+                            + "<td>" + (b.originName != null ? "★" : "") + "</td>" +
+                        "</tr>")
+            }
+
+            boardBody.innerHTML = str;
+        }
     </script>
-    <jsp:include page="common/footer.jsp" />
+    <jsp:include page="common/footer.jsp"/>
 </body>
 </html>

@@ -21,4 +21,6 @@ public interface BoardService {
     int insertReply(Reply reply);
     //댓글목록 가져오기
     ArrayList<Reply> selectReplyList(int boardNo);
+    //게시글 조회수 TOP5
+    ArrayList<Board> getBoardTopN(String order, int limit);
 }

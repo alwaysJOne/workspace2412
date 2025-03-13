@@ -24,4 +24,10 @@ public class APIBoardController {
     public ArrayList<Reply> getReplyList(int boardNo) {
         return boardService.selectReplyList(boardNo);
     }
+
+    //produces : 해당 타입으로 응답을 반환해 줘.
+    @GetMapping(value = "/topn", produces = "application/json; charset=UTF-8")
+    public ArrayList<Board> getBoardTopN(String order, int limit) {
+        return boardService.getBoardTopN(order, limit);
+    }
 }
