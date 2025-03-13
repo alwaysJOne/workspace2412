@@ -158,6 +158,9 @@
 
                 //data.refBno전달해서 댓글리스트를 가져오기
                 getReplyList({boardNo: data.refBno}, function (replyList){
+                    const countSpan = document.querySelector("#rcount");
+                    countSpan.innerHTML = replyList.length;
+
                     const contentBody = document.querySelector("#replyArea tbody");
                     contentBody.innerHTML = "";
 
