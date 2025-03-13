@@ -23,4 +23,6 @@ public interface BoardService {
     ArrayList<Reply> selectReplyList(int boardNo);
     //게시글 조회수 TOP5
     ArrayList<Board> getBoardTopN(String order, int limit);
+    //게시글 수정
+    int updateBoard(Board board);
 }

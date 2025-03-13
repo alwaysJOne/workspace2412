@@ -60,5 +60,10 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.getBoardTopN(rowBounds, order);
     }
 
+    @Override
+    public int updateBoard(Board board) {
+        return boardMapper.updateBoard(board);
+    }
+
 
 }

@@ -69,7 +69,7 @@
             </div>
             <br><br>
 
-            <form action="" method="POST" id="postForm">
+            <form action="" method="GET" id="postForm">
                 <input type="hidden" name="bno" value="${b.boardNo}">
             </form>
 
@@ -90,14 +90,6 @@
                     $(formEl).submit();
                 }
             </script>
-           
-            
-             <form action="" method="post" id="postForm">
-           		<input type="hidden" name=bno value="7">
-           		<input type="hidden" name="filePath" value="이미지.jpg">
-             </form>
-            
-          
  
             <table id="replyArea" class="table" align="center">
                 <thead>

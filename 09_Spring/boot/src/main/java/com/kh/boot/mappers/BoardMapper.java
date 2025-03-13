@@ -22,4 +22,6 @@ public interface BoardMapper {
     //댓글목록 가져오기
     ArrayList<Reply> selectReplyList(@Param("boardNo") int boardNo);
     ArrayList<Board> getBoardTopN(RowBounds rowBounds,@Param("order") String order);
+    //게시글 수정
+    int updateBoard(Board board);
 }

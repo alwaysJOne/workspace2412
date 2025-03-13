@@ -58,7 +58,7 @@
         function moveDetail(boardNo){
             location.href = "/detail.bo?bno=" + boardNo;
         }
-        
+
         function drawBoardList(boardList) {
             const boardBody = document.querySelector("#top5-board-list tbody");
 

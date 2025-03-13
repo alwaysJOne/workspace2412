@@ -116,4 +116,12 @@
             </otherwise>
         </choose>
     </select>
+    <update id="updateBoard">
+        UPDATE BOARD
+           SET BOARD_TITLE = #{boardTitle},
+               BOARD_CONTENT = #{boardContent},
+               ORIGIN_NAME = #{originName},
+               CHANGE_NAME = #{changeName}
+         WHERE BOARD_NO = #{boardNo}
+    </update>
 </mapper>
