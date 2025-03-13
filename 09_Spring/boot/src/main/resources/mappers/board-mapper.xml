@@ -15,6 +15,12 @@
         <result column="CREATE_DATE" property="createDate"/>
         <result column="STATUS" property="status"/>
     </resultMap>
+    <resultMap id="replyResult" type="Reply">
+        <result column="REPLY_NO" property="replyNo"/>
+        <result column="REPLY_CONTENT" property="replyContent"/>
+        <result column="REPLY_WRITER" property="replyWriter"/>
+        <result column="CREATE_DATE" property="createDate"/>
+    </resultMap>
     <select id="selectBoardCount" resultType="_int">
         SELECT COUNT(*)
           FROM BOARD
@@ -82,4 +88,14 @@
             #{replyWriter}
         )
     </insert>
+    <select id="selectReply" resultMap="replyResult">
+        SELECT REPLY_NO,
+               REPLY_CONTENT,
+               REPLY_WRITER,
+               TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+          FROM REPLY
+         WHERE STATUS = 'Y'
+           AND REF_BNO = #{boardNo}
+         ORDER BY REPLY_NO DESC
+    </select>
 </mapper>

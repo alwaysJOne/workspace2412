@@ -4,10 +4,9 @@ import com.kh.boot.domain.vo.Board;
 import com.kh.boot.domain.vo.Reply;
 import com.kh.boot.service.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,5 +18,10 @@ public class APIBoardController {
     @PostMapping("/reply")
     public String insertReply(Reply r) {
         return boardService.insertReply(r) > 0 ? "success" : "fail";
+    }
+
+    @GetMapping("/reply")
+    public ArrayList<Reply> getReplyList(int boardNo) {
+        return boardService.selectReplyList(boardNo);
     }
 }

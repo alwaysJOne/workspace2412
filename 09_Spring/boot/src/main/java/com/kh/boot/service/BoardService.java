@@ -19,4 +19,6 @@ public interface BoardService {
     int increaseCount(int boardNo);
     //댓글 추가
     int insertReply(Reply reply);
+    //댓글목록 가져오기
+    ArrayList<Reply> selectReplyList(int boardNo);
 }

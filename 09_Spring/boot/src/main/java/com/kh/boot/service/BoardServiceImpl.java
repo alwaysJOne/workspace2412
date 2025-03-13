@@ -49,5 +49,10 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.insertReply(reply);
     }
 
+    @Override
+    public ArrayList<Reply> selectReplyList(int boardNo) {
+        return boardMapper.selectReplyList(boardNo);
+    }
+
 
 }

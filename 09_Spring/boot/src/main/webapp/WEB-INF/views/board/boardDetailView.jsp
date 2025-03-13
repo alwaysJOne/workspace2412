@@ -151,6 +151,24 @@
                 //TODO 1 댓글목록 가져와서 그리기
                 //data를 이용해서 댓글목록을 불러오고
                 //화면에 맞게 그려주기
+                console.log(data)
+                //data.refBno전달해서 댓글리스트를 가져오기
+                getReplyList({boardNo: data.refBno}, function (replyList){
+
+                })
+            }
+
+            function getReplyList(data, callback){
+                $.ajax({
+                    url: "/api/board/reply",
+                    type: "get",
+                    data: data,
+                    success: function (res){
+                        callback(res)
+                    }, error: function (){
+                        console.log("reply insert ajax 요청 실패")
+                    }
+                })
             }
 
             function insertReply(data, callback){
@@ -159,9 +177,13 @@
                     type: "post",
                     data: data,
                     success: function (res){
-                        callback(data)
+                        if(res === "success") {
+                            callback(data)
+                        } else {
+                            console.log("reply insert 실패")
+                        }
                     }, error: function (){
-
+                        console.log("reply insert ajax 요청 실패")
                     }
                 })
             }

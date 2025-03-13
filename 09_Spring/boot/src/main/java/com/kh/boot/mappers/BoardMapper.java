@@ -19,4 +19,6 @@ public interface BoardMapper {
     Board selectBoard(@Param("bno") int boardNo);
     //댓글추가
     int insertReply(Reply reply);
+    //댓글목록 가져오기
+    ArrayList<Reply> selectReplyList(@Param("boardNo") int boardNo);
 }
