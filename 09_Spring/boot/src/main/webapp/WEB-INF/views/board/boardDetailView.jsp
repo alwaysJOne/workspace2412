@@ -11,7 +11,7 @@
 	table {width:100%;}
 </style> 
 </head>
-<body>
+<body onload="init()">
 	<jsp:include page="../common/header.jsp" />
 
     <div class="content">
@@ -134,6 +134,10 @@
         <br><br>
 
         <script>
+            function init(){
+                drawReplyList({refBno : ${b.boardNo}});
+            }
+
             function addReply(){
                 //댓글내용, 작성자, 게시글번호
                 const boardNo = ${b.boardNo};
@@ -151,10 +155,28 @@
                 //TODO 1 댓글목록 가져와서 그리기
                 //data를 이용해서 댓글목록을 불러오고
                 //화면에 맞게 그려주기
-                console.log(data)
+
                 //data.refBno전달해서 댓글리스트를 가져오기
                 getReplyList({boardNo: data.refBno}, function (replyList){
+                    const contentBody = document.querySelector("#replyArea tbody");
+                    contentBody.innerHTML = "";
 
+                    for(const reply of replyList){
+                        const replyTr = document.createElement("tr"); //<tr></tr>
+                        contentBody.appendChild(replyTr);
+
+                        const userIdTd = document.createElement('td');
+                        userIdTd.innerText = reply.user_id;
+                        replyTr.appendChild(userIdTd);
+
+                        const contentTd = document.createElement('td');
+                        contentTd.innerText = reply.reply_content;
+                        replyTr.appendChild(contentTd);
+
+                        const createDateTd = document.createElement('td');
+                        createDateTd.innerText = reply.create_date;
+                        replyTr.appendChild(createDateTd);
+                    }
                 })
             }
 
