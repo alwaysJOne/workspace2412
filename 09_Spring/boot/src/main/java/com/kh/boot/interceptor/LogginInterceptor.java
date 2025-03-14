@@ -10,6 +10,15 @@ import org.springframework.web.servlet.HandlerInterceptor;
     Intercepter
     - Spring MVC 컨트롤러 실행 전후에 동작
     - DispatcherServlet 이후 단계에서 실행 됨
+
+    장점
+    - Spring MVC컨트롤러 실행 전후 동작하므로 특정URL단위로 비즈니스 로직을 분석할 수 있음
+
+    단점
+    - 요청 본문(Body)를 직접 읽고 조작하기 어려움
+
+    보톤 api요청별로 어떤 작업을 처리학기위해서 사용
+    인증/권한 체크
  */
 
 @Slf4j

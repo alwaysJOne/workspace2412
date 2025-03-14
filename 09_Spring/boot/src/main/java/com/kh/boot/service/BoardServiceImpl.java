@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -54,6 +55,7 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.selectReplyList(boardNo);
     }
 
+    @Transactional
     @Override
     public ArrayList<Board> getBoardTopN(String order, int limit) {
         RowBounds rowBounds = new RowBounds(0, limit);
