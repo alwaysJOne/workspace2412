@@ -48,16 +48,42 @@
       function getAirStatus(){
         //지역명을 포함해서 데이터 요청
         const location = document.querySelector("#location").value;
-        getAirInfo({
-          location: location
+        <%--const serviceKey = "${airServiceKey}";--%>
+        <%--getAirInfo({--%>
+        <%--  location: location,--%>
+        <%--  serviceKey: serviceKey--%>
+        <%--}, drawAirInfo);--%>
+
+        getAirAPI({
+          location: location,
+          count: 100
         }, drawAirInfo);
       }
 
+      //서버를 통해 요청
+      function getAirAPI(data, callback){
+        $.ajax({
+          url: "/api/air",
+          data: data,
+          dataType: "json",
+          success: function (result){
+            console.log("API 응답 : ", result);
+            callback(result);
+          },
+          error: function (err){
+            console.log("air ajax 에러발생 : ", err);
+          }
+        })
+      }
+
+      //클라이언트에서 직접 요청
       function getAirInfo(data, callback){
         $.ajax({
           url: "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty",
           data: {
-            serviceKey: "8h1yVur/0C1jzB+QnTVFLYlJk9Gfckktb8MFl25lzXaujB8wU9qgmg5abLreCLJnE2J/OK4DW5bqq0p4FPIEqw==",
+            //api-key는 외부로 노출시 api요청이 남용될 가능성이 있으므로 server에서 랜더링시 넣어주도록 하자
+            // serviceKey: "8h1yVur/0C1jzB+QnTVFLYlJk9Gfckktb8MFl25lzXaujB8wU9qgmg5abLreCLJnE2J/OK4DW5bqq0p4FPIEqw==",
+            serviceKey: data.serviceKey,
             returnType: "json",
             sidoName: data.location,
             numOfRows: 100
