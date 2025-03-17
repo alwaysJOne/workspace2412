@@ -30,6 +30,7 @@ public class APIAirController {
         //요청시 전달값에 한글이 있다면 인코딩 작업 후 전송하기
         url += "?sidoName=" + URLEncoder.encode(location, "UTF-8");
         url += "&numOfRows=" + count;
+        url += "&returnType=json";
         url += "&serviceKey=" + airApiKey;
 
         log.info("url {}", url);
