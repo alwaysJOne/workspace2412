@@ -1,5 +1,6 @@
 package com.kh.boot.RESTController;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/air")
 public class APIAirController {
@@ -29,6 +31,8 @@ public class APIAirController {
         url += "?sidoName=" + URLEncoder.encode(location, "UTF-8");
         url += "&numOfRows=" + count;
         url += "&serviceKey=" + airApiKey;
+
+        log.info("url {}", url);
 
         //1. 요청하고자하는 url을 전달하면서 java.net.URL객체 생성
         URL requestURL = new URL(url);
@@ -51,6 +55,7 @@ public class APIAirController {
         br.close();
         urlConnection.disconnect();
 
+        log.info("result {}", result);
         return result;
     }
 }
