@@ -1,10 +1,26 @@
 package com.kh.boot.controller;
 
 import com.kh.boot.domain.vo.Member;
+import com.kh.boot.service.GoogleAPIService;
 import com.kh.boot.service.MemberService;
 import com.kh.boot.service.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import javax.net.ssl.HttpsURLConnection;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,9 +29,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
 
+@Slf4j
 @Controller
 public class MemberController {
 
@@ -46,12 +64,14 @@ public class MemberController {
      */
 
     private final MemberService memberService;
+    private final GoogleAPIService googleAPIService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public MemberController(MemberService memberService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public MemberController(MemberService memberService, BCryptPasswordEncoder bCryptPasswordEncoder, GoogleAPIService googleAPIService) {
         this.memberService = memberService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.googleAPIService = googleAPIService;
     }
 
     /*
@@ -165,6 +185,27 @@ public class MemberController {
 
         return mv;
     }
+
+    /*
+   3. ModelAndView객체를 이용한 방법 -> 데이터를 담고 리턴형식까지 지정할 수 있음
+    */
+    @GetMapping("login.go")
+    public ModelAndView loginByGoogle(String code, ModelAndView mv, HttpSession session) throws IOException {
+        String memberId = googleAPIService.requestMemberInfo(code);
+
+        Member loginMember = memberService.loginMember(memberId);
+
+        if(loginMember == null){
+            session.setAttribute("alertMsg", "회원가입 후 이용 가능합니다.");
+            mv.setViewName("redirect:/enrollForm.me?memberId=" + memberId);
+        } else {
+            session.setAttribute("loginUser", loginMember);
+            mv.setViewName("redirect:/");
+        }
+
+        return mv;
+    }
+
 
     @GetMapping("logout.me")
     public String logout(HttpSession session) {

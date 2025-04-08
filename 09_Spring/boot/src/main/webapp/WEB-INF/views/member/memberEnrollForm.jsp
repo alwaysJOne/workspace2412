@@ -67,6 +67,19 @@
     <jsp:include page="../common/footer.jsp" />
 
     <script>
+        window.onload = function (){
+          // 현재 URL의 쿼리 파라미터를 가져옴
+          const params = new URLSearchParams(window.location.search);
+
+          // memberId 파라미터 값 가져오기
+          const memberId = params.get('memberId');
+          if(memberId != null){
+            let idInput = document.querySelector("#enrollForm #userId");
+            idInput.value = memberId;
+            idCheck(idInput);
+          }
+        }
+
         let eventFlag;
         function idCheck(idInput){
             const id = idInput.value;
