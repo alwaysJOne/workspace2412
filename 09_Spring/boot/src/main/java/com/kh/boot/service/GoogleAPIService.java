@@ -2,9 +2,23 @@ package com.kh.boot.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kh.boot.domain.vo.Member;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.auth.http.HttpCredentialsAdapter;
+import com.google.auth.oauth2.AccessToken;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -27,18 +41,28 @@ public class GoogleAPIService {
     private String googleClientSecret;
 
     // 구글 OAuth2 인증 코드로 토큰 요청을 처리하는 별도의 메서드
-    public String requestMemberInfo(String code) throws IOException {
+    public Map<String, String> requestMemberInfo(String code) throws IOException {
         String tokenResponse = requestGoogleToken(code);
 
-        // 액세스 토큰 추출
-        String accessToken = extractAccessToken(tokenResponse);
+        String accessToken = null;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(tokenResponse);
+            // 액세스 토큰 추출
+            accessToken = jsonNode.get("access_token").asText();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         // 액세스 토큰을 사용하여 사용자 정보 가져오기
         String userInfo = getUserInfo(accessToken);
 
         String memberId = extractMemberId(userInfo);
 
-        return memberId;
+        Map<String, String> result = new HashMap<>();
+        result.put("memberId", memberId);
+        result.put("accessToken", accessToken);
+        return result;
     }
 
     private String extractMemberId(String userInfo) {
@@ -56,19 +80,6 @@ public class GoogleAPIService {
             // UserInfo 객체 생성 및 반환
             return email;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    // 토큰 응답에서 access_token을 추출하는 메서드
-    private String extractAccessToken(String tokenResponse) {
-        // tokenResponse는 JSON 형식이므로 이를 파싱하여 access_token을 추출합니다.
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            JsonNode jsonNode = mapper.readTree(tokenResponse);
-            return jsonNode.get("access_token").asText(); // access_token 추출
-        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -95,9 +106,10 @@ public class GoogleAPIService {
 
         // 구글 토큰 엔드포인트로 POST 요청 보내기
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+        String req = response.getBody();
 
         // 응답 결과 반환
-        return response.getBody();
+        return req;
     }
 
     // 구글 사용자 정보를 가져오는 메서드
@@ -118,5 +130,37 @@ public class GoogleAPIService {
 
         // 응답 본문 반환
         return response.getBody();
+    }
+
+    public List<File> getGoogleForms(String accessToken) throws IOException, GeneralSecurityException {
+        FileList result = getDriveService(accessToken).files().list()
+                                      .setQ("mimeType='application/vnd.google-apps.form'")
+                                      .setSpaces("drive")
+                                      .setFields("files(id, name, createdTime)")
+                                      .execute();
+
+        System.out.println(result);
+
+        return result.getFiles();
+    }
+
+    // access_token을 사용하여 GoogleDriveService 초기화
+    private Drive getDriveService(String accessToken) throws IOException, GeneralSecurityException {
+        final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        final JacksonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
+        // access_token으로 GoogleCredentials 생성
+        GoogleCredential credential = new GoogleCredential.Builder()
+                .setTransport(httpTransport)
+                .setJsonFactory(jsonFactory)
+                .setClientSecrets(googleClientId, googleClientSecret)  // ← 반드시 clientId, clientSecret 필요
+                .build()
+                .setAccessToken(accessToken);
+
+        Drive driveService = new Drive.Builder(httpTransport, jsonFactory, credential)
+                .setApplicationName("spring-test-app")
+                .build();
+
+        return driveService;
     }
 }

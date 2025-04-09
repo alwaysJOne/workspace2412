@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,7 +192,8 @@ public class MemberController {
     */
     @GetMapping("login.go")
     public ModelAndView loginByGoogle(String code, ModelAndView mv, HttpSession session) throws IOException {
-        String memberId = googleAPIService.requestMemberInfo(code);
+        Map<String, String> result = googleAPIService.requestMemberInfo(code);
+        String memberId = result.get("memberId");
 
         Member loginMember = memberService.loginMember(memberId);
 
@@ -200,6 +202,7 @@ public class MemberController {
             mv.setViewName("redirect:/enrollForm.me?memberId=" + memberId);
         } else {
             session.setAttribute("loginUser", loginMember);
+            session.setAttribute("googleAccessToken", result.get("accessToken"));
             mv.setViewName("redirect:/");
         }
 

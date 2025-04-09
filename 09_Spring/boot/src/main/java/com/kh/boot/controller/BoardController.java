@@ -40,8 +40,6 @@ public class BoardController {
 
     @PostMapping("insert.bo")
     public String insertBoard(@ModelAttribute Board board, MultipartFile upfile, HttpSession session, Model model) {
-        System.out.println(board);
-        System.out.println(upfile);
 
         if(!upfile.getOriginalFilename().equals("")){
             String changeName = Template.saveFile(upfile, session, "/resources/uploadfile/");
