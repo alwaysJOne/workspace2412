@@ -1,6 +1,7 @@
 package com.kh.boot.controller;
 
 import com.kh.boot.domain.vo.Member;
+import com.kh.boot.service.GoogleAPiService;
 import com.kh.boot.service.MemberService;
 import com.kh.boot.service.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -47,11 +48,13 @@ public class MemberController {
 
     private final MemberService memberService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final GoogleAPiService googleAPiService;
 
     @Autowired
-    public MemberController(MemberService memberService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public MemberController(MemberService memberService, BCryptPasswordEncoder bCryptPasswordEncoder, GoogleAPiService googleAPiService) {
         this.memberService = memberService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.googleAPiService = googleAPiService;
     }
 
     /*
@@ -163,6 +166,23 @@ public class MemberController {
             mv.setViewName("redirect:/");
         }
 
+        return mv;
+    }
+
+    @GetMapping("login.go")
+    public ModelAndView loginGoogle(String code, ModelAndView mv, HttpSession session) {
+        System.out.println("code : " + code);
+        String memberId = googleAPiService.requestGoogleEmail(code);
+
+        Member loginMember = memberService.loginMember(memberId);
+
+        if(loginMember == null){
+            session.setAttribute("alertMsg", "회원가입 후 이용이 가능합니다.");
+            mv.setViewName("redirect:/enrollForm.me?memberId=" + memberId);
+        } else {
+            session.setAttribute("loginUser", loginMember);
+            mv.setViewName("redirect:/");
+        }
         return mv;
     }
 
