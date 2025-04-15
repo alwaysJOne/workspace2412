@@ -36,7 +36,7 @@
     <br>
     <!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
     <c:if test="${not empty loginUser}">
-      <a class="btn btn-secondary" style="float:right;" href="">설문등록</a>
+      <a class="btn btn-secondary" style="float:right;" href="enrollForm.fo">설문등록</a>
       <br>
     </c:if>
 

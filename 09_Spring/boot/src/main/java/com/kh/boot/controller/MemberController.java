@@ -5,6 +5,7 @@ import com.kh.boot.service.GoogleAPiService;
 import com.kh.boot.service.MemberService;
 import com.kh.boot.service.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -172,7 +173,8 @@ public class MemberController {
     @GetMapping("login.go")
     public ModelAndView loginGoogle(String code, ModelAndView mv, HttpSession session) {
         System.out.println("code : " + code);
-        String memberId = googleAPiService.requestGoogleEmail(code);
+        Map<String, String> userInfo = googleAPiService.requestGoogleUserInfo(code);
+        String memberId = userInfo.get("email");
 
         Member loginMember = memberService.loginMember(memberId);
 
@@ -181,6 +183,7 @@ public class MemberController {
             mv.setViewName("redirect:/enrollForm.me?memberId=" + memberId);
         } else {
             session.setAttribute("loginUser", loginMember);
+            session.setAttribute("access_token", userInfo.get("access_token"));
             mv.setViewName("redirect:/");
         }
         return mv;

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.boot.domain.vo.Member;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,9 +28,9 @@ public class GoogleAPiService {
     @Value("${google.login-api.client-secret}")
     private String gooleLoginApiClientSecret;
 
-    public String requestGoogleEmail(String code) {
+    public Map<String, String> requestGoogleUserInfo(String code) {
         String tokenResponse = requestGetGoogleToken(code);
-        System.out.println("tokenResponse : " + tokenResponse);
+
 
         String accessToekn = extractAccessToken(tokenResponse);
 
@@ -36,7 +38,10 @@ public class GoogleAPiService {
 
         String email = extractUserEmail(userInfoResponse);
 
-        return email;
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("email", email);
+        result.put("access_token", accessToekn);
+        return result;
     }
 
     private String getUserInfo(String accessToken) {

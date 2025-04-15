@@ -10,4 +10,10 @@ public class FormController {
     public String selectFormList() {
         return "form/formListView";
     }
+
+    @GetMapping("/enrollForm.fo")
+    public String selectEnrollForm() {
+
+        return "form/formEnrollForm";
+    }
 }
