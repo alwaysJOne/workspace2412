@@ -34,17 +34,7 @@
                        </tr>
                    </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <input type="radio">
-                            </td>
-                            <td colspan="2">
-                                점심메뉴 설문
-                            </td>
-                            <td>
-                                2025년 4월 15일
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
                 <br>
@@ -63,15 +53,55 @@
 
     <script>
         window.onload = function (){
+          //구글로부터 form목록을 불러오기위해 우선 accessToken정보가 있는 우리 서버로 요청을 보낸다.
           $.ajax({
             url: "/api/google/forms",
             dataType: "json",
             success: function (result){
-              console.log(result);
+              drawFormTbody(result);
             }, error: function () {
                 console.log("form ajax 요청 실패");
             }
           })
+        }
+
+
+        function drawFormTbody(list) {
+
+          const tableBody = document.querySelector("#enrollForm tbody");
+          for(let i in list) {
+            const form = list[i];
+
+            const row = document.createElement("tr");
+
+            const radioCell = document.createElement("td");
+            row.appendChild(radioCell);
+
+            const radioButton = document.createElement("input");
+            radioButton.type = "radio";
+            radioButton.name = "formId";
+            radioButton.value = form.id;
+            radioCell.appendChild(radioButton);
+            if(i == 0){
+              radioButton.checked = true;
+            }
+
+            const titleCell = document.createElement("td");
+            titleCell.setAttribute("colspan", "2");
+            titleCell.innerHTML = form.name;
+            row.appendChild(titleCell);
+
+            const createdTimeCell = document.createElement("td");
+            createdTimeCell.innerHTML = formatDate(form.createdTime.value);
+            row.appendChild(createdTimeCell);
+
+            tableBody.appendChild(row);
+          }
+        }
+
+        function formatDate(timestamp){
+            const date = new Date(timestamp);
+            return date.getFullYear() + "년 " + (date.getMonth() + 1) + "월 " + date.getDate() + "일";
         }
     </script>
 </body>
