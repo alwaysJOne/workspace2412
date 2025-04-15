@@ -281,7 +281,7 @@
                 + res.clientId
                 + "&redirect_uri=" + res.redirectUrl
                 + "&response_type=code"
-                + "&scope=email profile";
+                + "&scope=email profile https://www.googleapis.com/auth/drive";
 
                 location.href = url;
 

@@ -26,11 +26,11 @@
                    <thead>
                        <tr>
                            <th><label for="title">제목</label></th>
-                           <td><input type="text" id="title" class="form-control" name="formTitle" required></td>
+                           <td colspan="3"><input type="text" id="title" class="form-control" name="formTitle" required></td>
                        </tr>
                        <tr>
                            <th><label for="writer">작성자</label></th>
-                           <td><input type="text" id="writer" class="form-control" value="${loginUser.userId }" name="boardWriter" readonly></td>
+                           <td colspan="3"><input type="text" id="writer" class="form-control" value="${loginUser.userId }" name="boardWriter" readonly></td>
                        </tr>
                    </thead>
                     <tbody>
@@ -62,7 +62,17 @@
     <jsp:include page="../common/footer.jsp" />
 
     <script>
-        window.onload
+        window.onload = function (){
+          $.ajax({
+            url: "/api/google/forms",
+            dataType: "json",
+            success: function (result){
+              console.log(result);
+            }, error: function () {
+                console.log("form ajax 요청 실패");
+            }
+          })
+        }
     </script>
 </body>
 </html>

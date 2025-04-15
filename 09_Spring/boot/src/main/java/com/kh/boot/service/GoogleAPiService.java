@@ -1,10 +1,23 @@
 package com.kh.boot.service;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
+import com.kh.boot.domain.vo.Form;
 import com.kh.boot.domain.vo.Member;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.sql.Driver;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -112,5 +125,52 @@ public class GoogleAPiService {
 
         //응답 결과 반환
         return responseEntity.getBody();
+    }
+
+    public List<File> getGoogleForms(String accessToken) {
+        Drive driveService = getDriveService(accessToken);
+
+        FileList result = null;
+        try {
+            result = driveService.files().list()
+                    .setQ("mimeType='application/vnd.google-apps.form'")             //검색필터
+                    .setSpaces("drive")
+                    .setFields("files(id, name, createdTime)")
+                    .execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result.getFiles();
+    }
+
+    //accesstoken을 사용해서 google drive service초기화
+    private Drive getDriveService(String accessToken) {
+        Drive driveService = null;
+        try {
+            //googleApi 요청을 보낼 때 사용하는 안전한 HTTP클라이언트 설정
+            final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            //응답 json을 직렬화/역직렬화하기위한 파셔
+            final JacksonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
+
+            //구글 인증정보를 담는 객체 -> access_token을 통해서 직접 인증
+            GoogleCredential credential = new GoogleCredential.Builder()
+                    .setTransport(httpTransport)
+                    .setJsonFactory(jacksonFactory)
+                    .setClientSecrets(googleLoginApiClientId, gooleLoginApiClientSecret)
+                    .build()
+                    .setAccessToken(accessToken);
+
+            //driveService를 가져오면
+            driveService = new Drive.Builder(httpTransport, jacksonFactory, credential)
+                    .setApplicationName("spring-test-app")
+                    .build();
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return driveService;
     }
 }
