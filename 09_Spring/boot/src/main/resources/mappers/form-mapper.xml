@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.boot.mappers.FormMapper">
+    <resultMap id="formResult" type="Form">
+        <result column="FORM_NO" property="formNo"/>
+        <result column="FORM_TITLE" property="formTitle"/>
+        <result column="FORM_WRITER" property="formWriter"/>
+        <result column="FORM_RESPONSE_URL" property="formResponseUrl"/>
+        <result column="FORM_DASHBOARD_URL" property="formDashBoardUrl"/>
+        <result column="CREATE_DATE" property="createDate"/>
+    </resultMap>
+    <select id="selectFormList" resultMap="formResult">
+        SELECT  FORM_NO,
+            FORM_TITLE,
+            FORM_WRITER,
+            FORM_RESPONSE_URL,
+            FORM_DASHBOARD_URL,
+            TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+        FROM FORM
+        WHERE STATUS = 'Y'
+        ORDER BY FORM_NO DESC
+    </select>
+    <insert id="insertForm">
+        INSERT
+        INTO FORM(
+            FORM_NO,
+            FORM_TITLE,
+            FORM_WRITER,
+            FORM_RESPONSE_URL,
+            FORM_DASHBOARD_URL
+        ) VALUES (
+            SEQ_FNO.NEXTVAL,
+            #{formTitle},
+            #{formWriter},
+            #{formResponseUrl},
+            #{formDashBoardUrl}
+        )
+    </insert>
+
+</mapper>

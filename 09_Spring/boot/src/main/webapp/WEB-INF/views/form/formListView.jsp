@@ -51,7 +51,21 @@
       </tr>
       </thead>
       <tbody>
-
+      <c:forEach var="f" items="${list}">
+        <c:choose>
+          <c:when test="${loginUser.userId != f.formWriter}">
+            <tr onclick="window.open('${f.formResponseUrl}', '_blank')">
+          </c:when>
+          <c:otherwise>
+            <tr onclick="window.open('${f.formDashBoardUrl}', '_blank')">
+          </c:otherwise>
+        </c:choose>
+          <td>${f.formNo}</td>
+          <td>${f.formTitle}</td>
+          <td>${f.formWriter}</td>
+          <td>${f.createDate}</td>
+        </tr>
+      </c:forEach>
       </tbody>
     </table>
 

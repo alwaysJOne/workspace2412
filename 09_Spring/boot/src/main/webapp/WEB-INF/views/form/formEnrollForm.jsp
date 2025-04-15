@@ -30,7 +30,7 @@
                        </tr>
                        <tr>
                            <th><label for="writer">작성자</label></th>
-                           <td colspan="3"><input type="text" id="writer" class="form-control" value="${loginUser.userId }" name="boardWriter" readonly></td>
+                           <td colspan="3"><input type="text" id="writer" class="form-control" value="${loginUser.userId }" name="formWriter" readonly></td>
                        </tr>
                    </thead>
                     <tbody>
