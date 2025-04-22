@@ -18,8 +18,8 @@ const TodoContent = styled.div`
 `
 
 const TodoText = styled.span`
-    text-decoration: none; //line-through; 
-    color: inherit; //#118534
+    text-decoration: ${props => props.completed ? 'line-through' : 'none'}; 
+    color: ${props => props.completed ? 'inherit' : '#118534'};
 `
 
 const Checkbox = styled.input`
@@ -39,19 +39,21 @@ const DeleteButton = styled.button`
     }
 `
 
-const TodoItem = ({todo}) => {
+const TodoItem = ({todo, onToggle, onDelete}) => {
+
   return (
     <TodoItemContainer>
         <TodoContent>
             <Checkbox 
                 type="checkbox"
                 checked={todo.completed}
+                onChange={() => onToggle(todo.id)}
              />
-             <TodoText>
+             <TodoText completed = {todo.completed}>
                 {todo.text}
              </TodoText>
         </TodoContent>
-        <DeleteButton>
+        <DeleteButton onClick={() => onDelete(todo.id)}>
             삭제
         </DeleteButton>
     </TodoItemContainer>

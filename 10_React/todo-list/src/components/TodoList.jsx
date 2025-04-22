@@ -75,6 +75,18 @@ const TodoList = () => {
         }
     }
 
+    const onToggle = (id) =>{
+        //배열의 갯수 -> 유지
+        //상태만 변경 -> 특정조건으로
+        setTodos(todos.map(todo => 
+            todo.id === id ? {...todo, completed: !todo.completed} : todo
+        ));
+    }
+
+    const onDelete = (id) => {
+        setTodos(todos.filter(todo => todo.id !== id));
+    }
+
     return (
         <Container>
             <Title>Todo List</Title>
@@ -95,6 +107,8 @@ const TodoList = () => {
                     <TodoItem
                       key={todo.id}
                       todo={todo}
+                      onToggle = {onToggle}
+                      onDelete = {onDelete}
                     />
                 )}
             </TodoListContainer>
