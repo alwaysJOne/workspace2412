@@ -28,7 +28,6 @@ const UseRefScroll = () => {
         scrollRef.current[sectionKey]?.scrollIntoView({behavior: "smooth"});
     }
 
-
     return (
         <>
             <Nav>
