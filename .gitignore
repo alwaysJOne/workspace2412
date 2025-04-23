@@ -183,3 +183,4 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,visualstudiocode,java,maven,windows,gradle
+10_React/todo-list/node_modules/
