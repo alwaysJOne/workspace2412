@@ -22,6 +22,24 @@ const UseEffectTest = () => {
         console.log("빈 배열을 의존성으로 설정했을 때 : 컴포넌트가 마운트 될 때 1번만 실행")
     }, [])
 
+    //3. 의존성배열에 name을 넣었을 때
+    useEffect(() => {
+        console.log("의존성배열에 name을 넣었을 때 : name이 변경될 때만 실행")
+    }, [name])
+
+    //4. 클린업 함수(컴포넌트가 사라질 때 실행하는 함수) : name이 변경될 때 이전 값 활용하고 싶을 때(언마운트 시 실행됨)
+    useEffect(() => {
+      return () => {
+        console.log(`컴포넌트가 사라질때 실행 : ${name}`);
+      }  
+    },[name]);
+
+    useEffect(() => {
+        return () => {
+          console.log(`컴포넌트가 완전히 사라질 때 : ${name}`);
+        }  
+    },[]);
+
     return (
         <div>
             <h2>useEffect 테스트</h2>
