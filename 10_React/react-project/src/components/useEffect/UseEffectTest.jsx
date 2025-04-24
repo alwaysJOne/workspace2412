@@ -34,6 +34,7 @@ const UseEffectTest = () => {
       }  
     },[name]);
 
+    //5. 컴포넌트가 완전히 사라질 때 실행하는 함수 
     useEffect(() => {
         return () => {
           console.log(`컴포넌트가 완전히 사라질 때 : ${name}`);
