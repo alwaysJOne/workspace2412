@@ -72,7 +72,7 @@ function UserDetail() {
     if (!user) {
       navigate('/');
     }
-  }, [user, navigate]);
+  }, [user]);
 
   const handleDelete = () => {
     if (window.confirm('정말로 이 사용자를 삭제하시겠습니까?')) {
