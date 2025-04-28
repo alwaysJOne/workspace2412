@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import useTodoStore from '../store/useTodoStore'
 
@@ -58,17 +58,42 @@ const FilterButton = styled.button`
 `
 
 const TodoList = () => {
-    const { todos, toggleTodo, deleteTodo } = useTodoStore();
+    const { getFilteredTodos,filter, toggleTodo, deleteTodo, setFilter } = useTodoStore();
+    // const [filter, setFilter] = useState("all");
+
+    // const filterTodos = todos.filter(todo => {
+    //     switch(filter){
+    //         case "active":
+    //             return !todo.completed;
+    //         case "completed":
+    //             return todo.completed;
+    //         default:
+    //             return true;
+    //     }
+    // })
+
+    const todos = getFilteredTodos();
+
+
     return (
         <ListContainer>
             <FilterContainer>
-                <FilterButton>
+                <FilterButton
+                    active={filter === "all"}
+                    onClick={() => setFilter("all")}
+                >
                     전체
                 </FilterButton>
-                <FilterButton>
+                <FilterButton
+                    active={filter === "active"}
+                    onClick={() => setFilter("active")}
+                >
                     진행중
                 </FilterButton>
-                <FilterButton>
+                <FilterButton
+                    active={filter === "completed"}
+                    onClick={() => setFilter("completed")}
+                >
                     완료
                 </FilterButton>
             </FilterContainer>
