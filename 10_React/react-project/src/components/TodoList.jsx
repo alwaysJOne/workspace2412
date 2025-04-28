@@ -74,7 +74,6 @@ const TodoList = () => {
 
     const todos = getFilteredTodos();
 
-
     return (
         <ListContainer>
             <FilterContainer>
