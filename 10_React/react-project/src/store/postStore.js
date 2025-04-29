@@ -5,7 +5,6 @@ const usePostStore = create((set) => ({
     posts: [],
     loading: false,
     error: null,
-    deleteLoading: false,
     
     getPosts: async () => {
         set({ loading: true, error: null });
@@ -19,17 +18,17 @@ const usePostStore = create((set) => ({
         }
     },
     deletePost: async (id) => {
-        set({ deleteLoading: true, error: null });
+        set({ loading: true, error: null });
 
         try{
             await axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`);
         
             set((state) => ({
                 posts: state.posts.filter(post => post.id !== id),
-                deleteLoading: false,
+                loading: false,
             }));
         } catch(error){
-            set({ deleteLoading: false, error: error.message });
+            set({ loading: false, error: error.message });
         }
     }
 }));
