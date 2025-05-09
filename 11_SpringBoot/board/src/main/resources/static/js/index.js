@@ -3,9 +3,9 @@ function init(){
 }
 
 function initBoard(){
-    const path = window.location.pathname;
-    const pathParts = path.split('/');
-    const boardId = pathParts[pathParts.length - 1];
+    const urlParams = new URLSearchParams(window.location.search);
+    const boardId = urlParams.get('board_id');
+    console.log(boardId)
 
     getBoard(boardId, function(board){
         document.querySelector('#title').value = board.title;
@@ -60,7 +60,7 @@ function drawBoardList(boardList){
     if (boardList && boardList.length > 0) {
         boardBody.innerHTML = "";
         for(let board of boardList){
-            boardBody.innerHTML += `<tr onclick="location.href='/boardDetail/${board.board_id}'">
+            boardBody.innerHTML += `<tr onclick="location.href='/boardDetail.html?board_id=${board.board_id}'">
                                         <td>${board.board_id}</td>
                                         <td>${board.title}</td>
                                         <td>${board.member_email}</td>
