@@ -24,4 +24,24 @@ public class BoardRequest {
                         .build();
         }
     }
+
+    @Getter
+    @Setter
+    public static class UpdateDTO {
+        private Long boardId;
+        private String user_id;
+        private String title;
+        private String contents;
+        private String origin_file;
+
+        public Board toEntity() {
+            return Board.builder()
+                        .boardId(boardId)
+                        .memberEmail(user_id)
+                        .title(title)
+                        .contents(contents)
+                        .fileName(origin_file)
+                        .build();
+        }
+    }
 }

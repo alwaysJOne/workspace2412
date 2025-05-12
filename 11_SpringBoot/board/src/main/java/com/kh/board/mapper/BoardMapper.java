@@ -11,4 +11,5 @@ public interface BoardMapper {
     Board findOne(@Param("boardId") Long boardId);
     int save(Board board);
     int delete(@Param("boardId") Long boardId);
+    int update(Board board);
 }

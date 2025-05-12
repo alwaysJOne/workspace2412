@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,5 +78,22 @@ public class BoardController {
     public ResponseEntity<String> deleteBoard(@PathVariable Long boardId) {
         int result = boardService.delete(boardId);
         return new ResponseEntity<>(result + "개 게시글 삭제완료", HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<Long> updateBoard(BoardRequest.UpdateDTO request, MultipartFile upfile) throws IOException {
+
+        if (upfile != null && !upfile.isEmpty()) {
+            File file = new File("C:\\workspace\\11_SpringBoot\\board\\src\\main\\resources\\uploads", upfile.getOriginalFilename());
+            upfile.transferTo(file);
+
+            request.setOrigin_file("/uploads/" + upfile.getOriginalFilename());
+        }
+
+        Board board = request.toEntity();
+        System.out.println(board);
+
+        Long boardId = boardService.update(board);
+        return new ResponseEntity<>(boardId, HttpStatus.OK);
     }
 }

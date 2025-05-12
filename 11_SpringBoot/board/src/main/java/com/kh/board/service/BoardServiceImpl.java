@@ -24,5 +24,11 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int delete(Long boardId) { return boardMapper.delete(boardId); }
 
+    @Override
+    public Long update(Board board) {
+        boardMapper.update(board);
+        return board.getBoardId();
+    }
+
 
 }

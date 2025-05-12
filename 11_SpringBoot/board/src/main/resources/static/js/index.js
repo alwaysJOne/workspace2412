@@ -115,7 +115,7 @@ function updateBoard(){
     formData.append("title", document.querySelector('#title').value)
     formData.append("contents", document.querySelector('#contents').value)
     formData.append("upfile", document.querySelector('#upfile').files[0])
-    formData.append("originFile", document.querySelector('#originFile').value)
+    formData.append("origin_file", document.querySelector('#originFile').value)
     formData.append("boardId", boardId);
 
     $.ajax({
@@ -127,7 +127,7 @@ function updateBoard(){
         success: function(response) {
             console.log(response)
             alert("글이 성공적으로 수정되었습니다.");
-            window.location.href = "/boardDetail/" + boardId; 
+            window.location.href = "/boardDetail.html?board_id=" + boardId;
         },
         error: function(error) {
             alert("글 등록에 실패했습니다.");

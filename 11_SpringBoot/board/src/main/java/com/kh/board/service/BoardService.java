@@ -8,4 +8,5 @@ public interface BoardService {
     List<Board> findAll();
     int save(Board board);
     int delete(Long boardId);
+    Long update(Board board);
 }
