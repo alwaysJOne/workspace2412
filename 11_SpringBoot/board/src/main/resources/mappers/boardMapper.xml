@@ -6,11 +6,20 @@
   <select id="findAll" resultType="Board">
     SELECT BOARD_ID boardId,
           TITLE title,
-          CONTENTS contents,
-          FILE_NAME fileName,
           MEMBER_EMAIL memberEmail,
           CREATED_AT createdAt,
           UPDATED_AT updatedAt
     FROM BOARD
+  </select>
+  <select id="findOne" resultType="Board">
+    SELECT BOARD_ID boardId,
+            TITLE title,
+            CONTENTS contents,
+            FILE_NAME fileName,
+            MEMBER_EMAIL memberEmail,
+            CREATED_AT createdAt,
+            UPDATED_AT updatedAt
+    FROM BOARD
+    WHERE BOARD_ID = #{boardId}
   </select>
 </mapper>

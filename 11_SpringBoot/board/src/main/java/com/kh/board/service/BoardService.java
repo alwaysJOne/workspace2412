@@ -4,5 +4,6 @@ import com.kh.board.entity.Board;
 import java.util.List;
 
 public interface BoardService {
+    Board findOne(Long boardId);
     List<Board> findAll();
 }

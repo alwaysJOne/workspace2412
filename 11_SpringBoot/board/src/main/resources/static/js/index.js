@@ -79,7 +79,7 @@ function insertBoard(){
 
     const formData = new FormData();
     formData.append("title", document.querySelector('#title').value)
-    formData.append("userId", document.querySelector('#userId').value)
+    formData.append("user_id", document.querySelector('#userId').value)
     formData.append("contents", document.querySelector('#contents').value)
     formData.append("upfile", document.querySelector('#upfile').files[0])
 

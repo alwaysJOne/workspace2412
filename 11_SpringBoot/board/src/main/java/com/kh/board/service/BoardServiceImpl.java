@@ -13,5 +13,8 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
 
     @Override
+    public Board findOne(Long boardId) {return boardMapper.findOne(boardId);}
+
+    @Override
     public List<Board> findAll() { return boardMapper.findAll(); }
 }
