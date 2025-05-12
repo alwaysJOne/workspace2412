@@ -2,10 +2,13 @@ function init(){
     getBoardList(drawBoardList);
 }
 
-function initBoard(){
+function getUrlPrams(id){
     const urlParams = new URLSearchParams(window.location.search);
-    const boardId = urlParams.get('board_id');
-    console.log(boardId)
+    return urlParams.get(id);
+}
+
+function initBoard(){
+    const boardId = getUrlPrams('board_id');
 
     getBoard(boardId, function(board){
         document.querySelector('#title').value = board.title;
@@ -106,9 +109,7 @@ function updateBoard(){
     if(!confirm("글을 정말 수정하시겠습니까?"))
         return;
 
-    const path = window.location.pathname;
-    const pathParts = path.split('/');
-    const boardId = pathParts[pathParts.length - 1];
+    const boardId = getUrlPrams('board_id');
 
     const formData = new FormData();
     formData.append("title", document.querySelector('#title').value)
@@ -138,14 +139,11 @@ function updateBoard(){
 function deleteBoard(){
     if(!confirm("글을 정말 삭제하시겠습니까?"))
         return;
-    
-    const path = window.location.pathname;
-    const pathParts = path.split('/');
-    const boardId = pathParts[pathParts.length - 1];
 
+    const boardId = getUrlPrams('board_id');
 
     $.ajax({
-        url: "http://localhost:8888/api/board/" + boardId,
+        url: "http://localhost:8888/board/" + boardId,
         type: "DELETE",
         success: function(response) {
             alert("글이 성공적으로 삭제되었습니다.");

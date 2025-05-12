@@ -22,4 +22,27 @@
     FROM BOARD
     WHERE BOARD_ID = #{boardId}
   </select>
+  <insert id="save">
+    INSERT
+    INTO BOARD(
+      TITLE,
+      CONTENTS,
+      MEMBER_EMAIL,
+      FILE_NAME,
+      CREATED_AT,
+      UPDATED_AT
+    ) VALUES(
+      #{title},
+      #{contents},
+      #{memberEmail},
+      #{fileName},
+      CURRENT_TIMESTAMP,
+      CURRENT_TIMESTAMP
+    )
+  </insert>
+  <delete id="delete">
+    DELETE
+    FROM BOARD
+    WHERE BOARD_ID = #{boardId}
+  </delete>
 </mapper>

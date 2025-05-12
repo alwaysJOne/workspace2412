@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,11 +52,11 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<String> createBoard(BoardRequest.CreateDTO request, MultipartFile upfile) throws IOException {
 
-        if(request == null || request.getUser_id() == null) {
+        if (request == null || request.getUser_id() == null) {
             throw new RuntimeException("check value");
         }
 
-        if(!upfile.isEmpty()) {
+        if (!upfile.isEmpty()) {
             File file = new File("C:\\workspace\\11_SpringBoot\\board\\src\\main\\resources\\uploads", upfile.getOriginalFilename());
             upfile.transferTo(file);
 
@@ -62,6 +64,18 @@ public class BoardController {
         }
 
         Board board = request.toEntity();
+        int result = boardService.save(board);
 
+        if(result > 0){
+            return new ResponseEntity<>("게시글 등록 성공", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("게시글 등록 실패", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<String> deleteBoard(@PathVariable Long boardId) {
+        int result = boardService.delete(boardId);
+        return new ResponseEntity<>(result + "개 게시글 삭제완료", HttpStatus.OK);
     }
 }

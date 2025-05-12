@@ -9,4 +9,6 @@ import org.apache.ibatis.annotations.Param;
 public interface BoardMapper {
     List<Board> findAll();
     Board findOne(@Param("boardId") Long boardId);
+    int save(Board board);
+    int delete(@Param("boardId") Long boardId);
 }
