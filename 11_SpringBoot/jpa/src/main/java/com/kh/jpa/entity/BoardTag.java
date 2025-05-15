@@ -1,0 +1,25 @@
+package com.kh.jpa.entity;
+
+import com.kh.jpa.enums.CommonEnums;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/**
+ * 게시글-태그 매핑 정보를 저장하는 엔티티 클래스
+ * Board와 Tag 엔티티 간의 N:M 관계를 매핑
+ * 복합키를 사용하여 매핑 정보 관리
+ */
+@Entity
+@Table(name = "BOARD_TAG")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+public class BoardTag {
+
+}
