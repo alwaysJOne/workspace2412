@@ -1,5 +1,6 @@
 package com.kh.jpa.entity;
 
+import com.kh.jpa.dto.MemberDto;
 import com.kh.jpa.enums.CommonEnums;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -84,6 +85,15 @@ public class Member {
 
     public enum Gender {
         M, F
+    }
+
+    public void updateMemberInfo(String userName, String email, Gender gender, String phone, String address, Integer age) {
+        this.userName = userName;
+        this.email = email;
+        this.gender = gender;
+        this.phone = phone;
+        this.address = address;
+        this.age = age;
     }
 
     @PrePersist

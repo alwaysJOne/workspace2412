@@ -5,9 +5,11 @@ import com.kh.jpa.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +33,20 @@ public class MemberController {
     @GetMapping("/{userId}")
     public ResponseEntity<MemberDto.Response> getMember(@PathVariable String userId) {
         return ResponseEntity.ok(memberService.findMember(userId));
+    }
+    
+    //회원수정
+    @PutMapping("/{userId}")
+    public ResponseEntity<MemberDto.Response> updateMember(
+            @PathVariable String userId,
+            @RequestBody MemberDto.Update updateDto) {
+        return ResponseEntity.ok(memberService.updateMember(userId, updateDto));
+    }
+
+    //회원삭제
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteMember(@PathVariable String userId) {
+        memberService.deleteMember(userId);
+        return ResponseEntity.ok().build();
     }
 }

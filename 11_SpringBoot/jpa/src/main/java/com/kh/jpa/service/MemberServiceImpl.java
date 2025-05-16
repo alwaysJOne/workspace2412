@@ -21,11 +21,34 @@ public class MemberServiceImpl implements MemberService {
         return member.getUserId(); // 영속상태의 member
     }
 
+    //
     @Transactional(readOnly = true)
     @Override
     public MemberDto.Response findMember(String userId) {
         return memberRepository.findOne(userId)
-                .map(MemberDto.Response::toDto)
+                .map(MemberDto.Response::toDto) //있으면 변환해줘.
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+    }
+
+    @Override
+    public MemberDto.Response updateMember(String userId, MemberDto.Update updateDto) {
+        Member member = memberRepository.findOne(userId)
+                                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        member.updateMemberInfo(
+                updateDto.getUser_name(),
+                updateDto.getEmail(),
+                updateDto.getGender(),
+                updateDto.getPhone(),
+                updateDto.getAddress(),
+                updateDto.getAge()
+        );
+        return MemberDto.Response.toDto(member);
+    }
+
+    @Override
+    public void deleteMember(String userId) {
+        Member member = memberRepository.findOne(userId)
+                                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        memberRepository.delete(member);
     }
 }

@@ -21,4 +21,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     public Optional<Member> findOne(String userId) {
         return Optional.ofNullable(em.find(Member.class, userId));
     }
+
+    @Override
+    public void delete(Member member) { em.remove(member); }
 }
