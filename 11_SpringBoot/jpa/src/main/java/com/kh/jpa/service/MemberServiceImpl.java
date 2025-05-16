@@ -3,9 +3,9 @@ package com.kh.jpa.service;
 import com.kh.jpa.dto.MemberDto;
 import com.kh.jpa.entity.Member;
 import com.kh.jpa.repository.MemberRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +21,7 @@ public class MemberServiceImpl implements MemberService {
         return member.getUserId(); // 영속상태의 member
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MemberDto.Response findMember(String userId) {
         return memberRepository.findOne(userId)
