@@ -29,18 +29,24 @@ public class Reply {
     @Column(name = "REPLY_CONTENT", length = 400, nullable = false)
     private String replyContent;
 
-    @Column(name = "REF_BNO", nullable = false)
-    private Long refBno;
-
-    @Column(name = "REPLY_WRITER", length = 30, nullable = false)
-    private String replyWriter;
-
     @Column(name = "CREATE_DATE", nullable = false)
     private LocalDateTime createDate;
 
     @Column(name = "STATUS", length = 1, nullable = false)
     @Enumerated(EnumType.STRING)
     private CommonEnums.Status status;
+
+    //어떤게시글의 댓글인지 게시글 정보
+    //댓글 : 게시글 (N : 1)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "REF_BNO")
+    private Board board;
+
+    //어떤사람의 댓글인지 작성자 정보
+    //댓글 : 작성자 (N : 1)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "REPLY_WRITER")
+    private Member member;
 
     @PrePersist
     public void prePersist() {
