@@ -12,7 +12,8 @@ public class MemberDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Create{
+    public static class Create {
+
         private String user_id;
         private String user_pwd;
         private String user_name;
@@ -22,6 +23,18 @@ public class MemberDto {
         private String address;
         private Integer age;
 
+        public Member toEntity() {
+            return Member.builder()
+                         .userId(this.user_id)
+                         .userPwd(this.user_pwd)
+                         .userName(this.user_name)
+                         .email(this.email)
+                         .gender(this.gender)
+                         .age(this.age)
+                         .phone(this.phone)
+                         .address(this.address)
+                         .build();
+        }
 
     }
 }
