@@ -3,6 +3,7 @@ package com.kh.jpa.repository;
 import com.kh.jpa.entity.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,9 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public void save(Member member) {
         em.persist(member); // 영속
+    }
+
+    public Optional<Member> findOne(String userId) {
+        return Optional.ofNullable(em.find(Member.class, userId));
     }
 }

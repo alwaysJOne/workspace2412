@@ -5,6 +5,8 @@ import com.kh.jpa.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,5 +25,11 @@ public class MemberController {
         String userId = memberService.createMember(createDto);
         //return new ResponseEntity<String>(userId, HttpStatus.OK);
         return ResponseEntity.ok(userId);
+    }
+
+    //회원조회
+    @GetMapping("/{userId}")
+    public ResponseEntity<MemberDto.Response> getMember(@PathVariable String userId) {
+        return ResponseEntity.ok(memberService.findMember(userId));
     }
 }
