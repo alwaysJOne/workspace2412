@@ -3,6 +3,7 @@ package com.kh.jpa.repository;
 import com.kh.jpa.entity.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,5 +24,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public void delete(Member member) { em.remove(member); }
+    public void delete(Member member) {em.remove(member);}
+
+    @Override
+    public List<Member> findAll() {
+        //JPQL : 엔티티기반 쿼리를 전달하는 방법
+        return em.createQuery("select m from Member m", Member.class)
+                 .getResultList();
+    }
 }

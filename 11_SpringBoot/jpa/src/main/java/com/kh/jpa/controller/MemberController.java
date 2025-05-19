@@ -2,6 +2,7 @@ package com.kh.jpa.controller;
 
 import com.kh.jpa.dto.MemberDto;
 import com.kh.jpa.service.MemberService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,11 @@ public class MemberController {
     public ResponseEntity<MemberDto.Response> getMember(@PathVariable String userId) {
         return ResponseEntity.ok(memberService.findMember(userId));
     }
-    
+
+    //전체 회원 조회
+    @GetMapping
+    public ResponseEntity<List<MemberDto.Response>> getAllMembers() {return ResponseEntity.ok(memberService.findAllMember());}
+
     //회원수정
     @PutMapping("/{userId}")
     public ResponseEntity<MemberDto.Response> updateMember(
