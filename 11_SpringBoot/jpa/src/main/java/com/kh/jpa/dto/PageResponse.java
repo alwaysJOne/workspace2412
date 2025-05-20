@@ -1,9 +1,11 @@
 package com.kh.jpa.dto;
 
 import java.util.List;
+import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 //페이징 처리 반환타입
+@Getter
 public class PageResponse<T> {
     private List<T> content;
     private int currentPage;

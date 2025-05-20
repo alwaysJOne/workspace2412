@@ -1,13 +1,18 @@
 package com.kh.jpa.controller;
 
+import com.kh.jpa.dto.BoardDto;
+import com.kh.jpa.dto.PageResponse;
 import com.kh.jpa.entity.Board;
 import com.kh.jpa.service.BoardService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,9 +28,13 @@ public class BoardController {
     sort 정렬 기준 : 속성, 방향 (boardTitle,desc)
      */
     @GetMapping
-    public List<Board> getBoards(
+    public ResponseEntity<PageResponse<BoardDto.Response>> getBoards(
             @PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        boardService.getBoardList(pageable);
-        return null;
+        return ResponseEntity.ok(new PageResponse<>(boardService.getBoardList(pageable)));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BoardDto.Response> getBoard(@PathVariable("id") Long boardNo) {
+        return ResponseEntity.ok(boardService.getBoardDetail(boardNo));
     }
 }

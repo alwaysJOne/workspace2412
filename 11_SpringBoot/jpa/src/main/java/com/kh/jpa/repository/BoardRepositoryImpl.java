@@ -6,6 +6,7 @@ import com.kh.jpa.service.BoardService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -36,5 +37,11 @@ public class BoardRepositoryImpl implements BoardRespository {
         //Page<T> 인터페이스의 기본구현체를 통해서 pageing한 정보를 한번에 전달할 수 있음
         //new PageImpl<>(content, pageable, total);
         return new PageImpl<Board>(boards, pageable, totalCount);
+    }
+
+    @Override
+    public Optional<Board> findById(Long id) {
+        if(id == null) return Optional.empty();
+        return Optional.ofNullable(em.find(Board.class, id));
     }
 }

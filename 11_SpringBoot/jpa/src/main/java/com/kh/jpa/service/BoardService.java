@@ -1,7 +1,11 @@
 package com.kh.jpa.service;
 
+import com.kh.jpa.dto.BoardDto;
+import com.kh.jpa.entity.Board;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface BoardService {
-    void getBoardList(Pageable pageable);
+    Page<BoardDto.Response> getBoardList(Pageable pageable);
+    BoardDto.Response getBoardDetail(Long boardNo);
 }
