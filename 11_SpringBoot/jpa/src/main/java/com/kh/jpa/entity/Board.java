@@ -77,7 +77,7 @@ public class Board {
     private List<Reply> replies = new ArrayList<>();
 
     //BoardTag : Board (N : 1)
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @Builder.Default
     private List<BoardTag> boardTags = new ArrayList<>();
 
