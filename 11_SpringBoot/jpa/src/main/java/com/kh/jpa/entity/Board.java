@@ -42,7 +42,7 @@ public class Board {
     //@Lob : 대용량 데이터 매핑
     @Column(name = "BOARD_CONTENT", nullable = false)
     @Lob
-    private String noticeContent;
+    private String boardContent;
 
     @Column(name = "ORIGIN_NAME", length = 100)
     private String originName;
