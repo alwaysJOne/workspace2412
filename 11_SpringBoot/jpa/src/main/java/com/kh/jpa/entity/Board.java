@@ -64,14 +64,27 @@ public class Board {
     @JoinColumn(name = "BOARD_WRITER")
     private Member member;
 
+    public void changeMember(Member member) {
+        this.member = member;
+        if(!member.getBoards().contains(this)) {
+            member.getBoards().add(this);
+        }
+    }
+
     //Reply : Board (N : 1)
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Reply> replies = new ArrayList<>();
 
     //BoardTag : Board (N : 1)
     @OneToMany(mappedBy = "board")
+    @Builder.Default
     private List<BoardTag> boardTags = new ArrayList<>();
 
+    public void changeFile(String originName, String changeName) {
+        this.originName = originName;
+        this.changeName = changeName;
+    }
 
     @PrePersist
     protected void onCreate() {

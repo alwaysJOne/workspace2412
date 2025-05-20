@@ -44,4 +44,12 @@ public class BoardRepositoryImpl implements BoardRespository {
         if(id == null) return Optional.empty();
         return Optional.ofNullable(em.find(Board.class, id));
     }
+
+    @Override
+    public Long save(Board board) {
+        em.persist(board);
+        return board.getBoardNo();
+    }
+
+
 }

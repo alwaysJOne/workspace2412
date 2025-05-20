@@ -31,6 +31,11 @@ public class BoardTag {
     @JoinColumn(name = "BOARD_NO", nullable = false)
     private Board board;
 
+    public void changeBoard(Board board) {
+        this.board = board;
+        board.getBoardTags().add(this);
+    }
+
     //태그 : 중계테이블 (1 :  N)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID", nullable = false)

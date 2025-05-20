@@ -10,4 +10,5 @@ import org.springframework.data.domain.Pageable;
 public interface BoardRespository {
     Page<Board> findByStatus(CommonEnums.Status status, Pageable pageable);
     Optional<Board> findById(Long id);
+    Long save(Board board);
 }

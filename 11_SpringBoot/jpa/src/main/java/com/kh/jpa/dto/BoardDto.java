@@ -8,8 +8,28 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 public class BoardDto {
+
+    @Getter
+    @AllArgsConstructor
+    public static class Create{
+        private String board_title;
+        private String board_content;
+        private String user_id;
+        private MultipartFile file;
+        private List<String> tags;
+
+        public Board toEntity() {
+            return Board.builder()
+                    .boardTitle(this.board_title)
+                    .boardContent(this.board_content)
+                    .build();
+        }
+    }
 
     @Getter
     @AllArgsConstructor

@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 //페이징 처리 반환타입
+//직렬화시 getter필수
 @Getter
 public class PageResponse<T> {
     private List<T> content;
