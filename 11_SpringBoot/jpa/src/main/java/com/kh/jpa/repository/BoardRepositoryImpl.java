@@ -51,5 +51,11 @@ public class BoardRepositoryImpl implements BoardRespository {
         return board.getBoardNo();
     }
 
+    @Override
+    public void delete(Board board) {
+        System.out.println("BoardNo : " + board.getBoardNo());
+        em.remove(board);
+    }
+
 
 }

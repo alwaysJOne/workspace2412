@@ -51,6 +51,7 @@ public class BoardServiceImpl implements BoardService {
         return BoardDto.Response.toDto(board);
     }
 
+    @Transactional
     @Override
     public Long createBoard(BoardDto.Create createBoard) throws IOException {
         //게시글작성
@@ -63,8 +64,7 @@ public class BoardServiceImpl implements BoardService {
         String changeName = null;
         String originName = null;
 
-        if (createBoard.getFile() != null && !createBoard.getFile()
-                                                         .isEmpty()) {
+        if (createBoard.getFile() != null && !createBoard.getFile().isEmpty()) {
             originName = createBoard.getFile()
                                     .getOriginalFilename();
             changeName = UUID.randomUUID()
@@ -85,7 +85,7 @@ public class BoardServiceImpl implements BoardService {
 
         if (createBoard.getTags() != null && !createBoard.getTags()
                                                          .isEmpty()) {
-            //tag가 왔다.
+            //tag가 왔다. ["kh","java","쉬움"]
             for (String tagName : createBoard.getTags()) {
                 //tag를 이름으로 조회해서 없으면 새로 만들어라.
                 Tag tag = tagRepository.findByTagName(tagName)
@@ -102,6 +102,71 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return boardRespository.save(board);
+    }
+
+    @Transactional
+    @Override
+    public void deleteBoard(Long boardNo) {
+        Board board = boardRespository.findById(boardNo)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+
+        if(board.getChangeName() != null){
+            new File(UPLOAD_PATH + board.getChangeName()).delete();
+        }
+
+        boardRespository.delete(board);
+    }
+
+    @Override
+    public BoardDto.Response updateBoard(Long boardNo, BoardDto.Update boardUpdate) throws IOException {
+        Board board = boardRespository.findById(boardNo)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+
+        String changeName = board.getChangeName();
+        String originName = board.getOriginName();
+
+        if (boardUpdate.getFile() != null && !boardUpdate.getFile().isEmpty()) {
+            originName = boardUpdate.getFile()
+                                    .getOriginalFilename();
+            changeName = UUID.randomUUID()
+                             .toString() + "_" + originName;
+
+            File uploadDir = new File(UPLOAD_PATH);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            boardUpdate.getFile()
+                       .transferTo(new File(UPLOAD_PATH + changeName));
+        }
+
+        board.changeContent(boardUpdate.getBoard_content());
+        board.changeTitle(boardUpdate.getBoard_title());
+        board.changeFile(originName, changeName);
+
+        if (boardUpdate.getTags() != null && !boardUpdate.getTags()
+                                                         .isEmpty()) {
+            //기존BoardTag -> 연결이 끊기면 필요가 있을까? X
+            //연결된 boardTags의 영속성을 제거한다. -> orphanRemoval = true 설정이 되어있다면 실제 db에서 제거
+            board.getBoardTags().clear();
+
+            //tag가 왔다. ["kh","java","쉬움"]
+            for (String tagName : boardUpdate.getTags()) {
+                //tag를 이름으로 조회해서 없으면 새로 만들어라.
+                Tag tag = tagRepository.findByTagName(tagName)
+                                       .orElseGet(() -> tagRepository.save(Tag.builder()
+                                                                              .tagName(tagName)
+                                                                              .build()));
+
+                BoardTag boardTag = BoardTag.builder()
+                                            .tag(tag)
+                                            .build();
+
+                boardTag.changeBoard(board);
+            }
+        }
+
+        return BoardDto.Response.toDto(board);
     }
 
 
