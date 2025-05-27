@@ -6,6 +6,7 @@ import com.kh.jpa.entity.BoardTag;
 import com.kh.jpa.entity.Member;
 import com.kh.jpa.entity.Tag;
 import com.kh.jpa.enums.CommonEnums;
+import com.kh.jpa.repository.BoardRepositoryV2;
 import com.kh.jpa.repository.BoardRespository;
 import com.kh.jpa.repository.MemberRepository;
 import com.kh.jpa.repository.TagRepository;
@@ -24,7 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class BoardServiceImpl implements BoardService {
 
-    private final BoardRespository boardRespository;
+//    private final BoardRespository boardRespository;
+    private final BoardRepositoryV2 boardRespository;
     private final MemberRepository memberRepository;
     private final TagRepository tagRepository;
     private final String UPLOAD_PATH = "C:\\dev_tool";
@@ -37,7 +39,7 @@ public class BoardServiceImpl implements BoardService {
             getTotalelements() 전체 데이터 수
             getSize() 페이지당 데이터 수
             ...
-         */
+        */
         Page<Board> page = boardRespository.findByStatus(CommonEnums.Status.Y, pageable);
 
         return page.map(BoardDto.Response::toSimpleDto);
@@ -101,7 +103,7 @@ public class BoardServiceImpl implements BoardService {
             }
         }
 
-        return boardRespository.save(board);
+        return boardRespository.save(board).getBoardNo();
     }
 
     @Transactional
