@@ -1,8 +1,33 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { SITE_CONFIG } from '../config/site';
+import { media } from '../styles/MediaQueries';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 const Header = () => {
-  return <HeaderContainer>sdvsdv</HeaderContainer>;
+  return (
+    <HeaderContainer>
+      <HeaderWrapper>
+        <Logo to="/">{SITE_CONFIG.name}</Logo>
+
+        {/* 모바일환경에서의 nav */}
+        <MenuButton />
+
+        {/* pc환경에서의 nav */}
+        <DesktopNav>
+          <NavItem to="/">홈</NavItem>
+          <NavItem to="/products">상품</NavItem>
+          <NavItem to="/question">Q&A 게시판</NavItem>
+        </DesktopNav>
+
+        <DesktopUserMenu>
+          <NavItem to="/login">로그인</NavItem>
+          <NavItem to="/signup">회원가입</NavItem>
+        </DesktopUserMenu>
+      </HeaderWrapper>
+    </HeaderContainer>
+  );
 };
 
 const HeaderContainer = styled.header`
@@ -18,6 +43,55 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const Logo = styled(Link)`
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.primary};
+
+  ${media.md`
+   font-size: ${({ theme }) => theme.fontSizes['2xl']}; 
+  `}
+`;
+
+const DesktopNav = styled.nav`
+  display: none;
+  gap: ${({ theme }) => theme.spacing[8]};
+
+  ${media.md`
+        display: flex;
+    `}
+`;
+
+const DesktopUserMenu = styled.nav`
+  display: none;
+  gap: ${({ theme }) => theme.spacing[8]};
+
+  ${media.md`
+        display: flex;
+    `}
+`;
+
+const NavItem = styled(Link)`
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  color: ${({ theme }) => theme.colors.gray[700]};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const MenuButton = styled(GiHamburgerMenu)`
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 10;
+
+  ${media.md`
+        display: none;
+    `}
 `;
 
 export default Header;
