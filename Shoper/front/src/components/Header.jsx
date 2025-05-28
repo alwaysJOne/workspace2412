@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SITE_CONFIG } from '../config/site';
@@ -6,13 +6,27 @@ import { media } from '../styles/MediaQueries';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <HeaderContainer>
       <HeaderWrapper>
         <Logo to="/">{SITE_CONFIG.name}</Logo>
 
         {/* 모바일환경에서의 nav */}
-        <MenuButton />
+        <MenuButton onClick={() => setIsMenuOpen(!isMenuOpen)} />
+
+        <MobileMenu $isOpen={isMenuOpen}>
+          <UserMenu>
+            <NavItem to="/login">로그인</NavItem>
+            <NavItem to="/signup">회원가입</NavItem>
+          </UserMenu>
+          <Nav>
+            <NavItem to="/">홈</NavItem>
+            <NavItem to="/products">상품</NavItem>
+            <NavItem to="/question">Q&A 게시판</NavItem>
+          </Nav>
+        </MobileMenu>
 
         {/* pc환경에서의 nav */}
         <DesktopNav>
@@ -92,6 +106,43 @@ const MenuButton = styled(GiHamburgerMenu)`
   ${media.md`
         display: none;
     `}
+`;
+
+const MobileMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[4]};
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  background: ${({ theme }) => theme.colors.white};
+  transform: translateX(${({ $isOpen }) => ($isOpen ? '0' : '100%')});
+  transition: transform 0.3s ease;
+  padding: ${({ theme }) => theme.spacing[4]};
+  padding-top: ${({ theme }) => theme.spacing[16]};
+  z-index: 5;
+  overflow-y: auto;
+
+  ${media.md`
+        display: none;
+    `}
+`;
+
+const Nav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[4]};
+`;
+
+const UserMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[4]};
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[200]};
+  padding-top: ${({ theme }) => theme.spacing[8]};
 `;
 
 export default Header;
