@@ -7,8 +7,13 @@ export const SITE_CONFIG = {
     blog: 'https://naver.me/shoper',
   },
   contact: {
+    runtime: '평일 09:00 ~ 18:00',
     email: 'support@shoper.com',
     phone: '02-1234-5678',
     address: '서울특별시 강남구 테헤란로 123',
+  },
+  info: {
+    ceo: '최지원',
+    company_number: '123-12-456',
   },
 };
