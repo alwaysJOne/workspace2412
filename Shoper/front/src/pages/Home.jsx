@@ -1,15 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { SITE_CONFIG } from '../config/site';
 import { media } from '../styles/MediaQueries';
-import { getProducts } from '../api/products';
+import { productService } from '../api/products';
+import { GridContainer, Section } from '../styles/common/Container';
+import { Title } from '../styles/common/Typography';
+import { Card } from '../styles/common/Card';
 
 const Home = () => {
+  const [popularProducts, setPopularProdeucts] = useState([]);
+  const [newProducts, setNewProducts] = useState([]);
+
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const products = await getProducts();
+        const products = await productService.getProducts();
         console.log(products);
+        setNewProducts(products.filter((p) => p.isNew));
+        setPopularProdeucts(products.filter((p) => p.isPopular));
       } catch (error) {
         console.error(error);
       }
@@ -26,6 +34,26 @@ const Home = () => {
           <BannerSubTitle>{SITE_CONFIG.description}</BannerSubTitle>
         </div>
       </Banner>
+
+      <Section>
+        <Title>인기 상품</Title>
+        <GridContainer>
+          {popularProducts.map((product) => (
+            <Card>
+              <img src="" alt="" />
+              <div>
+                <h3>{product.name}</h3>
+                <span>{product.price}원</span>
+              </div>
+            </Card>
+          ))}
+        </GridContainer>
+      </Section>
+
+      <Section>
+        <Title>신상품</Title>
+        <GridContainer></GridContainer>
+      </Section>
     </>
   );
 };
