@@ -5,6 +5,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Layout from './components/Layout';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -17,6 +18,16 @@ function App() {
           </Routes>
         </Layout>
       </Router>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        closeOnClick
+        draggable
+        hideProgressBar={false}
+        newestOnTop
+        theme="light"
+        pauseOnHover
+      />
     </ThemeProvider>
   );
 }
