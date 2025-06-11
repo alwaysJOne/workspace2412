@@ -25,4 +25,17 @@ export const userService = {
       throw new Error('서버 통신 불량');
     }
   },
+  login: async (email, password) => {
+    try {
+      const { data } = await api.get(API_ENDPOINTS.USERS.LOGIN(email, password));
+      return data[0]; //
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '로그인에 실패했습니다.';
+        throw new Error(message);
+      }
+
+      throw new Error('서버 통신 불량');
+    }
+  },
 };

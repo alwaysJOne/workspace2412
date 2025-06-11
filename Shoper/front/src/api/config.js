@@ -16,5 +16,7 @@ export const API_ENDPOINTS = {
   },
   USERS: {
     BASE: '/users',
+    //LOGIN: '/users/login'
+    LOGIN: (email, password) => `/users?email=${email}&password=${password}`,
   },
 };

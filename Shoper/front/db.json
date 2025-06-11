@@ -99,13 +99,13 @@
   ],
   "users": [
     {
-      "id": "6093",
-      "email": "asd123@naver.com",
-      "password": "qwe123123",
+      "id": "2cf9",
+      "email": "asd123@gmail.com",
+      "password": "asd123123",
       "username": "최지원",
       "role": "user",
-      "createdAt": "2025-06-11T06:50:18.636Z",
-      "updatedAt": "2025-06-11T06:50:18.636Z"
+      "createdAt": "2025-06-11T07:02:42.974Z",
+      "updatedAt": "2025-06-11T07:02:42.974Z"
     }
   ]
 }
