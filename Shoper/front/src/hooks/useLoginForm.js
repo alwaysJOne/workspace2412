@@ -38,8 +38,6 @@ export const useLoginForm = () => {
         throw new Error('이메일 또는 비밀번호 불일치');
       }
 
-      console.log();
-
       //로그인 성공시 store에 로그인 정보를 저장
       login({
         email: user.email,

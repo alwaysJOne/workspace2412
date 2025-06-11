@@ -29,7 +29,7 @@ const useUserStore = create(
     }),
     {
       name: 'user-storage',
-      storage: localStorage, //기본값
+      //기본값 storage: localStorage -> 쿠키나 세션으로 변경가능
       partialize: (state) => ({
         user: state.user,
         isAuthenticated: state.isAuthenticated,
