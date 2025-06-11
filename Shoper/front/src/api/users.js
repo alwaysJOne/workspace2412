@@ -3,7 +3,7 @@ import { API_ENDPOINTS } from './config';
 
 export const userService = {
   //회원가입
-  sugnUp: async (userData) => {
+  signUp: async (userData) => {
     console.log('????');
     try {
       const { data } = await api.post(API_ENDPOINTS.USERS.BASE, {

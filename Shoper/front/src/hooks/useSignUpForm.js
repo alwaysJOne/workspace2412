@@ -48,7 +48,7 @@ export const useSignUpForm = () => {
       // setError('email', {})
 
       //회원가입API호출
-      await userService.sugnUp({
+      await userService.signUp({
         username: data.username,
         email: data.email,
         password: data.password,

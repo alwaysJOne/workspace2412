@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSignUpForm } from '../hooks/useSignUpForm';
 import {
   AuthContainer,
   AuthLink,
@@ -10,7 +11,6 @@ import {
   Label,
   Title,
 } from '../styles/Auth.styles';
-import { useSignUpForm } from '../hooks/useSignUpForm';
 
 function SignUp() {
   const { register, handleSubmit, errors, isSubmitting } = useSignUpForm();
@@ -37,10 +37,10 @@ function SignUp() {
             id="email"
             type="email"
             placeholder="이메일을 입력하세요."
-            {...register('eamil')}
-            $error={errors.eamil}
+            {...register('email')}
+            $error={errors.email}
           />
-          {errors.eamil && <ErrorMessage>{errors.eamil.message}</ErrorMessage>}
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </InputGroup>
 
         <InputGroup>
