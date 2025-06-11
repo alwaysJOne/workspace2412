@@ -1,32 +1,75 @@
 import React from 'react';
-import { AuthContainer, AuthLink, Button, Form, Input, InputGroup, Label, Title } from '../styles/Auth.styles';
+import {
+  AuthContainer,
+  AuthLink,
+  Button,
+  ErrorMessage,
+  Form,
+  Input,
+  InputGroup,
+  Label,
+  Title,
+} from '../styles/Auth.styles';
+import { useSignUpForm } from '../hooks/useSignUpForm';
 
 function SignUp() {
+  const { register, handleSubmit, errors, isSubmitting } = useSignUpForm();
+
   return (
     <AuthContainer>
       <Title>회원가입</Title>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <InputGroup>
           <Label htmlFor="username">사용자 이름</Label>
-          <Input id="username" type="text" placeholder="사용자 이름을 입력하세요." />
+          <Input
+            id="username"
+            type="text"
+            placeholder="사용자 이름을 입력하세요."
+            {...register('username')}
+            $error={errors.username}
+          />
+          {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
         </InputGroup>
 
         <InputGroup>
-          <Label htmlFor="username">이메일</Label>
-          <Input id="email" type="email" placeholder="이메일을 입력하세요." />
+          <Label htmlFor="email">이메일</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="이메일을 입력하세요."
+            {...register('eamil')}
+            $error={errors.eamil}
+          />
+          {errors.eamil && <ErrorMessage>{errors.eamil.message}</ErrorMessage>}
         </InputGroup>
 
         <InputGroup>
           <Label htmlFor="password">비밀번호</Label>
-          <Input id="password" type="password" placeholder="비밀번호를 입력하세요." />
+          <Input
+            id="password"
+            type="password"
+            placeholder="비밀번호를 입력하세요."
+            {...register('password')}
+            $error={errors.password}
+          />
+          {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
         </InputGroup>
 
         <InputGroup>
           <Label htmlFor="confirmPassword">비밀번호 확인</Label>
-          <Input id="confirmPassword" type="password" placeholder="비밀번호를 다시 입력하세요." />
+          <Input
+            id="confirmPassword"
+            type="password"
+            placeholder="비밀번호를 다시 입력하세요."
+            {...register('confirmPassword')}
+            $error={errors.confirmPassword}
+          />
+          {errors.confirmPassword && <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>}
         </InputGroup>
 
-        <Button type="submit">{'가입하기'}</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? '처리중...' : '가입하기'}
+        </Button>
       </Form>
       <AuthLink to="/login">이미 계정이 있으신가요? 로그인하기</AuthLink>
     </AuthContainer>
