@@ -1,18 +1,18 @@
-import React from 'react';
+import { FaSpinner } from 'react-icons/fa';
 import { useSignUpForm } from '../hooks/useSignUpForm';
 import {
   AuthContainer,
-  AuthLink,
-  Button,
-  ErrorMessage,
+  Title,
   Form,
-  Input,
   InputGroup,
   Label,
-  Title,
+  Input,
+  ErrorMessage,
+  Button,
+  AuthLink,
 } from '../styles/Auth.styles';
 
-function SignUp() {
+const SignUp = () => {
   const { register, handleSubmit, errors, isSubmitting } = useSignUpForm();
 
   return (
@@ -24,7 +24,7 @@ function SignUp() {
           <Input
             id="username"
             type="text"
-            placeholder="사용자 이름을 입력하세요."
+            placeholder="사용자 이름을 입력하세요"
             {...register('username')}
             $error={errors.username}
           />
@@ -36,7 +36,7 @@ function SignUp() {
           <Input
             id="email"
             type="email"
-            placeholder="이메일을 입력하세요."
+            placeholder="이메일을 입력하세요"
             {...register('email')}
             $error={errors.email}
           />
@@ -48,7 +48,7 @@ function SignUp() {
           <Input
             id="password"
             type="password"
-            placeholder="비밀번호를 입력하세요."
+            placeholder="비밀번호를 입력하세요"
             {...register('password')}
             $error={errors.password}
           />
@@ -60,7 +60,7 @@ function SignUp() {
           <Input
             id="confirmPassword"
             type="password"
-            placeholder="비밀번호를 다시 입력하세요."
+            placeholder="비밀번호를 다시 입력하세요"
             {...register('confirmPassword')}
             $error={errors.confirmPassword}
           />
@@ -68,12 +68,19 @@ function SignUp() {
         </InputGroup>
 
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? '처리중...' : '가입하기'}
+          {isSubmitting ? (
+            <>
+              <FaSpinner size={16} />
+              처리 중...
+            </>
+          ) : (
+            '가입하기'
+          )}
         </Button>
       </Form>
       <AuthLink to="/login">이미 계정이 있으신가요? 로그인하기</AuthLink>
     </AuthContainer>
   );
-}
+};
 
 export default SignUp;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { media } from '../MediaQueries';
+import { media } from './MediaQueries';
 
 export const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes['2xl']};

@@ -1,19 +1,15 @@
 export const SITE_CONFIG = {
-  name: 'Shoper',
+  name: 'ShopIt',
   description: '당신의 라이프스타일을 위한 모든 것',
-  logo: '/assets/react.svg',
+  logo: '/logo.png', // 로고 이미지 경로
   social: {
-    instagram: 'https://instagram.com/shoper',
-    blog: 'https://naver.me/shoper',
+    instagram: 'https://instagram.com/shopit',
+    facebook: 'https://facebook.com/shopit',
+    twitter: 'https://twitter.com/shopit',
   },
   contact: {
-    runtime: '평일 09:00 ~ 18:00',
-    email: 'support@shoper.com',
+    email: 'support@shopit.com',
     phone: '02-1234-5678',
     address: '서울특별시 강남구 테헤란로 123',
   },
-  info: {
-    ceo: '최지원',
-    company_number: '123-12-456',
-  },
-};
+}; 
