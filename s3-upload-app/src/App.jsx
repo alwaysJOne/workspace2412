@@ -5,20 +5,20 @@ import axios from 'axios';
 
 function App() {
   const [file, setFile] = useState(null);
+  const [downloadFileInfo, setDownloadFileInfo] = useState(null);
   const [status, setStatus] = useState('');
 
   const uploadFile = async () => {
     try{
       setStatus('업로드 중...');
 
-      console.log(file);
       const extension = file.type.split("/").pop();
       const uniqueName = `${uuidv4()}.${extension}`;
       //encodeURIComponent() -> url에 포함될 수 없는 특수문자나 퍼센트같은 것들을 안전하게 encodinf해줌
       const encodingFileName = encodeURIComponent(uniqueName);
 
       //lambda api 호출 -> presigned url요청
-      const response = await axios.get('https://151h0kahe6.execute-api.ap-northeast-3.amazonaws.com/default/getPresignedUrl',{
+      const response = await axios.get('api게이트웨이',{
         params: {
           filename: encodingFileName,
           contentType: file.type,
@@ -35,8 +35,13 @@ function App() {
           headers: {
             "Content-Type": file.type,
           }
-        })
+        });
 
+        setDownloadFileInfo({
+          filename: encodingFileName,
+          contentType: file.type,
+          originalName: file.name,
+        })
         setStatus('업로드 완료!');
       } else {
         console.error('presigned url 요청 실패', response.data);
@@ -45,6 +50,37 @@ function App() {
     } catch (err){
       console.error(err);
       setStatus('업로드 실패');
+    }
+  }
+
+  const downloadFile = async () => {
+
+    try{
+      const response = await axios.get('api게이트웨이',
+        {
+          params:{
+            filename: downloadFileInfo.filename,
+            originalName: downloadFileInfo.originalName,
+            mode: 'get',
+          }
+        }
+      );
+
+      const { statusCode, body } = response.data;
+
+      if(statusCode === 200){
+          const bodyData = JSON.parse(body);
+          const presignedUrl = bodyData.url;
+
+          window.open(presignedUrl, "_blank");
+          setStatus('다운로드 완료');
+      } else {
+        console.error('다운로드 URL요청 실패:', response.data);
+        setStatus('다운로드 실패');
+      }
+    } catch(err){
+      console.error(err);
+      setStatus('다운로드 실패');
     }
   }
 
@@ -61,6 +97,19 @@ function App() {
         <input type="file" onChange={handleFileChange}/>
         <button onClick={uploadFile} disabled={!file}>
           업로드
+        </button>
+      </div>
+
+      <div className='download-section'>
+        <h2>파일 다운로드</h2>
+        <input 
+          type='text'
+          value={downloadFileInfo?.originalName}
+          disabled={true}
+          placeholder='다운로드할 파일명 입력'
+        />
+        <button onClick={downloadFile} disabled={!downloadFileInfo}>
+          다운로드
         </button>
       </div>
 
