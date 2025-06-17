@@ -8,7 +8,7 @@ function App() {
   const [downloadFileInfo, setDownloadFileInfo] = useState(null);
   const [status, setStatus] = useState('');
 
-  const uploadFile = async () => {
+  const uploadFile = async (path) => {
     try{
       setStatus('업로드 중...');
 
@@ -18,9 +18,9 @@ function App() {
       const encodingFileName = encodeURIComponent(uniqueName);
 
       //lambda api 호출 -> presigned url요청
-      const response = await axios.get('api게이트웨이',{
+      const response = await axios.get('https://151h0kahe6.execute-api.ap-northeast-3.amazonaws.com/default/getPresignedUrl',{
         params: {
-          filename: encodingFileName,
+          filename: path + encodingFileName,
           contentType: file.type,
         }
       })
@@ -36,6 +36,7 @@ function App() {
             "Content-Type": file.type,
           }
         });
+        
 
         setDownloadFileInfo({
           filename: encodingFileName,
@@ -56,7 +57,7 @@ function App() {
   const downloadFile = async () => {
 
     try{
-      const response = await axios.get('api게이트웨이',
+      const response = await axios.get('https://151h0kahe6.execute-api.ap-northeast-3.amazonaws.com/default/getPresignedUrl',
         {
           params:{
             filename: downloadFileInfo.filename,
@@ -95,8 +96,11 @@ function App() {
       <div className='upload-section'>
         <h2>파일 업로드</h2>
         <input type="file" onChange={handleFileChange}/>
-        <button onClick={uploadFile} disabled={!file}>
+        <button onClick={() => uploadFile("")} disabled={!file}>
           업로드
+        </button>
+        <button onClick={()=> uploadFile("user-profile/")} disabled={!file}>
+          프로필 업로드
         </button>
       </div>
 
@@ -112,11 +116,11 @@ function App() {
           다운로드
         </button>
       </div>
-
       {
         status !== '' &&
         <div className='status'>
-          <p>{status}</p>
+          <p>{status}</p> 
+          <img src={`https://dwxo8vkl18znf.cloudfront.net/user-profile/${downloadFileInfo?.filename}`}/>
         </div>
       }
     </div>
