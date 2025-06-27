@@ -3,7 +3,9 @@ package com.kh.login.service;
 import com.kh.login.domain.Member;
 import com.kh.login.dto.MemberCreateDto;
 import com.kh.login.exception.UserAleadyExistsException;
+import com.kh.login.exception.UserNotFoundException;
 import com.kh.login.repository.MemberRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,5 +37,18 @@ public class MemberService {
 
         memberRepository.save(member);
         return member;
+    }
+
+    public Member login(String email, String password) {
+        Optional<Member> optMember = memberRepository.findByEmail(email);
+        if (!optMember.isPresent()) {
+            throw new UserNotFoundException("이메일이 존재하지 않습니다.");
+        }
+
+        Member m = optMember.get();
+        if (!passwordEncoder.matches(password, m.getPassword())) {
+            throw new UserNotFoundException("비밀번호가 일치하지 않습니다.");
+        }
+        return m;
     }
 }

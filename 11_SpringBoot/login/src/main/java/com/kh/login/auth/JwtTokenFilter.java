@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -27,6 +28,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class JwtTokenFilter extends GenericFilter {
 
@@ -50,6 +52,7 @@ public class JwtTokenFilter extends GenericFilter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String token = httpRequest.getHeader("Authorization");
+        System.out.println("test : " + token);
         try {
             if (token != null) {
                 if (!token.startsWith("Bearer ")) {

@@ -95,9 +95,8 @@ const MemberLogin = () => {
     }
     try {
       const response = await login(loginData)
-      const { token, id } = response
+      const { token} = response
       sessionStorage.setItem("token", token)
-      sessionStorage.setItem("memberId", id)
       window.location.href = "/"
     } catch (error) {
       console.error("로그인 실패:", error)
