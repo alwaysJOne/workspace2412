@@ -2,6 +2,8 @@ package com.kh.login.service;
 
 import com.kh.login.domain.Member;
 import com.kh.login.dto.MemberCreateDto;
+import com.kh.login.dto.MemberLoginDto;
+import com.kh.login.dto.MemberResponseDto;
 import com.kh.login.exception.UserAleadyExistsException;
 import com.kh.login.exception.UserNotFoundException;
 import com.kh.login.repository.MemberRepository;
@@ -39,16 +41,22 @@ public class MemberService {
         return member;
     }
 
-    public Member login(String email, String password) {
-        Optional<Member> optMember = memberRepository.findByEmail(email);
+    public Member login(MemberLoginDto loginDto) {
+        Optional<Member> optMember = memberRepository.findByEmail(loginDto.getEmail());
         if (!optMember.isPresent()) {
             throw new UserNotFoundException("이메일이 존재하지 않습니다.");
         }
 
         Member m = optMember.get();
-        if (!passwordEncoder.matches(password, m.getPassword())) {
+        if (!passwordEncoder.matches(loginDto.getPassword(), m.getPassword())) {
             throw new UserNotFoundException("비밀번호가 일치하지 않습니다.");
         }
         return m;
+    }
+
+    public MemberResponseDto getMemberInfoByEmail(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("회원정보를 찾을 수 없습니다."));
+        return MemberResponseDto.from(member);
     }
 }
