@@ -1,0 +1,39 @@
+package com.kh.login.service;
+
+import com.kh.login.domain.Member;
+import com.kh.login.dto.MemberCreateDto;
+import com.kh.login.exception.UserAleadyExistsException;
+import com.kh.login.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public Member create(MemberCreateDto memberCreateDto) {
+        //이메일중복검사
+        if (memberRepository.existsByEmail(memberCreateDto.getEmail())) {
+            throw new UserAleadyExistsException("이미 존재하는 이메일입니다.");
+        }
+        //전화번호 중복검사
+        if (memberRepository.existsByPhone(memberCreateDto.getPhone_number())) {
+            throw new UserAleadyExistsException("이미 존재하는 전화번호입니다.");
+        }
+
+        //생성
+        Member member = Member.builder()
+                .name(memberCreateDto.getName())
+                .email(memberCreateDto.getEmail())
+                .password(passwordEncoder.encode(memberCreateDto.getPassword()))
+                .phone(memberCreateDto.getPhone_number())
+                .build();
+
+        memberRepository.save(member);
+        return member;
+    }
+}
