@@ -83,7 +83,7 @@ const MemberCreate = () => {
       name: name,
       email: email,
       password: password,
-      phone_number: phoneNumber
+      phoneNumber: phoneNumber
     }
     
     try {

@@ -84,7 +84,7 @@ const MemberLogin = () => {
   const [password, setPassword] = useState("")
   
   const kakaoUrl = "https://kauth.kakao.com/oauth/authorize"
-  const kakaoClientId = "<client-id>"
+  const kakaoClientId = "카카오 clientID"
   const kakaoRedirectUrl = "http://localhost:3000/oauth/kakao/redirect"
 
   const memberLogin = async (e) => {
@@ -95,8 +95,9 @@ const MemberLogin = () => {
     }
     try {
       const response = await login(loginData)
-      const { token} = response
+      const { token, id } = response
       sessionStorage.setItem("token", token)
+      sessionStorage.setItem("memberId", id)
       window.location.href = "/"
     } catch (error) {
       console.error("로그인 실패:", error)
