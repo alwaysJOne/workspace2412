@@ -27,7 +27,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/member/login" element={<MemberLogin />} />
           <Route path="/member/create" element={<MemberCreate />} />
-          <Route path="/oauth/kakao/callback" element={<KakaoRedirect />} />
+          <Route path="/oauth/kakao/redirect" element={<KakaoRedirect />} />
           <Route path="/files" element={<FileUpload />} />
         </Routes>
       </MainContent>

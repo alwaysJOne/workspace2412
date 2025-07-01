@@ -2,9 +2,12 @@ package com.kh.login.controller;
 
 import com.kh.login.auth.JwtTokenProvider;
 import com.kh.login.domain.Member;
+import com.kh.login.dto.AccessTokenDto;
 import com.kh.login.dto.MemberCreateDto;
 import com.kh.login.dto.MemberLoginDto;
 import com.kh.login.dto.MemberResponseDto;
+import com.kh.login.dto.RedirectDto;
+import com.kh.login.service.KakaoService;
 import com.kh.login.service.MemberService;
 import jakarta.validation.Valid;
 import java.util.HashMap;
@@ -25,6 +28,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final KakaoService kakaoService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody MemberCreateDto memberCreateDto) {
@@ -48,5 +52,10 @@ public class MemberController {
         String email = jwtTokenProvider.getUserEmailFromToken();
         MemberResponseDto memberInfo = memberService.getMemberInfoByEmail(email);
         return new ResponseEntity<>(memberInfo, HttpStatus.OK);
+    }
+
+    @PostMapping("/kakao/login")
+    public ResponseEntity<?> kakaoLogin(@RequestBody RedirectDto redirectDto) {
+        AccessTokenDto accessTokenDto = kakaoService.getAccessToken(redirectDto.getCode());
     }
 }
