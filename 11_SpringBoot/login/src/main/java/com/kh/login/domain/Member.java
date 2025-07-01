@@ -1,6 +1,7 @@
 package com.kh.login.domain;
 
 import com.kh.login.enums.Role;
+import com.kh.login.enums.SocialType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,6 +37,11 @@ public class Member {
 
     @Column(nullable = true, unique = true)
     private String phone;
+
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
+
+    private String socialId;
 
     @Enumerated(EnumType.STRING)
     @Builder.Default

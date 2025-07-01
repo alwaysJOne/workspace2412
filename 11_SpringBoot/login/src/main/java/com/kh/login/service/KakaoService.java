@@ -1,6 +1,7 @@
 package com.kh.login.service;
 
 import com.kh.login.dto.AccessTokenDto;
+import com.kh.login.dto.KakaoProfileDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,17 @@ public class KakaoService {
                 .body(params)
                 .retrieve()
                 .toEntity(AccessTokenDto.class);
+
+        return response.getBody();
+    }
+
+    public KakaoProfileDto getKakaoProfile(String token) {
+        RestClient restClient = RestClient.create();
+        ResponseEntity<KakaoProfileDto> response = restClient.get()
+                .uri("https://kapi.kakao.com/v2/user/me")
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .toEntity(KakaoProfileDto.class);
 
         return response.getBody();
     }

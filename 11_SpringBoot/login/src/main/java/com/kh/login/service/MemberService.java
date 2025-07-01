@@ -4,6 +4,7 @@ import com.kh.login.domain.Member;
 import com.kh.login.dto.MemberCreateDto;
 import com.kh.login.dto.MemberLoginDto;
 import com.kh.login.dto.MemberResponseDto;
+import com.kh.login.enums.SocialType;
 import com.kh.login.exception.UserAleadyExistsException;
 import com.kh.login.exception.UserNotFoundException;
 import com.kh.login.repository.MemberRepository;
@@ -59,4 +60,25 @@ public class MemberService {
                 .orElseThrow(() -> new UserNotFoundException("회원정보를 찾을 수 없습니다."));
         return MemberResponseDto.from(member);
     }
+
+    public Member getMemberBySocialId(String socialId) {
+        Member member = memberRepository.findBySocialId(socialId).orElse(null);
+        return member;
+    }
+
+    public Member createOauth(String socialId, String email, String name, SocialType socialType) {
+        Member member = Member.builder()
+                .email(email)
+                .name(name)
+                .password("")
+                .phone(null)
+                .socialType(socialType)
+                .socialId(socialId)
+                .build();
+
+        memberRepository.save(member);
+        return member;
+    }
+
+
 }

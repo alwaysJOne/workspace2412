@@ -1,6 +1,5 @@
 package com.kh.login.auth;
 
-import com.kh.login.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,7 +24,7 @@ public class JwtTokenProvider {
         this.SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createToken(String email, Role role) {
+    public String createToken(String email, String role) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);
 
