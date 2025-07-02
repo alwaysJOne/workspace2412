@@ -61,8 +61,8 @@ public class MemberService {
         return MemberResponseDto.from(member);
     }
 
-    public Member getMemberBySocialId(String socialId) {
-        Member member = memberRepository.findBySocialId(socialId).orElse(null);
+    public Member getMemberBySocialId(String socialId, SocialType socialType) {
+        Member member = memberRepository.findBySocialIdAndSocialType(socialId, socialType).orElse(null);
         return member;
     }
 
