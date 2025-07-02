@@ -60,7 +60,7 @@ public class MemberController {
     public ResponseEntity<?> kakaoLogin(@RequestBody RedirectDto redirectDto) {
         AccessTokenDto accessTokenDto = kakaoService.getAccessToken(redirectDto.getCode());
         KakaoProfileDto kakaoProfileDto = kakaoService.getKakaoProfile(accessTokenDto.getAccess_token());
-        Member originMember = memberService.getMemberBySocialId(kakaoProfileDto.getId());
+        Member originMember = memberService.getMemberBySocialId(kakaoProfileDto.getId(), SocialType.KAKAO);
         if (originMember == null) { //가입된 기록이 없음 회원가입해야함
             originMember = memberService.createOauth(
                     kakaoProfileDto.getId(),

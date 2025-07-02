@@ -1,6 +1,7 @@
 package com.kh.login.config;
 
 import com.kh.login.auth.JwtTokenFilter;
+import com.kh.login.service.GoogleOauth2LoginSuccess;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
+    private final GoogleOauth2LoginSuccess googleOauth2LoginSuccess;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,6 +40,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // 위의 요청경로를 제외한 나머지 경로는 인증
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                //OAuth2 로그인 성공시 실행될 핸드러를 설정
+                .oauth2Login(o -> o.successHandler(googleOauth2LoginSuccess))
                 .build();
     }
 
