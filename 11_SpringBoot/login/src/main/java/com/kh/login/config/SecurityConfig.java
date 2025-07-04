@@ -35,7 +35,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/v1/member/signup",
                                 "/v1/member/login",
-                                "/v1/member/kakao/login"
+                                "/v1/member/kakao/login",
+                                "/mail/send"
                         ).permitAll()
                         .anyRequest().authenticated() // 위의 요청경로를 제외한 나머지 경로는 인증
                 )

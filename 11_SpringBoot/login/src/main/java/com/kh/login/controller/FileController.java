@@ -2,6 +2,7 @@ package com.kh.login.controller;
 
 import com.kh.login.domain.File;
 import com.kh.login.dto.file.CompleteUploadRequestDto;
+import com.kh.login.dto.file.DownloadUrlResponseDto;
 import com.kh.login.dto.file.UploadUrlResponseDto;
 import com.kh.login.service.FileService;
 import java.util.List;
@@ -48,6 +49,8 @@ public class FileController {
     public ResponseEntity<?> getDownloadUrl(@PathVariable Long fileId) {
         File file = fileService.getFile(fileId);
         String presigendUrl = fileService.generatePresignedDownloadUrl(file.getChangeName());
+
+        return ResponseEntity.ok(new DownloadUrlResponseDto(presigendUrl, file.getOriginalName()));
     }
 
     @PostMapping("/complete")
