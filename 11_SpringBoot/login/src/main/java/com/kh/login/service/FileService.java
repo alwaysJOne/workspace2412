@@ -47,7 +47,7 @@ public class FileService {
     @Transactional
     public File saveFileInfo(String originalName, String changeName, String contentType) {
         File files = File.builder()
-                .originName(originalName)
+                .originalName(originalName)
                 .changeName(changeName)
                 .contentType(contentType)
                 .build();

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getUploadUrl, uploadFileToS3, getAllFiles, getDownloadUrl, completeUpload } from '../api/fileApi';
 
-const CLOUDFRONT_URL = '본인 클라우드 프론트 주소/';
+const CLOUDFRONT_URL = 'https://dwxo8vkl18znf.cloudfront.net/';
 
 const Container = styled.div`
   max-width: 800px;
@@ -257,6 +257,7 @@ const FileUpload = () => {
             {/* 파일 목록 */}
             <FileListSection>
                 <FileListTitle>파일 목록</FileListTitle>
+                {console.log(files)}
                 {files.length > 0 ? (
                     files.map((file) => (
                         <FileItem key={file.id}>

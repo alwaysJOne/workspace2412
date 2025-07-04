@@ -25,11 +25,11 @@ public class File {
     private Long id;
 
     @Column(nullable = false)
-    private String originName;
+    private String originalName;
 
     @Column(nullable = false, unique = true)
     private String changeName;
-    
+
     private String contentType;
 
     @CreationTimestamp
