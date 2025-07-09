@@ -40,7 +40,6 @@ function App() {
           <Route path="/mychats" element={<MyChatPage />} />
           <Route path="/chat" element={<ChatMenuPage />} />
           <Route path="/chatpage/:roomId" element={<ChatPage />} />
-          {/* <Route path="/chatpage/:roomId" element={<StompChatPage />} /> */}
         </Routes>
       </MainContent>
     </AppContainer>
