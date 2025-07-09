@@ -13,6 +13,7 @@ import com.kh.login.service.KakaoService;
 import com.kh.login.service.MemberService;
 import jakarta.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -74,5 +75,11 @@ public class MemberController {
         Map<String, Object> loginInfo = new HashMap<>();
         loginInfo.put("token", jwtToken);
         return new ResponseEntity<>(loginInfo, HttpStatus.OK);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> getMemberList() {
+        List<MemberResponseDto> dtos = memberService.findAll();
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 }

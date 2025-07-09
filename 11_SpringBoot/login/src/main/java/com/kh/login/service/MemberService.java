@@ -8,7 +8,9 @@ import com.kh.login.enums.SocialType;
 import com.kh.login.exception.UserAleadyExistsException;
 import com.kh.login.exception.UserNotFoundException;
 import com.kh.login.repository.MemberRepository;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -78,6 +80,16 @@ public class MemberService {
 
         memberRepository.save(member);
         return member;
+    }
+
+    public List<MemberResponseDto> findAll() {
+        List<Member> members = memberRepository.findAll();
+
+        List<MemberResponseDto> dtos = members.stream()
+                .map(MemberResponseDto::from)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 
 
