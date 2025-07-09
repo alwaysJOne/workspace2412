@@ -124,9 +124,11 @@ const ChatPage = () => {
 
   const connectWebsocket = () => {
     const websocket = new WebSocket(getWsUrl(roomId));
+    
     websocket.onopen = () => {
       console.log('WebSocket 연결됨');
     };
+
     websocket.onmessage = (event) => {
       try {
         const message = JSON.parse(event.data);
@@ -135,6 +137,7 @@ const ChatPage = () => {
         console.error('메시지 파싱 실패:', error);
       }
     };
+    
     websocket.onclose = () => {
       console.log('WebSocket 연결 종료');
     };

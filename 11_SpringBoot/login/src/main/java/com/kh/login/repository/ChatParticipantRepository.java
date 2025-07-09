@@ -3,6 +3,7 @@ package com.kh.login.repository;
 import com.kh.login.domain.ChatParticipant;
 import com.kh.login.domain.ChatRoom;
 import com.kh.login.domain.Member;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +13,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ChatParticipantRepository extends JpaRepository<ChatParticipant, Long> {
     Optional<ChatParticipant> findByChatRoomAndMember(ChatRoom chatRoom, Member member);
-    
+
+    List<ChatParticipant> findByChatRoom(ChatRoom chatRoom);
 
     //두 사용자가 함께 참여하고 있는 1:1 채팅방
     @Query("""
