@@ -68,6 +68,7 @@ public class SimpleWebSocketHandler extends TextWebSocketHandler {
         session.getAttributes().put("roomId", roomId);
 
         // roomId에 해당하는 세션 Set에 추가 (없으면 새로 생성)
+        //computeIfAbsent() 해당 키에 값이 있으면 그 값을 반환하고 없다면 새로운 값을 만들어서 넣어준다.
         roomSessions.computeIfAbsent(roomId, k -> ConcurrentHashMap.newKeySet()).add(session);
         System.out.println("Connected : " + session.getId() + " to room " + roomId);
     }
@@ -81,8 +82,9 @@ public class SimpleWebSocketHandler extends TextWebSocketHandler {
         String payload = message.getPayload();
         System.out.println("received message : " + payload);
         ChatMessageDto chatMessageDto = objectMapper.readValue(payload, ChatMessageDto.class);
+
         //메시지 DB 저장
-        chatService.saveMessage(chatMessageDto.getRoomId(), chatMessageDto);
+        chatService.saveMessage(chatMessageDto);
 
         //해당 채팅방(roomId)에만 브로드캐스트
         Long roomId = chatMessageDto.getRoomId();

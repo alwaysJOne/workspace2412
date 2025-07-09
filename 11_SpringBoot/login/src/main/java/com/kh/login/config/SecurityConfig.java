@@ -37,7 +37,8 @@ public class SecurityConfig {
                                 "/v1/member/login",
                                 "/v1/member/kakao/login",
                                 "/auth/email/*",
-                                "/mail/send"
+                                "/mail/send",
+                                "/connect/**"
                         ).permitAll()
                         .anyRequest().authenticated() // 위의 요청경로를 제외한 나머지 경로는 인증
                 )
