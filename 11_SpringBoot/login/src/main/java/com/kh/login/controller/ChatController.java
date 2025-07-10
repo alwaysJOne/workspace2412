@@ -1,6 +1,7 @@
 package com.kh.login.controller;
 
 import com.kh.login.dto.chat.ChatMessageDto;
+import com.kh.login.dto.chat.ChatRoomResponse;
 import com.kh.login.service.ChatService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,37 @@ public class ChatController {
     }
 
     //특정 채팅방의 이전 메세지 목록 조회
-    @GetMapping("history/{roomId}")
+    @GetMapping("/history/{roomId}")
     public ResponseEntity<?> getChatHistory(@PathVariable Long roomId) {
         List<ChatMessageDto> chatMessageDtos = chatService.getChatHistory(roomId);
         return new ResponseEntity<>(chatMessageDtos, HttpStatus.OK);
+    }
+
+    //그룹채팅목록 조회
+    @GetMapping("/room/group/list")
+    public ResponseEntity<?> getChatGroupList() {
+        List<ChatRoomResponse> chatRooms = chatService.getGroupchatRooms();
+        return new ResponseEntity<>(chatRooms, HttpStatus.OK);
+    }
+
+    //그룹 채팅방 개설
+    @PostMapping("/room/group/create")
+    public ResponseEntity<?> createGroupRoom(@RequestParam String roomName) {
+        Long roomId = chatService.createGroupRoom(roomName);
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomId);
+    }
+
+    //그룹 채팅방 참여
+    @PostMapping("/room/group/{roomId}/join")
+    public ResponseEntity<?> joinGroupRoom(@PathVariable Long roomId) {
+        chatService.addParticipantToGroupChat(roomId);
+        return ResponseEntity.ok().build();
+    }
+
+    //내 채팅방 목록 조회 : roomId, roomName, 그룹채팅여부, 메세지 읽을 개수
+    @GetMapping("/my/rooms")
+    public ResponseEntity<?> getMyRooms() {
+        chatService.getMyChatRooms();
+        return ResponseEntity.ok().build();
     }
 }

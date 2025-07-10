@@ -1,11 +1,13 @@
 package com.kh.login.service;
 
+import com.kh.login.auth.JwtTokenProvider;
 import com.kh.login.domain.ChatMessage;
 import com.kh.login.domain.ChatParticipant;
 import com.kh.login.domain.ChatRoom;
 import com.kh.login.domain.Member;
 import com.kh.login.domain.ReadStatus;
 import com.kh.login.dto.chat.ChatMessageDto;
+import com.kh.login.dto.chat.ChatRoomResponse;
 import com.kh.login.repository.ChatMessageRepository;
 import com.kh.login.repository.ChatParticipantRepository;
 import com.kh.login.repository.ChatRoomReposigory;
@@ -30,6 +32,7 @@ public class ChatService {
     private final ChatRoomReposigory chatRoomReposigory;
     private final ChatMessageRepository chatMessageRepository;
     private final ReadStatusRepository readStatusRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     //1:1채팅방 생성 또는 조회
     public Long getOrCreatePrivateRoom(Long otherMemberId) {
@@ -85,7 +88,7 @@ public class ChatService {
         ChatRoom chatRoom = chatRoomReposigory.findById(roomId)
                 .orElseThrow(() -> new EntityNotFoundException("Room not found"));
 
-        Member member = memberRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+        Member member = memberRepository.findByEmail(jwtTokenProvider.getUserEmailFromToken())
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
 
         boolean isParticipant = chatParticipantRepository.findByChatRoom(chatRoom)
@@ -143,7 +146,88 @@ public class ChatService {
                         .isRead(c.getMember().equals(sender))
                         .build())
                 .toList();
-        
+
         readStatusRepository.saveAll(readStatuses);
+    }
+
+    /*
+    그룹인 채팅방 조회
+    1. isGroupChat = 'Y'인 채팅방만 필터링해서 조회
+    2. 채팅방정보를 dto로 변환해서 반환
+     */
+    public List<ChatRoomResponse> getGroupchatRooms() {
+        List<ChatRoom> chatRooms = chatRoomReposigory.findByIsGroupChat("Y");
+        List<ChatRoomResponse> dtos = chatRooms.stream()
+                .map(c -> ChatRoomResponse.builder()
+                        .roomId(c.getId())
+                        .roomName(c.getName())
+                        .build())
+                .toList();
+
+        return dtos;
+    }
+
+    /*
+    그룹 채팅방 생성
+    1. 현재 로그인한 사용자 조회
+    2. 그룹채팅방 만들기
+    3. 로그인한 사용자를 첫번째 참여자로 등록
+     */
+    public Long createGroupRoom(String chatRoomName) {
+        Member member = memberRepository.findByEmail(jwtTokenProvider.getUserEmailFromToken())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        ChatRoom chatRoom = ChatRoom.builder()
+                .name(chatRoomName)
+                .isGroupChat("Y")
+                .build();
+
+        chatRoomReposigory.save(chatRoom);
+
+        ChatParticipant chatParticipant = ChatParticipant.builder()
+                .chatRoom(chatRoom)
+                .member(member)
+                .build();
+
+        chatParticipantRepository.save(chatParticipant);
+
+        return chatRoom.getId();
+    }
+
+    /*
+    그룹 채팅방 참여
+
+    1. 채팅방 조회
+    2. 현재 사용자가 참여중인지 여부 확인
+    3. 참여자로 등록x -> 새로운 참여자로 등록
+     */
+    public void addParticipantToGroupChat(Long roomId) {
+        ChatRoom chatRoom = chatRoomReposigory.findById(roomId)
+                .orElseThrow(() -> new EntityNotFoundException("Room not found"));
+
+        Member member = memberRepository.findByEmail(jwtTokenProvider.getUserEmailFromToken())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        if (chatRoom.getIsGroupChat().equals("N")) {
+            throw new IllegalArgumentException("그룹 채팅이 아닙니다.");
+        }
+
+        Optional<ChatParticipant> participant = chatParticipantRepository.findByChatRoomAndMember(chatRoom, member);
+        if (!participant.isPresent()) {
+            addParticipantToRoom(chatRoom, member);
+        }
+    }
+
+    /*
+     내 채팅방 목록 조회
+
+     1. 로그인한 사용자 정보 가져오기
+     2. 사용자가 속한 채팅방 목록 가져오기
+     3. 각 채팅방마다 읽지않은 메세지 수를 계산
+     4. 모든 정보를 dto로 만들어서 반환
+     */
+    public void getMyChatRooms() {
+        Member member = memberRepository.findByEmail(jwtTokenProvider.getUserEmailFromToken())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
     }
 }
