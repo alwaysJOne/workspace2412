@@ -8,6 +8,7 @@ import com.kh.login.domain.Member;
 import com.kh.login.domain.ReadStatus;
 import com.kh.login.dto.chat.ChatMessageDto;
 import com.kh.login.dto.chat.ChatRoomResponse;
+import com.kh.login.dto.chat.MyChatResponse;
 import com.kh.login.repository.ChatMessageRepository;
 import com.kh.login.repository.ChatParticipantRepository;
 import com.kh.login.repository.ChatRoomReposigory;
@@ -226,8 +227,75 @@ public class ChatService {
      3. 각 채팅방마다 읽지않은 메세지 수를 계산
      4. 모든 정보를 dto로 만들어서 반환
      */
-    public void getMyChatRooms() {
+    public List<MyChatResponse> getMyChatRooms() {
         Member member = memberRepository.findByEmail(jwtTokenProvider.getUserEmailFromToken())
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        List<ChatParticipant> chatParticipants = chatParticipantRepository.findAllByMember(member);
+
+        List<MyChatResponse> dtos = chatParticipants.stream()
+                .map(c -> {
+                    //각 채팅방의 읽지않은 메세지 수 조회
+                    Long count = readStatusRepository.countByChatRoomAndMemberAndIsReadFalse(c.getChatRoom(), member);
+
+                    return MyChatResponse.builder()
+                            .roomId(c.getChatRoom().getId())
+                            .roomName(c.getChatRoom().getName())
+                            .isGroupChat(c.getChatRoom().getIsGroupChat())
+                            .unReadCount(count)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return dtos;
+    }
+
+    /*
+    메세지 읽음 처리
+
+    1. 채팅방과 사용자의 정보를 확인
+    2. 해당 사용자의 해당 방의 모든 읽지않은 메세지를 읽음 상태로 변경
+     */
+    public void messageRead(Long roomId) {
+        ChatRoom chatRoom = chatRoomReposigory.findById(roomId)
+                .orElseThrow(() -> new EntityNotFoundException("Room not found"));
+
+        Member member = memberRepository.findByEmail(jwtTokenProvider.getUserEmailFromToken())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        List<ReadStatus> readStatuses = readStatusRepository.findByChatRoomAndMemberAndIsReadFalse(chatRoom, member);
+        for (ReadStatus r : readStatuses) {
+            r.updateIsRead(true);
+        }
+    }
+
+    /*
+        채팅방 참여자 목록 제외
+
+        1. 현재 사용자정보 가져오기
+        2. 채팅방 정보 가져오기
+        3. 사용자를 채팅방의 참여자목록에서 제거
+        4. 혹시 마지막 참여자라면 채팅방 자체를 삭제
+     */
+    public void leaveGroupChatRoom(Long roomId) {
+        ChatRoom chatRoom = chatRoomReposigory.findById(roomId)
+                .orElseThrow(() -> new EntityNotFoundException("Room not found"));
+
+        Member member = memberRepository.findByEmail(jwtTokenProvider.getUserEmailFromToken())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        if (chatRoom.getIsGroupChat().equals("N")) {
+            throw new IllegalArgumentException("단체 채팅방이 아닙니다.");
+        }
+
+        ChatParticipant c = chatParticipantRepository.findByChatRoomAndMember(chatRoom, member)
+                .orElseThrow(() -> new EntityNotFoundException("참여자를 찾을 수 없습니다."));
+        chatParticipantRepository.delete(c);
+
+        //남은 참여자가 없다면 채팅방 삭제
+        List<ChatParticipant> chatParticipants = chatParticipantRepository.findByChatRoom(chatRoom);
+        if (chatParticipants.isEmpty()) {
+            chatRoomReposigory.delete(chatRoom);
+        }
     }
 }
