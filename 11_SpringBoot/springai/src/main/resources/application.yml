@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: springai
+
+  ai:
+    openai:
+      api-key:
+server:
+  port: 8001
