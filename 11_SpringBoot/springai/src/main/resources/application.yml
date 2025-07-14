@@ -4,6 +4,6 @@ spring:
 
   ai:
     openai:
-      api-key:
+      api-key: 
 server:
   port: 8001
