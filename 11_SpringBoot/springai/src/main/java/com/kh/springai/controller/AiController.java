@@ -1,6 +1,9 @@
 package com.kh.springai.controller;
 
+import com.kh.springai.dto.SqlResponse;
 import com.kh.springai.entity.Movie;
+import com.kh.springai.service.DateTimeTools;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +17,15 @@ import org.springframework.ai.image.ImageOptionsBuilder;
 import org.springframework.ai.image.ImagePrompt;
 import org.springframework.ai.image.ImageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/api/ai")
@@ -30,6 +37,17 @@ public class AiController {
 
     @Autowired
     private ImageModel imageModel;
+
+    @Autowired
+    private DateTimeTools dateTimeTools;
+
+    @Value("classpath:/schema.sql")
+    private Resource schema;
+
+    @Value("classpath:/sql-prompt-template.st")
+    private Resource sqlPromptTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @GetMapping("/test")
     public Map<String, Object> testChatModel() {
@@ -165,5 +183,78 @@ public class AiController {
             response.put("error", e.getMessage());
         }
         return response;
+    }
+
+    /*
+    function-calling이란
+    - LLM이 직접 외부함수를 호출하여 실시간 정보를 가져오는 방식
+    - LLM이 사용자 질문을 분석해서 필요한 정보를 자동으로 선택하여 호출할 수 있음.
+
+    동작방식
+    1. ChatClient .tools() 사용할 수 있는 도구를 등록
+    2. 사용자 질문을 전달
+    3. 질문분석 후 필요한 도구를 판단해서 사용하여 정보 획득
+     */
+    @PostMapping("/function-calling-ko")
+    public Map<String, Object> functionCallingKo(@RequestBody Map<String, String> request) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            String question = request.get("question");
+            if(question == null || question.trim().isEmpty()) {
+                response.put("status", "error");
+                response.put("error", "질문을 입력해주세요.");
+                return response;
+            }
+
+            ChatClient chatClient = ChatClient.builder(chatModel).build();
+            String result = chatClient.prompt(question)
+                    .tools(dateTimeTools)
+                    .call()
+                    .content();
+
+            response.put("status", "success");
+            response.put("result", result);
+            response.put("type", "function-calling-ko");
+        }catch (Exception e) {
+            response.put("status", "error");
+            response.put("error", e.getMessage());
+        }
+
+        return response;
+    }
+
+    //자연어로 요청한부분을 llm을 통해 sql을 구성해서 추출하기
+    @GetMapping("/sql")
+    public SqlResponse sqlQuery(@RequestParam("question") String question) {
+
+        if(question == null || question.trim().isEmpty()) {
+            return new SqlResponse(null, List.of());
+        }
+
+        try {
+            //schema파일에서 ddl읽기
+            String schemaStr = schema.getContentAsString(Charset.defaultCharset());
+
+            //AI에게 자연어 질문과 DDL을 전달해서 sql쿼리 생성
+            ChatClient chatClient = ChatClient.builder(chatModel).build();
+            String query = chatClient.prompt()
+                    .user(userSpec -> userSpec
+                            .text(sqlPromptTemplate)
+                            .param("question", question)
+                            .param("ddl", schemaStr))
+                    .call()
+                    .content();
+
+            if(query.toLowerCase().startsWith("select")) {
+                System.out.println(query);
+                return new SqlResponse(query, jdbcTemplate.queryForList(query));
+            }
+
+            return new SqlResponse(query, List.of());
+        }catch (Exception e) {
+            return new SqlResponse("error : " + e.getMessage() , List.of());
+        }
+
     }
 }

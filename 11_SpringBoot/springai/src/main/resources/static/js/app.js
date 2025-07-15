@@ -467,3 +467,70 @@ async function askRag() {
         resultDiv.textContent = '질문 처리 중 오류 발생: ' + error.message;
     }
 } 
+
+// SQL 자연어 질의 테스트
+async function runSqlQuery() {
+    const question = document.getElementById('sqlQuestion').value.trim();
+    if (!question) {
+        alert('질문을 입력해주세요.');
+        return;
+    }
+    const button = document.querySelector('button[onclick="runSqlQuery()"]');
+    const resultDiv = document.getElementById('sqlResult');
+    button.disabled = true;
+    button.textContent = '실행 중...';
+    resultDiv.style.display = 'none';
+    try {
+        const response = await fetch(`${API_BASE}/sql?question=${encodeURIComponent(question)}`);
+        const data = await response.json();
+        displaySqlResult(data, question);
+    } catch (error) {
+        resultDiv.style.display = 'block';
+        resultDiv.className = 'result error';
+        resultDiv.textContent = '네트워크 오류: ' + error.message;
+    } finally {
+        button.disabled = false;
+        button.textContent = 'SQL 질의 실행';
+    }
+}
+
+function displaySqlResult(data, question) {
+    const element = document.getElementById('sqlResult');
+    element.style.display = 'block';
+    if (data.query && data.query.startsWith('error:')) {
+        element.className = 'result error';
+        element.textContent = data.query;
+        return;
+    }
+    element.className = 'result success';
+    let html = `<h3>SQL 쿼리:</h3><pre>${data.query || ''}</pre>`;
+    if (data.result && data.result.length > 0) {
+        html += '<h3>결과:</h3>';
+        html += '<table border="1" style="border-collapse:collapse; width:100%;">';
+        html += '<thead><tr>';
+        Object.keys(data.result[0]).forEach(key => {
+            html += `<th>${key}</th>`;
+        });
+        html += '</tr></thead><tbody>';
+        data.result.forEach(row => {
+            html += '<tr>';
+            Object.values(row).forEach(val => {
+                html += `<td>${val}</td>`;
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table>';
+    } else {
+        html += '<p>결과가 없습니다.</p>';
+    }
+    element.innerHTML = html;
+}
+
+// Enter 키로 SQL 질의 실행
+if (document.getElementById('sqlQuestion')) {
+    document.getElementById('sqlQuestion').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            runSqlQuery();
+        }
+    });
+} 

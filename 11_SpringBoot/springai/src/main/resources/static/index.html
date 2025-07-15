@@ -24,17 +24,6 @@
         </div>
         <br>
         <div class="section">
-            <h2>다양한 출력 변환 챗봇</h2>
-            <input type="text" id="chatMessage" placeholder="질문을 입력해주세요..." />
-            <div class="button-group" id="outputTypeButtons">
-                <button onclick="chat('json')">JSON 응답</button>
-                <button onclick="chat('list')">리스트 변환</button>
-                <button onclick="chat('map')">맵 변환</button>
-            </div>
-            <div id="chatResult" class="result" style="display: none;"></div>
-        </div>
-        <br>
-        <div class="section">
             <h2>PromptTemplate 예제</h2>
             <input type="text" id="templateName" placeholder="이름을 입력해주세요..." />
             <button onclick="promptTemplate()">템플릿 실행</button>
@@ -56,6 +45,13 @@
                 <button onclick="functionCalling('en')">English</button>
             </div>
             <div id="functionResult" class="result" style="display: none;"></div>
+        </div>
+        <br>
+        <div class="section">
+            <h2>SQL 자연어 질의 테스트</h2>
+            <input type="text" id="sqlQuestion" placeholder="예: 모든 책 목록 보여줘" />
+            <button onclick="runSqlQuery()">SQL 질의 실행</button>
+            <div id="sqlResult" class="result" style="display: none;"></div>
         </div>
         <br>
         <div class="section">
