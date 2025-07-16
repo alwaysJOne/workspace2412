@@ -52,7 +52,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         //요청을 허용할 도메인들
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("https://dn7lu1v1qes0l.cloudfront.net"));
 
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(List.of("*"));

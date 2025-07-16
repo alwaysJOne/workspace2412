@@ -39,6 +39,7 @@ public class ChatMessage extends BaseTimeEntity {
     @JoinColumn(name = "chat_room_id", nullable = false)
     private ChatRoom chatRoom;
 
+    @Builder.Default
     @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ReadStatus> readStatuses = new ArrayList<>();
 }
