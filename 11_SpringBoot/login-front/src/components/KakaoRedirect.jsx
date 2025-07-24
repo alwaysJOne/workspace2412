@@ -49,7 +49,7 @@ const KakaoRedirect = () => {
   const sendCodeToServer = async (code) => {
     try {
       // const response = await axios.post("http://localhost:8001/v1/member/kakao/login", { code })
-      const response = await axios.post("http://15.152.36.178:8080/v1/member/kakao/login", { code })
+      const response = await axios.post("https://api.alpha-note.co.kr/v1/member/kakao/login", { code })
     
       const token = response.data.token
       sessionStorage.setItem("token", token)

@@ -82,7 +82,7 @@ const BackButton = styled.button`
 
 function getWsUrl(roomId) {
   // const base = "http://localhost:8001";
-  const base = "http://15.152.36.178:8080";
+  const base = "https://api.alpha-note.co.kr";
   const token = sessionStorage.getItem('token');
   return base.replace(/^http/, 'ws') + `/connect?roomId=${roomId}&token=${token}`;
 }

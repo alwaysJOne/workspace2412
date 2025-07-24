@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const API_BASE_URL = 'http://localhost:8001';
-const API_BASE_URL = 'http://15.152.36.178:8080';
+const API_BASE_URL = 'https://api.alpha-note.co.kr';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,

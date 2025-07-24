@@ -86,7 +86,7 @@ const MemberLogin = () => {
   const kakaoUrl = "https://kauth.kakao.com/oauth/authorize"
   const kakaoClientId = "카카오 clientID"
   // const kakaoRedirectUrl = "http://localhost:3000/oauth/kakao/redirect"
-  const kakaoRedirectUrl = "http://15.152.36.178:8080/oauth/kakao/redirect"
+  const kakaoRedirectUrl = "https://alpha-note.co.kr/oauth/kakao/redirect"
 
   const memberLogin = async (e) => {
     e.preventDefault()
@@ -113,7 +113,7 @@ const MemberLogin = () => {
 
   const googleServerLogin = () => {
     //window.location.href = "http://localhost:8001/oauth2/authorization/google"
-    window.location.href = "http://15.152.36.178:8080/oauth2/authorization/google"
+    window.location.href = "https://api.alpha-note.co.kr/oauth2/authorization/google"
   }
 
   return (

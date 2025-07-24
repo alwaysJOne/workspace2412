@@ -20,6 +20,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
         // /connect url로 websocket연결 요청이 들어오면, 핸들러 클래스가 처리
         registry.addHandler(simpleWebSocketHandler, "/connect")
                 .setAllowedOrigins(
-                        "https://dn7lu1v1qes0l.cloudfront.net"); // [운영배포시] 운영 도메인으로 변경 필요, 여러 도메인 허용 시 환경별 분기 처리 권장
+                        "https://alpha-note.co.kr"); // [운영배포시] 운영 도메인으로 변경 필요, 여러 도메인 허용 시 환경별 분기 처리 권장
     }
 }
