@@ -1,24 +1,13 @@
-import { useState } from 'react'
-import './App.css'
-import styled from 'styled-components'
-import TodoList from './components/TodoList'
-
-const AppContainer = styled.div`
-  min-height: 100vh;
-  background: #f3f2f2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-`
+import { TodoProvider } from './context/TodoContext';
+import AppRoutes from './routes/routes';
+import './App.css';
 
 function App() {
-
   return (
-    <AppContainer>
-      <TodoList />
-    </AppContainer>
-  )
+    <TodoProvider>
+      <AppRoutes />
+    </TodoProvider>
+  );
 }
 
-export default App
+export default App;
