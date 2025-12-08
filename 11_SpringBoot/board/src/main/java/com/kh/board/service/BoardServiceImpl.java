@@ -1,6 +1,7 @@
 package com.kh.board.service;
 
 import com.kh.board.entity.Board;
+import com.kh.board.entity.Member;
 import com.kh.board.mapper.BoardMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,12 @@ public class BoardServiceImpl implements BoardService {
         return board.getBoardId();
     }
 
-
+    @Override
+    public Member findMemberByUserId(String userId) {
+        // This is a placeholder implementation. In a real application,
+        // you would retrieve the Member from a database or another service.
+        Member member = new Member();
+        member.setEmail(userId);
+        return member;
+    }
 }

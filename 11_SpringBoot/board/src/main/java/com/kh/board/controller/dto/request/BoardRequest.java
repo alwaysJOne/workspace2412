@@ -23,7 +23,7 @@ public class BoardRequest {
                         .contents(contents)
                         .fileName(file_name)
                         .build();
-        }
+        } 
     }
 
     @Getter

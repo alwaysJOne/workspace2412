@@ -3,6 +3,7 @@ package com.kh.board.controller;
 import com.kh.board.controller.dto.request.BoardRequest;
 import com.kh.board.controller.dto.response.BoardResponse;
 import com.kh.board.entity.Board;
+import com.kh.board.entity.Member;
 import com.kh.board.mapper.BoardMapper;
 import com.kh.board.service.BoardService;
 import java.io.File;
@@ -64,7 +65,8 @@ public class BoardController {
             request.setFile_name("/uploads/" + upfile.getOriginalFilename());
         }
 
-        Board board = request.toEntity();
+        Member member = boardService.findMemberByUserId(request.getUser_id());
+        Board board = request.toEntity(member);
         int result = boardService.save(board);
 
         if(result > 0){
@@ -90,7 +92,7 @@ public class BoardController {
             request.setOrigin_file("/uploads/" + upfile.getOriginalFilename());
         }
 
-        Board board = request.toEntity();
+        Board board = request.toEntity(boardService.findMemberByUserId(request.getUser_id()));
         System.out.println(board);
 
         Long boardId = boardService.update(board);
