@@ -1,0 +1,268 @@
+/* =========================================================
+1) MEMBER (CREATE_DATE, MODIFY_DATE 포함)
+   ========================================================= */
+   INSERT INTO MEMBER
+   (USER_ID, USER_PWD, USER_NAME, EMAIL, GENDER, AGE, PHONE, ADDRESS, STATUS, CREATE_DATE, MODIFY_DATE)
+   VALUES
+   ('admin', '$2a$10$xyzabc123', '관리자', 'admin@example.com', 'M', 30,
+   '010-1234-5678', '서울시 강남구', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO MEMBER
+(USER_ID, USER_PWD, USER_NAME, EMAIL, GENDER, AGE, PHONE, ADDRESS, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('user01', '$2a$10$password01', '김철수', 'kim@example.com', 'M', 25,
+'010-1111-2222', '서울시 마포구', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO MEMBER
+(USER_ID, USER_PWD, USER_NAME, EMAIL, GENDER, AGE, PHONE, ADDRESS, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('user02', '$2a$10$password02', '이영희', 'lee@example.com', 'F', 28,
+'010-3333-4444', '경기도 성남시', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO MEMBER
+(USER_ID, USER_PWD, USER_NAME, EMAIL, GENDER, AGE, PHONE, ADDRESS, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('user03', '$2a$10$password03', '박민수', 'park@example.com', 'M', 32,
+'010-5555-6666', '인천시 남동구', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO MEMBER
+(USER_ID, USER_PWD, USER_NAME, EMAIL, GENDER, AGE, PHONE, ADDRESS, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('user04', '$2a$10$password04', '최수진', 'choi@example.com', 'F', 27,
+'010-7777-8888', '부산시 해운대구', 'N', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+/* =========================================================
+2) TAG
+   ========================================================= */
+   INSERT INTO TAG (TAG_NAME) VALUES ('Java');
+   INSERT INTO TAG (TAG_NAME) VALUES ('Spring');
+   INSERT INTO TAG (TAG_NAME) VALUES ('JPA');
+   INSERT INTO TAG (TAG_NAME) VALUES ('Database');
+   INSERT INTO TAG (TAG_NAME) VALUES ('Backend');
+   INSERT INTO TAG (TAG_NAME) VALUES ('Tutorial');
+   INSERT INTO TAG (TAG_NAME) VALUES ('Question');
+   INSERT INTO TAG (TAG_NAME) VALUES ('Tips');
+
+
+/* =========================================================
+3) PROFILE
+   ========================================================= */
+   INSERT INTO PROFILE
+   (USER_ID, PROFILE_IMAGE, INTRO)
+   VALUES
+   ('admin', 'admin_profile.jpg', '안녕하세요! 관리자입니다. 궁금한 점은 언제든 문의해주세요.');
+
+INSERT INTO PROFILE
+(USER_ID, PROFILE_IMAGE, INTRO)
+VALUES
+('user01', 'user01_profile.jpg', 'Java 백엔드 개발자를 꿈꾸는 김철수입니다. 잘 부탁드립니다!');
+
+INSERT INTO PROFILE
+(USER_ID, PROFILE_IMAGE, INTRO)
+VALUES
+('user02', 'user02_profile.jpg', 'Spring Boot로 프로젝트 개발 중인 이영희입니다.');
+
+
+/* =========================================================
+4) NOTICE
+   ========================================================= */
+   INSERT INTO NOTICE
+   (NOTICE_TITLE, NOTICE_WRITER, NOTICE_CONTENT)
+   VALUES
+   ('서비스 오픈 안내', 'admin', '안녕하세요. 커뮤니티 서비스가 정식 오픈되었습니다. 많은 이용 부탁드립니다.');
+
+INSERT INTO NOTICE
+(NOTICE_TITLE, NOTICE_WRITER, NOTICE_CONTENT)
+VALUES
+('개인정보 처리방침 변경 안내', 'admin', '개인정보 처리방침이 2024년 1월 1일부로 변경됩니다. 자세한 내용은 공지사항을 확인해주세요.');
+
+INSERT INTO NOTICE
+(NOTICE_TITLE, NOTICE_WRITER, NOTICE_CONTENT)
+VALUES
+('정기 점검 안내', 'admin', '매주 월요일 02:00 ~ 04:00 정기 점검이 진행됩니다. 서비스 이용에 참고 부탁드립니다.');
+
+
+/* =========================================================
+5) BOARD (CREATE_DATE, MODIFY_DATE 포함)
+   ========================================================= */
+   INSERT INTO BOARD
+   (BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, COUNT, STATUS, CREATE_DATE, MODIFY_DATE)
+   VALUES
+   ('Spring Boot 시작하기', 'user01',
+   'Spring Boot 프로젝트를 시작하는 방법에 대해 알아봅시다. 먼저 Spring Initializr에서 프로젝트를 생성하고...',
+   NULL, NULL, 45, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO BOARD
+(BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, COUNT, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('JPA Entity 매핑 질문', 'user02',
+'JPA에서 연관관계 매핑할 때 양방향 매핑과 단방향 매핑 중 어떤 것을 사용하는 게 좋을까요?',
+NULL, NULL, 32, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO BOARD
+(BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, COUNT, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('데이터베이스 설계 팁', 'user03',
+'효율적인 데이터베이스 설계를 위한 몇 가지 팁을 공유합니다. 1. 정규화를 적절히 수행하고 2. 인덱스를 잘 활용하며...',
+'db_design.png', 'uuid123_db_design.png', 78, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO BOARD
+(BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, COUNT, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('@Transactional 사용법', 'user01',
+'Spring의 @Transactional 애노테이션 사용 방법과 주의사항에 대해 정리했습니다.',
+NULL, NULL, 56, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO BOARD
+(BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, COUNT, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('REST API 설계 가이드', 'user02',
+'RESTful API를 설계할 때 지켜야 할 규칙과 Best Practice를 공유합니다. URI 설계, HTTP 메서드 활용법 등...',
+NULL, NULL, 92, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO BOARD
+(BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, COUNT, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('JPA N+1 문제 해결하기', 'user03',
+'JPA 사용 시 발생하는 N+1 문제의 원인과 해결 방법에 대해 알아봅시다. Fetch Join, EntityGraph 등...',
+NULL, NULL, 67, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO BOARD
+(BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, COUNT, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('테스트 코드 작성하기', 'user01',
+'JUnit과 Mockito를 활용한 단위 테스트 작성 방법을 소개합니다.',
+'test_example.jpg', 'uuid456_test_example.jpg', 41, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO BOARD
+(BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, COUNT, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('Spring Security 적용', 'user02',
+'Spring Security를 프로젝트에 적용하는 방법과 설정 방법을 단계별로 설명합니다.',
+NULL, NULL, 83, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO BOARD
+(BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, COUNT, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('Docker로 배포하기', 'user03',
+'Spring Boot 애플리케이션을 Docker 컨테이너로 배포하는 방법에 대해 알아봅시다.',
+'docker_guide.pdf', 'uuid789_docker_guide.pdf', 29, 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO BOARD
+(BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, ORIGIN_NAME, CHANGE_NAME, COUNT, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('삭제된 게시글', 'user04',
+'이 게시글은 삭제되었습니다.',
+NULL, NULL, 5, 'N', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+/* =========================================================
+6) REPLY (CREATE_DATE, MODIFY_DATE 포함)
+   ========================================================= */
+   INSERT INTO REPLY
+   (REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+   VALUES
+   ('정말 유익한 글이네요! 감사합니다.', 1, 'user02', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('저도 처음 시작할 때 많이 헤맸는데 도움이 되었습니다.', 1, 'user03', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('양방향 매핑은 필요한 경우에만 사용하는 것이 좋습니다.', 2, 'user01', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('보통 단방향으로 시작해서 필요시 양방향으로 변경하는 게 좋아요.', 2, 'user03', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('좋은 팁 감사합니다!', 3, 'user01', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('readOnly 옵션도 함께 설명해주시면 좋을 것 같아요.', 4, 'user02', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('@Transactional의 propagation 옵션도 중요하죠!', 4, 'user03', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('REST API 설계할 때 항상 참고하고 있습니다.', 5, 'user01', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('HTTP 상태 코드 사용법도 추가해주시면 좋겠네요.', 5, 'user03', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('N+1 문제 때문에 고생했는데 덕분에 해결했습니다!', 6, 'user01', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('Batch Size 설정도 효과적이에요.', 6, 'user02', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('테스트 커버리지는 어느 정도 유지하시나요?', 7, 'user03', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('Spring Security 설정이 복잡해서 어려웠는데 도움이 되었습니다.', 8, 'user01', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('Docker Compose도 함께 사용하면 더 편리해요.', 9, 'user02', 'Y', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO REPLY
+(REPLY_CONTENT, REF_BNO, REPLY_WRITER, STATUS, CREATE_DATE, MODIFY_DATE)
+VALUES
+('삭제된 댓글입니다.', 1, 'user04', 'N', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+/* =========================================================
+7) BOARD_TAG
+   ========================================================= */
+   INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (1, 2);
+   INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (1, 5);
+   INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (1, 6);
+
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (2, 3);
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (2, 7);
+
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (3, 4);
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (3, 8);
+
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (4, 2);
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (4, 6);
+
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (5, 5);
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (5, 8);
+
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (6, 3);
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (6, 5);
+
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (7, 1);
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (7, 6);
+
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (8, 2);
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (8, 5);
+
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (9, 5);
+INSERT INTO BOARD_TAG (BOARD_NO, TAG_ID) VALUES (9, 6);

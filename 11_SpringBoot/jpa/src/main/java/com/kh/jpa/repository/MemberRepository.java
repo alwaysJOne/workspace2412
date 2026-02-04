@@ -4,6 +4,10 @@ import com.kh.jpa.entity.Member;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Member Repository 인터페이스
+ * MemberRepositoryImpl에서 구현
+ */
 public interface MemberRepository {
     void save(Member member);
     Optional<Member> findOne(String userId);

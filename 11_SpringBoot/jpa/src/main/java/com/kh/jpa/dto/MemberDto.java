@@ -72,19 +72,22 @@ public class MemberDto {
         private LocalDateTime enrollDate;
         private CommonEnums.Status status;
 
-        public static Response toDto(Member member) {
+        public static Response of(String userId, String userName, String email,
+                                   Member.Gender gender, String phone, String address,
+                                   Integer age, LocalDateTime enrollDate,
+                                   LocalDateTime modifyDate, CommonEnums.Status status) {
             return Response.builder()
-                           .user_id(member.getUserId())
-                           .user_name(member.getUserName())
-                           .email(member.getEmail())
-                           .gender(member.getGender())
-                           .age(member.getAge())
-                           .phone(member.getPhone())
-                           .address(member.getAddress())
-                           .enrollDate(member.getEnrollDate())
-                           .modifyDate(member.getModifyDate())
-                           .status(member.getStatus())
-                           .build();
+                    .user_id(userId)
+                    .user_name(userName)
+                    .email(email)
+                    .gender(gender)
+                    .phone(phone)
+                    .address(address)
+                    .age(age)
+                    .enrollDate(enrollDate)
+                    .modifyDate(modifyDate)
+                    .status(status)
+                    .build();
         }
     }
 }

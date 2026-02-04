@@ -4,6 +4,7 @@ import com.kh.jpa.dto.BoardDto;
 import com.kh.jpa.dto.PageResponse;
 import com.kh.jpa.entity.Board;
 import com.kh.jpa.service.BoardService;
+import com.kh.jpa.service.BoardServiceJpa;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BoardController {
 
-    private final BoardService boardService;
+    // ========== Service 선택 (주석으로 전환) ==========
+    // 1. Spring Data JPA 버전 (현재 사용 중)
+//    private final BoardServiceJpa boardService;
+
+    // 2. JPQL 버전 (EntityManager 직접 사용)
+     private final BoardService boardService;
     /*
     page 보고자하는 페이지 번호
     size 몇개씩 가지고 올것인지

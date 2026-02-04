@@ -2,22 +2,22 @@ package com.kh.jpa.service;
 
 import com.kh.jpa.dto.MemberDto;
 import com.kh.jpa.entity.Member;
-import com.kh.jpa.repository.MemberRepository;
+import com.kh.jpa.repository.MemberJpaRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 회원 관련 비즈니스 로직을 처리하는 서비스 클래스
+ * 회원 관련 비즈니스 로직을 처리하는 서비스 클래스 - Spring Data JPA 버전
+ * MemberJpaRepository(JpaRepository 상속)를 사용
  */
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class MemberService {
+public class MemberServiceJpa {
 
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberJpaRepository;
 
     /**
      * 회원 등록
@@ -25,9 +25,9 @@ public class MemberService {
      * @return 생성된 회원 ID
      */
     public String createMember(MemberDto.Create createDto) {
-        Member member = createDto.toEntity(); //메모리 올라온 member
-        memberRepository.save(member);
-        return member.getUserId(); // 영속상태의 member
+        Member member = createDto.toEntity();
+        memberJpaRepository.save(member); // JpaRepository.save()
+        return member.getUserId();
     }
 
     /**
@@ -37,7 +37,7 @@ public class MemberService {
      */
     @Transactional(readOnly = true)
     public MemberDto.Response findMember(String userId) {
-        return memberRepository.findOne(userId)
+        return memberJpaRepository.findById(userId) // JpaRepository.findById()
                 .map(member -> MemberDto.Response.of(
                         member.getUserId(),
                         member.getUserName(),
@@ -60,8 +60,9 @@ public class MemberService {
      * @return 수정된 회원 정보 DTO
      */
     public MemberDto.Response updateMember(String userId, MemberDto.Update updateDto) {
-        Member member = memberRepository.findOne(userId)
-                                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        Member member = memberJpaRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
         member.updateMemberInfo(
                 updateDto.getUser_name(),
                 updateDto.getEmail(),
@@ -70,6 +71,7 @@ public class MemberService {
                 updateDto.getAddress(),
                 updateDto.getAge()
         );
+
         return MemberDto.Response.of(
                 member.getUserId(),
                 member.getUserName(),
@@ -89,9 +91,9 @@ public class MemberService {
      * @param userId 삭제할 회원 ID
      */
     public void deleteMember(String userId) {
-        Member member = memberRepository.findOne(userId)
-                                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-        memberRepository.delete(member);
+        Member member = memberJpaRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        memberJpaRepository.delete(member); // JpaRepository.delete()
     }
 
     /**
@@ -100,7 +102,8 @@ public class MemberService {
      */
     @Transactional(readOnly = true)
     public List<MemberDto.Response> findAllMember() {
-        return memberRepository.findAll().stream()
+        return memberJpaRepository.findAll() // JpaRepository.findAll()
+                .stream()
                 .map(member -> MemberDto.Response.of(
                         member.getUserId(),
                         member.getUserName(),
@@ -113,7 +116,7 @@ public class MemberService {
                         member.getModifyDate(),
                         member.getStatus()
                 ))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -123,7 +126,8 @@ public class MemberService {
      */
     @Transactional(readOnly = true)
     public List<MemberDto.Response> findByName(String name) {
-        return memberRepository.findByName(name).stream()
+        return memberJpaRepository.findByUserNameContaining(name) // Method Query 사용
+                .stream()
                 .map(member -> MemberDto.Response.of(
                         member.getUserId(),
                         member.getUserName(),
@@ -136,6 +140,6 @@ public class MemberService {
                         member.getModifyDate(),
                         member.getStatus()
                 ))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

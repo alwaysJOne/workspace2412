@@ -2,6 +2,7 @@ package com.kh.jpa.controller;
 
 import com.kh.jpa.dto.MemberDto;
 import com.kh.jpa.service.MemberService;
+import com.kh.jpa.service.MemberServiceJpa;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberService memberService;
+    // ========== Service 선택 (주석으로 전환) ==========
+    // 1. Spring Data JPA 버전 (현재 사용 중)
+    private final MemberServiceJpa memberService;
+
+    // 2. JPQL 버전 (EntityManager 직접 사용)
+    // private final MemberService memberService;
+
+    //전체 회원 조회
+    @GetMapping
+    public ResponseEntity<List<MemberDto.Response>> getAllMembers() {return ResponseEntity.ok(memberService.findAllMember());}
+
+    //회원조회
+    @GetMapping("/{userId}")
+    public ResponseEntity<MemberDto.Response> getMember(@PathVariable String userId) {
+        return ResponseEntity.ok(memberService.findMember(userId));
+    }
 
     //회원등록API
     @PostMapping
@@ -30,16 +46,6 @@ public class MemberController {
         //return new ResponseEntity<String>(userId, HttpStatus.OK);
         return ResponseEntity.ok(userId);
     }
-
-    //회원조회
-    @GetMapping("/{userId}")
-    public ResponseEntity<MemberDto.Response> getMember(@PathVariable String userId) {
-        return ResponseEntity.ok(memberService.findMember(userId));
-    }
-
-    //전체 회원 조회
-    @GetMapping
-    public ResponseEntity<List<MemberDto.Response>> getAllMembers() {return ResponseEntity.ok(memberService.findAllMember());}
 
     //회원수정
     @PutMapping("/{userId}")

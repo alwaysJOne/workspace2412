@@ -32,6 +32,20 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public Long patch(Long boardId, String title, String contents, String fileName) {
+        Board existingBoard = boardMapper.findOne(boardId);
+
+        if (existingBoard == null) {
+            throw new RuntimeException("Board not found");
+        }
+
+        existingBoard.patch(title, contents, fileName);
+
+        boardMapper.update(existingBoard);
+        return existingBoard.getBoardId();
+    }
+
+    @Override
     public Member findMemberByUserId(String userId) {
         // This is a placeholder implementation. In a real application,
         // you would retrieve the Member from a database or another service.

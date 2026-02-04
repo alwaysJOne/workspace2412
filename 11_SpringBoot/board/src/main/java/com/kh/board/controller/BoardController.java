@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -96,6 +97,26 @@ public class BoardController {
         System.out.println(board);
 
         Long boardId = boardService.update(board);
+        return new ResponseEntity<>(boardId, HttpStatus.OK);
+    }
+
+    @PatchMapping
+    public ResponseEntity<Long> patchBoard(BoardRequest.PatchDTO request, MultipartFile upfile) throws IOException {
+
+        if (upfile != null && !upfile.isEmpty()) {
+            File file = new File("C:\\workspace\\11_SpringBoot\\board\\src\\main\\resources\\uploads", upfile.getOriginalFilename());
+            upfile.transferTo(file);
+
+            request.setOrigin_file("/uploads/" + upfile.getOriginalFilename());
+        }
+
+        Long boardId = boardService.patch(
+            request.getBoardId(),
+            request.getTitle(),
+            request.getContents(),
+            request.getOrigin_file()
+        );
+
         return new ResponseEntity<>(boardId, HttpStatus.OK);
     }
 }

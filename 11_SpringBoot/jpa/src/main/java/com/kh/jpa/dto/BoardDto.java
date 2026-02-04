@@ -2,7 +2,6 @@ package com.kh.jpa.dto;
 
 import com.kh.jpa.entity.Board;
 import com.kh.jpa.entity.BoardTag;
-import com.kh.jpa.entity.Reply;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -38,13 +37,6 @@ public class BoardDto {
         private String board_content;
         private MultipartFile file;
         private List<String> tags;
-
-        public Board toEntity() {
-            return Board.builder()
-                        .boardTitle(this.board_title)
-                        .boardContent(this.board_content)
-                        .build();
-        }
     }
 
     @Getter
@@ -63,38 +55,34 @@ public class BoardDto {
         private String user_name;
         private List<String> tags;
 
-        public static Response toDto(Board board) {
+        public static Response ofSimple(Long boardNo, String boardTitle, String originName,
+                                         Integer count, LocalDateTime createDate, String userId) {
             return Response.builder()
-                           .board_no(board.getBoardNo())
-                           .board_title(board.getBoardTitle())
-                           .board_content(board.getBoardContent())
-                           .change_name(board.getChangeName())
-                           .origin_name(board.getOriginName())
-                           .count(board.getCount())
-                           .create_date(board.getCreateDate())
-                           .user_id(board.getMember()
-                                         .getUserId())
-                           .user_name(board.getMember()
-                                           .getUserName())
-                           .tags(board.getBoardTags()
-                                      .stream()
-                                      .map(boardTag -> boardTag.getTag()
-                                                               .getTagName())
-                                      .toList())
-                           .build();
-            //boardTag x boardTag가 여러개이기 때문에 하나마다 전부 -> tag추출
+                    .board_no(boardNo)
+                    .board_title(boardTitle)
+                    .origin_name(originName)
+                    .count(count)
+                    .create_date(createDate)
+                    .user_id(userId)
+                    .build();
         }
 
-        public static Response toSimpleDto(Board board) {
+        public static Response of(Long boardNo, String boardTitle, String boardContent,
+                                   String originName, String changeName, Integer count,
+                                   LocalDateTime createDate, String userId, String userName,
+                                   List<String> tags) {
             return Response.builder()
-                           .board_no(board.getBoardNo())
-                           .board_title(board.getBoardTitle())
-                           .origin_name(board.getOriginName())
-                           .count(board.getCount())
-                           .create_date(board.getCreateDate())
-                           .user_id(board.getMember()
-                                         .getUserId())
-                           .build();
+                    .board_no(boardNo)
+                    .board_title(boardTitle)
+                    .board_content(boardContent)
+                    .origin_name(originName)
+                    .change_name(changeName)
+                    .count(count)
+                    .create_date(createDate)
+                    .user_id(userId)
+                    .user_name(userName)
+                    .tags(tags)
+                    .build();
         }
     }
 }

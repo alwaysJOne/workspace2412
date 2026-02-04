@@ -6,9 +6,9 @@ import com.kh.jpa.entity.BoardTag;
 import com.kh.jpa.entity.Member;
 import com.kh.jpa.entity.Tag;
 import com.kh.jpa.enums.CommonEnums;
-import com.kh.jpa.repository.BoardRespository;
-import com.kh.jpa.repository.MemberRepository;
-import com.kh.jpa.repository.TagRepositoryImpl;
+import com.kh.jpa.repository.BoardJpaRepository;
+import com.kh.jpa.repository.MemberJpaRepository;
+import com.kh.jpa.repository.TagJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
@@ -21,30 +21,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 게시글 관련 비즈니스 로직을 처리하는 서비스 클래스
+ * 게시글 관련 비즈니스 로직을 처리하는 서비스 클래스 - Spring Data JPA 버전
+ * BoardJpaRepository(JpaRepository 상속)를 사용
  */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class BoardService {
+public class BoardServiceJpa {
 
-    private final BoardRespository boardRespository;
-    private final MemberRepository memberRepository;
-    private final TagRepositoryImpl tagRepository;
+    private final BoardJpaRepository boardJpaRepository;
+    private final MemberJpaRepository memberJpaRepository;
+    private final TagJpaRepository tagJpaRepository;
     private final String UPLOAD_PATH = "C:\\dev_tool";
 
     /**
      * 게시글 목록 조회 (페이징)
      */
     public Page<BoardDto.Response> getBoardList(Pageable pageable) {
-        /*
-            getContent() 실제 데이터 리스트 반환
-            getTotalPages() 전체 페이지 개수
-            getTotalelements() 전체 데이터 수
-            getSize() 페이지당 데이터 수
-            ...
-        */
-        Page<Board> page = boardRespository.findByStatus(CommonEnums.Status.Y, pageable);
+        // JpaRepository의 Method Query 사용 - 한 줄로 끝!
+        Page<Board> page = boardJpaRepository.findByStatus(CommonEnums.Status.Y, pageable);
 
         return page.map(board -> BoardDto.Response.ofSimple(
                 board.getBoardNo(),
@@ -60,8 +55,9 @@ public class BoardService {
      * 게시글 상세 조회
      */
     public BoardDto.Response getBoardDetail(Long boardNo) {
-        Board board = boardRespository.findById(boardNo)
-                                      .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+        // JpaRepository.findById() 사용
+        Board board = boardJpaRepository.findById(boardNo)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 
         Member writer = board.getMember();
         List<String> tagNames = board.getBoardTags()
@@ -88,44 +84,39 @@ public class BoardService {
      */
     @Transactional
     public Long createBoard(BoardDto.Create createBoard) throws IOException {
-        //게시글작성
-        //작성자 찾기 -> 객체지향코드를 작성할 것이기때문에 key를 직접 외래키로 insert하지않고
-        //작성자를 찾아 참조해준다.
-
-        Member member = memberRepository.findOne(createBoard.getUser_id())
-                                        .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+        // 작성자 찾기 - JpaRepository.findById()
+        Member member = memberJpaRepository.findById(createBoard.getUser_id())
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         String changeName = null;
         String originName = null;
 
+        // 파일 업로드 처리
         if (createBoard.getFile() != null && !createBoard.getFile().isEmpty()) {
-            originName = createBoard.getFile()
-                                    .getOriginalFilename();
-            changeName = UUID.randomUUID()
-                             .toString() + "_" + originName;
+            originName = createBoard.getFile().getOriginalFilename();
+            changeName = UUID.randomUUID().toString() + "_" + originName;
 
             File uploadDir = new File(UPLOAD_PATH);
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
-            createBoard.getFile()
-                       .transferTo(new File(UPLOAD_PATH + changeName));
+            createBoard.getFile().transferTo(new File(UPLOAD_PATH + changeName));
         }
 
+        // Board 엔티티 생성
         Board board = createBoard.toEntity();
         board.changeMember(member);
         board.changeFile(originName, changeName);
 
-        if (createBoard.getTags() != null && !createBoard.getTags()
-                                                         .isEmpty()) {
-            //tag가 왔다. ["kh","java","쉬움"]
+        // 태그 처리
+        if (createBoard.getTags() != null && !createBoard.getTags().isEmpty()) {
             for (String tagName : createBoard.getTags()) {
-                //tag를 이름으로 조회해서 없으면 새로 만들어라.
-                Tag tag = tagRepository.findByTagName(tagName)
-                                       .orElseGet(() -> tagRepository.save(Tag.builder()
-                                                                              .tagName(tagName)
-                                                                              .build()));
+                // 태그 조회 또는 생성 - JpaRepository 사용
+                Tag tag = tagJpaRepository.findByTagName(tagName)
+                        .orElseGet(() -> tagJpaRepository.save(Tag.builder()
+                                .tagName(tagName)
+                                .build()));
 
                 BoardTag boardTag = BoardTag.builder()
                         .tag(tag)
@@ -135,7 +126,8 @@ public class BoardService {
             }
         }
 
-        return boardRespository.save(board).getBoardNo();
+        // 게시글 저장 - JpaRepository.save()
+        return boardJpaRepository.save(board).getBoardNo();
     }
 
     /**
@@ -143,14 +135,17 @@ public class BoardService {
      */
     @Transactional
     public void deleteBoard(Long boardNo) {
-        Board board = boardRespository.findById(boardNo)
+        // JpaRepository.findById()
+        Board board = boardJpaRepository.findById(boardNo)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 
-        if(board.getChangeName() != null){
+        // 파일 삭제
+        if (board.getChangeName() != null) {
             new File(UPLOAD_PATH + board.getChangeName()).delete();
         }
 
-        boardRespository.delete(board);
+        // 게시글 삭제 - JpaRepository.delete()
+        boardJpaRepository.delete(board);
     }
 
     /**
@@ -158,53 +153,53 @@ public class BoardService {
      */
     @Transactional
     public BoardDto.Response updateBoard(Long boardNo, BoardDto.Update boardUpdate) throws IOException {
-        Board board = boardRespository.findById(boardNo)
+        // JpaRepository.findById()
+        Board board = boardJpaRepository.findById(boardNo)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 
         String changeName = board.getChangeName();
         String originName = board.getOriginName();
 
+        // 파일 업로드 처리
         if (boardUpdate.getFile() != null && !boardUpdate.getFile().isEmpty()) {
-            originName = boardUpdate.getFile()
-                                    .getOriginalFilename();
-            changeName = UUID.randomUUID()
-                             .toString() + "_" + originName;
+            originName = boardUpdate.getFile().getOriginalFilename();
+            changeName = UUID.randomUUID().toString() + "_" + originName;
 
             File uploadDir = new File(UPLOAD_PATH);
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
-            boardUpdate.getFile()
-                       .transferTo(new File(UPLOAD_PATH + changeName));
+            boardUpdate.getFile().transferTo(new File(UPLOAD_PATH + changeName));
         }
 
+        // 게시글 내용 수정
         board.changeContent(boardUpdate.getBoard_content());
         board.changeTitle(boardUpdate.getBoard_title());
         board.changeFile(originName, changeName);
 
-        if (boardUpdate.getTags() != null && !boardUpdate.getTags()
-                                                         .isEmpty()) {
-            //기존BoardTag -> 연결이 끊기면 필요가 있을까? X
-            //연결된 boardTags의 영속성을 제거한다. -> orphanRemoval = true 설정이 되어있다면 실제 db에서 제거
+        // 태그 처리
+        if (boardUpdate.getTags() != null && !boardUpdate.getTags().isEmpty()) {
+            // 기존 태그 제거
             board.getBoardTags().clear();
 
-            //tag가 왔다. ["kh","java","쉬움"]
+            // 새로운 태그 추가
             for (String tagName : boardUpdate.getTags()) {
-                //tag를 이름으로 조회해서 없으면 새로 만들어라.
-                Tag tag = tagRepository.findByTagName(tagName)
-                                       .orElseGet(() -> tagRepository.save(Tag.builder()
-                                                                              .tagName(tagName)
-                                                                              .build()));
+                // 태그 조회 또는 생성 - JpaRepository 사용
+                Tag tag = tagJpaRepository.findByTagName(tagName)
+                        .orElseGet(() -> tagJpaRepository.save(Tag.builder()
+                                .tagName(tagName)
+                                .build()));
 
                 BoardTag boardTag = BoardTag.builder()
-                                            .tag(tag)
-                                            .build();
+                        .tag(tag)
+                        .build();
 
                 boardTag.changeBoard(board);
             }
         }
 
+        // Response DTO 생성
         Member writer = board.getMember();
         List<String> tagNames = board.getBoardTags()
                 .stream()

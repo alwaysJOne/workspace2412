@@ -55,4 +55,16 @@ public class Board {
     @UpdateTimestamp //엔티티가 수정될대마다 자동으로 업데이트 시간을 넣어줌
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public void patch(String title, String contents, String fileName) {
+        if (title != null) {
+            this.title = title;
+        }
+        if (contents != null) {
+            this.contents = contents;
+        }
+        if (fileName != null) {
+            this.fileName = fileName;
+        }
+    }
 }
